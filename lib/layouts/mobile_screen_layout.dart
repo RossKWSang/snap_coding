@@ -1,8 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:snap_coding_2/screens/login_screen.dart';
+import 'package:snap_coding_2/providers/user_provider.dart';
 import 'package:snap_coding_2/utils/colors.dart';
 import 'package:snap_coding_2/utils/global_variables.dart';
+import 'package:snap_coding_2/models/user.dart' as model;
 
 class MobileScreenLayout extends StatefulWidget {
   const MobileScreenLayout({Key? key}) : super(key: key);
@@ -22,6 +26,12 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout>
     super.initState();
     _mainBannerTabController = new TabController(length: 3, vsync: this);
     pageController = PageController();
+    addData();
+  }
+
+  addData() async {
+    UserProvider _userProvider = Provider.of(context, listen: false);
+    await _userProvider.refreshUser();
   }
 
   @override
@@ -46,80 +56,11 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout>
 
   @override
   Widget build(BuildContext context) {
+    // print(Provider.of<UserProvider>(context).getUser == Null);
+    // model.User user = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: primaryColor,
-      //   leading: IconButton(
-      //     icon: Icon(
-      //       Icons.person_rounded,
-      //       color: secondaryColor,
-      //     ),
-      //     onPressed: () {},
-      //   ),
-      //   title: Text(
-      //     'Snap Coding Main',
-      //     style: TextStyle(
-      //       color: secondaryColor,
-      //     ),
-      //   ),
-      //   centerTitle: true,
-      // ),
       body: PageView(
         children: homeScreenItems,
-        // [
-        // SafeArea(
-        //   child: Column(
-        //     children: [
-        //       Stack(
-        //         children: [
-        //           Container(
-        //             width: double.infinity,
-        //             height: 200,
-        //             child: TabBarView(
-        //               controller: _mainBannerTabController,
-        //               children: [
-        //                 Image.asset(
-        //                   'assets/images/banner1.jpg',
-        //                   fit: BoxFit.fill,
-        //                 ),
-        //                 Image.asset(
-        //                   'assets/images/banner2.jpg',
-        //                   fit: BoxFit.fill,
-        //                 ),
-        //                 Image.asset(
-        //                   'assets/images/banner3.jpg',
-        //                   fit: BoxFit.fill,
-        //                 ),
-        //               ],
-        //             ),
-        //           ),
-        //           Container(
-        //             width: double.infinity,
-        //             height: 200,
-        //             child: Column(
-        //               children: [
-        //                 Spacer(),
-        //                 TabPageSelector(
-        //                   controller: _mainBannerTabController,
-        //                   selectedColor: secondaryColor,
-        //                 ),
-        //                 SizedBox(
-        //                   height: 5,
-        //                 ),
-        //               ],
-        //             ),
-        //           ),
-        //         ],
-        //       ),
-        //     ],
-        //   ),
-        // ),
-        //   Center(child: Text('homeScreen')),
-        //   Center(child: Text('search')),
-        //   Center(child: Text('add')),
-        //   Center(child: Text('alert')),
-        //   Center(child: Text('meetup')),
-        // ],
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         onPageChanged: onPageChanged,

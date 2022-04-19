@@ -24,6 +24,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
+
+  double _developerExperience = 0.0;
   MembershipCate _membershipCate = MembershipCate.individual;
   bool _isLoading = false;
   Uint8List? _image;
@@ -51,6 +53,7 @@ class _SignupScreenState extends State<SignupScreen> {
         usercate: _membershipCate == MembershipCate.individual
             ? 'individual'
             : 'enterprise',
+        devExp: _developerExperience * 30,
         file: _image!);
     // if string returned is sucess, user has been created
     if (res == "success") {
@@ -93,10 +96,6 @@ class _SignupScreenState extends State<SignupScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Flexible(
-                //   child: Container(),
-                //   flex: 2,
-                // ),
                 Image.asset(
                   'SnapCoding.png',
                 ),
@@ -127,7 +126,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 const SizedBox(
-                  height: 12,
+                  height: 24,
                 ),
                 TextFieldInput(
                   hintText: '계정 이름을 입력하세요.',
@@ -183,6 +182,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             },
                           );
                         },
+                        activeColor: primaryColor,
                       ),
                       Spacer(),
                       Text(
@@ -202,9 +202,35 @@ class _SignupScreenState extends State<SignupScreen> {
                             },
                           );
                         },
+                        activeColor: primaryColor,
                       ),
                     ],
                   ),
+                ),
+                Text(
+                  '개발 경력',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text('0'),
+                    Container(
+                      width: 300,
+                      child: Slider(
+                        value: _developerExperience,
+                        onChanged: (newRating) {
+                          setState(() => _developerExperience = newRating);
+                        },
+                        divisions: 30,
+                        label: "${(_developerExperience * 30).round()} 년차",
+                        activeColor: primaryColor,
+                      ),
+                    ),
+                    Text('30'),
+                  ],
                 ),
                 // TextFieldInput(
                 //   hintText: 'Enter your bio',
@@ -233,7 +259,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(4)),
                       ),
-                      color: primaryColor,
+                      color: secondaryColor,
                     ),
                   ),
                   onTap: signUpUser,

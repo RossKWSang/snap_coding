@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:snap_coding_2/screens/login_screen.dart';
 import 'package:snap_coding_2/utils/colors.dart';
+import 'package:snap_coding_2/utils/utils.dart';
+import 'package:snap_coding_2/models/user.dart';
+import 'package:snap_coding_2/providers/user_provider.dart';
+import 'package:snap_coding_2/resources/auth_methods.dart';
+// import 'package:snap_coding_2/resources/firestore_methods.dart';
+import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -27,6 +33,8 @@ class _MainPageState extends State<MainPage>
 
   @override
   Widget build(BuildContext context) {
+    // final UserProvider userProvider = Provider.of<UserProvider>(context);
+    // print(userProvider.getUser.username);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mobileBackgroundColor,
@@ -92,6 +100,12 @@ class _MainPageState extends State<MainPage>
                 ),
               ],
             ),
+            // ElevatedButton(
+            //   onPressed: () async {
+            //     await AuthMethods().signOut();
+            //   },
+            //   child: Text('Sign Out'),
+            // ),
           ],
         ),
       ),

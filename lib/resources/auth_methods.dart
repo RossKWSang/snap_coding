@@ -25,6 +25,7 @@ class AuthMethods {
     required String password,
     required String username,
     required String usercate,
+    required double devExp,
     required Uint8List file,
   }) async {
     String res = "Some error Occurred";
@@ -49,8 +50,9 @@ class AuthMethods {
           uid: cred.user!.uid,
           photoUrl: photoUrl,
           email: email,
-          followers: [],
-          following: [],
+          skillSet: [],
+          interests: [],
+          devExp: devExp,
         );
 
         // adding user in our database

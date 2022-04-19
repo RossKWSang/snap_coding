@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:snap_coding_2/screens/main_screen.dart';
 import 'package:snap_coding_2/screens/signup_screen.dart';
 import 'package:snap_coding_2/widgets/text_field_input.dart';
+import 'package:snap_coding_2/resources/auth_methods.dart';
 import 'package:snap_coding_2/layouts/mobile_screen_layout.dart';
 import 'package:snap_coding_2/utils/colors.dart';
+import 'package:snap_coding_2/utils/utils.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -22,6 +25,30 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+  }
+
+  void loginUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().loginUser(
+        email: _emailController.text, password: _passwordController.text);
+    if (res == 'success') {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => MobileScreenLayout(),
+          ),
+          (route) => false);
+
+      setState(() {
+        _isLoading = false;
+      });
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+      showSnackBar(context, res);
+    }
   }
 
   @override
@@ -63,26 +90,37 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 24,
               ),
               InkWell(
-                  child: Container(
-                    child: !_isLoading
-                        ? const Text(
-                            'Log in',
-                          )
-                        : const CircularProgressIndicator(
-                            color: primaryColor,
-                          ),
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    decoration: const ShapeDecoration(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(4)),
-                      ),
-                      color: blueColor,
+                child: Container(
+                  child: !_isLoading
+                      ? const Text(
+                          'Log in',
+                        )
+                      : const CircularProgressIndicator(
+                          color: secondaryColor,
+                        ),
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: const ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
                     ),
+                    color: primaryColor,
                   ),
-                  onTap: () {} // loginUser,
-                  ),
+                ),
+                onTap: loginUser, // loginUser,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => MainPage(),
+                    ),
+                  );
+                },
+                child: Text('Back to MainPage'),
+              ),
               const SizedBox(
                 height: 12,
               ),
