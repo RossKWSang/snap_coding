@@ -36,6 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (res == 'success') {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
+            // builder: (context) => MainPage(),
             builder: (context) => MobileScreenLayout(),
           ),
           (route) => false);
