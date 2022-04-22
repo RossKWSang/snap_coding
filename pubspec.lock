@@ -205,6 +205,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  hashtagable:
+    dependency: "direct main"
+    description:
+      name: hashtagable
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2+1"
   http:
     dependency: transitive
     description:
@@ -344,7 +351,7 @@ packages:
       name: provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.2"
+    version: "5.0.0"
   sky_engine:
     dependency: transitive
     description: flutter

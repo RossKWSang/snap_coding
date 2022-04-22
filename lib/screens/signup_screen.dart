@@ -29,6 +29,8 @@ class _SignupScreenState extends State<SignupScreen> {
   MembershipCate _membershipCate = MembershipCate.individual;
   bool _isLoading = false;
   Uint8List? _image;
+  List _skillSets = [];
+  String dropdownValue = '언어를 선택하세요';
 
   @override
   void dispose() {
@@ -54,6 +56,7 @@ class _SignupScreenState extends State<SignupScreen> {
             ? 'individual'
             : 'enterprise',
         devExp: _developerExperience * 30,
+        skillSets: _skillSets,
         file: _image!);
     // if string returned is sucess, user has been created
     if (res == "success") {
@@ -231,6 +234,102 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     Text('30'),
                   ],
+                ),
+                Text(
+                  '사용 언어/프레임워크',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+                Row(
+                  children: [
+                    Container(
+                      width: 280,
+                      child: DropdownButton(
+                        value: dropdownValue,
+                        isExpanded: true,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownValue = newValue!;
+                          });
+                        },
+                        items: <String>[
+                          '언어를 선택하세요',
+                          'C',
+                          'C++',
+                          'C#',
+                          'Java',
+                          'Python',
+                          'Ruby',
+                          'PHP',
+                          'Javascript',
+                          'dart',
+                          'go',
+                          'rust'
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    Spacer(),
+                    IconButton(
+                        onPressed: () => {
+                              if (dropdownValue != '언어를 선택하세요')
+                                {
+                                  if (_skillSets.contains(dropdownValue))
+                                    {}
+                                  else
+                                    {
+                                      if (_skillSets.length < 3)
+                                        {
+                                          setState(() {
+                                            _skillSets.add(dropdownValue);
+                                          })
+                                        }
+                                      else
+                                        {
+                                          setState((() {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                // return object of type Dialog
+                                                return AlertDialog(
+                                                  title: Text("경고"),
+                                                  content:
+                                                      Text("10개를 초과할 수 없습니다."),
+                                                  actions: <Widget>[],
+                                                );
+                                              },
+                                            );
+                                          }))
+                                        }
+                                    }
+                                }
+                            },
+                        icon: Icon(Icons.add_circle_rounded))
+                  ],
+                ),
+                Container(
+                  height: _skillSets.length * 50,
+                  child: ListView.builder(
+                    itemCount: _skillSets.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      String lang = _skillSets[index];
+                      return ListTile(
+                        title: Text(lang),
+                        trailing: IconButton(
+                            onPressed: () => {
+                                  setState((() {
+                                    _skillSets.remove(lang);
+                                  }))
+                                },
+                            icon: Icon(Icons.delete_rounded)),
+                      );
+                    },
+                  ),
                 ),
                 // TextFieldInput(
                 //   hintText: 'Enter your bio',

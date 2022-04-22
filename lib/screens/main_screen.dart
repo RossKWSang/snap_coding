@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:snap_coding_2/screens/login_screen.dart';
 import 'package:snap_coding_2/utils/colors.dart';
@@ -22,7 +23,7 @@ class _MainPageState extends State<MainPage>
   @override
   void initState() {
     super.initState();
-    _mainBannerTabController = new TabController(length: 3, vsync: this);
+    _mainBannerTabController = new TabController(length: 4, vsync: this);
   }
 
   @override
@@ -56,58 +57,86 @@ class _MainPageState extends State<MainPage>
           },
         ),
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 200,
-                  child: TabBarView(
-                    controller: _mainBannerTabController,
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+        builder: (context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Stack(
                     children: [
-                      Image.asset(
-                        'assets/images/banner1.jpg',
-                        fit: BoxFit.fill,
+                      Container(
+                        width: double.infinity,
+                        height: 300,
+                        child: TabBarView(
+                          controller: _mainBannerTabController,
+                          children: [
+                            Image.asset(
+                              'assets/images/banner1.jpg',
+                              fit: BoxFit.fill,
+                            ),
+                            Image.asset(
+                              'assets/images/banner2.jpg',
+                              fit: BoxFit.fill,
+                            ),
+                            Image.asset(
+                              'assets/images/banner3.jpg',
+                              fit: BoxFit.fill,
+                            ),
+                            Image.asset(
+                              'assets/images/banner4.jpg',
+                              fit: BoxFit.fill,
+                            ),
+                          ],
+                        ),
                       ),
-                      Image.asset(
-                        'assets/images/banner2.jpg',
-                        fit: BoxFit.fill,
-                      ),
-                      Image.asset(
-                        'assets/images/banner3.jpg',
-                        fit: BoxFit.fill,
+                      Container(
+                        width: double.infinity,
+                        height: 300,
+                        child: Column(
+                          children: [
+                            Spacer(),
+                            TabPageSelector(
+                              controller: _mainBannerTabController,
+                              selectedColor: secondaryColor,
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 200,
-                  child: Column(
-                    children: [
-                      Spacer(),
-                      TabPageSelector(
-                        controller: _mainBannerTabController,
-                        selectedColor: secondaryColor,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                  Divider(),
+                  Container(
+                    width: double.infinity,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            Row(),
+                            Divider(),
+                          ],
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
             ),
-            // ElevatedButton(
-            //   onPressed: () async {
-            //     await AuthMethods().signOut();
-            //   },
-            //   child: Text('Sign Out'),
-            // ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
