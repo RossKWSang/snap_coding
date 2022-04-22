@@ -29,11 +29,24 @@ class _SignupScreenState extends State<SignupScreen> {
   MembershipCate _membershipCate = MembershipCate.individual;
   bool _isLoading = false;
   Uint8List? _image;
-  List _skillSets = [];
+  final List _skillSets = [];
   String dropdownValue = '언어를 선택하세요';
+  List chipSkillSets = [
+    'C',
+    'C++',
+    'C#',
+    'Java',
+    'Python',
+    'Ruby',
+    'PHP',
+    'Javascript',
+    'dart',
+    'go',
+    'rust'
+  ];
 
-  final _skillSets = [];
-  String dropdownValue = '언어를 선택하세요';
+  // final _skillSets = [];
+  // String dropdownValue = '언어를 선택하세요';
 
   @override
   void dispose() {
@@ -61,7 +74,7 @@ class _SignupScreenState extends State<SignupScreen> {
         devExp: _developerExperience * 30,
         skillSets: _skillSets,
         file: _image!);
-    // if string returned is sucess, user has been created
+    // if string returned is success, user has been created
     if (res == "success") {
       setState(() {
         _isLoading = false;
@@ -315,6 +328,84 @@ class _SignupScreenState extends State<SignupScreen> {
                         icon: Icon(Icons.add_circle_rounded))
                   ],
                 ),
+
+                // Wrap(
+                //   spacing: 6,
+                //   runSpacing: 4,
+                //   children: List.generate(
+                //       chipSkillSets.length,
+                //       (index) => ChoiceChip(
+                //             label: Text(chipSkillSets[index]),
+                //             selected: isSelected,
+                //             onSelected: (selected) => {
+                //               setState((() {
+                //                 isSelected = selected;
+                //               }))
+                //             },
+                //           )),
+                // ),
+                Wrap(
+                  children: chipSkillSets.map(
+                    (chipskills) {
+                      bool isSelected = false;
+                      if (_skillSets.contains(chipskills)) {
+                        isSelected = true;
+                      }
+                      return GestureDetector(
+                        onTap: () {
+                          if (_skillSets.contains(chipskills)) {
+                            _skillSets.removeWhere(
+                                (element) => element == chipskills);
+                            setState(() {});
+                          } else {
+                            if (_skillSets.length < 5) {
+                              _skillSets.add(chipskills);
+                              setState(() {});
+                            } else {
+                              setState((() {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    // return object of type Dialog
+                                    return AlertDialog(
+                                      title: Text("경고"),
+                                      content: Text("5개를 초과할 수 없습니다."),
+                                      actions: <Widget>[],
+                                    );
+                                  },
+                                );
+                              }));
+                            }
+                          }
+                        },
+                        child: Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 4),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 12),
+                              decoration: BoxDecoration(
+                                  color:
+                                      isSelected ? primaryColor : Colors.white,
+                                  borderRadius: BorderRadius.circular(18),
+                                  border: Border.all(
+                                      color: isSelected
+                                          ? primaryColor
+                                          : Colors.grey,
+                                      width: 2)),
+                              child: Text(
+                                chipskills,
+                                style: TextStyle(
+                                    color:
+                                        isSelected ? Colors.white : Colors.grey,
+                                    fontSize: 14),
+                              ),
+                            )),
+                      );
+                    },
+                  ).toList(),
+                ),
+
                 Container(
                   height: _skillSets.length * 50,
                   child: ListView.builder(
@@ -334,10 +425,6 @@ class _SignupScreenState extends State<SignupScreen> {
                     },
                   ),
                 ),
-<<<<<<< HEAD
-
-=======
->>>>>>> 568f8d46240fb56f2ea98bb544bc55107cfab35f
                 // TextFieldInput(
                 //   hintText: 'Enter your bio',
                 //   textInputType: TextInputType.text,
