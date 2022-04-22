@@ -29,6 +29,8 @@ class _SignupScreenState extends State<SignupScreen> {
   MembershipCate _membershipCate = MembershipCate.individual;
   bool _isLoading = false;
   Uint8List? _image;
+  List _skillSets = [];
+  String dropdownValue = '언어를 선택하세요';
 
   final _skillSets = [];
   String dropdownValue = '언어를 선택하세요';
@@ -332,7 +334,10 @@ class _SignupScreenState extends State<SignupScreen> {
                     },
                   ),
                 ),
+<<<<<<< HEAD
 
+=======
+>>>>>>> 568f8d46240fb56f2ea98bb544bc55107cfab35f
                 // TextFieldInput(
                 //   hintText: 'Enter your bio',
                 //   textInputType: TextInputType.text,

@@ -1,41 +1,70 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Snap {
+  final String uid;
+  final String snapId;
   final String title;
-  final String photoUrl;
-  final String language;
-  final String detail;
-  final List hashtag;
-  final int like;
+  final String username;
+  final List<String> hashTag;
+  final String thumbnailUrl;
+  final String description;
+  final int price;
+  final List<String> devLanguage;
+  final List<String> devFramework;
+  final List<String> codeImage;
+  final List<String> bookMark;
+  final List<String> buyer;
+  // final Buyer ???
 
   const Snap({
+    required this.uid,
+    required this.snapId,
     required this.title,
-    required this.photoUrl,
-    required this.language,
-    required this.detail,
-    required this.hashtag,
-    required this.like,
+    required this.username,
+    required this.hashTag,
+    required this.thumbnailUrl,
+    required this.description,
+    required this.price,
+    required this.devLanguage,
+    required this.devFramework,
+    required this.codeImage,
+    required this.bookMark,
+    required this.buyer,
   });
 
   static Snap fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
 
     return Snap(
+      uid: snapshot["uid"],
+      snapId: snapshot["snapId"],
       title: snapshot["title"],
-      photoUrl: snapshot["photoUrl"],
-      language: snapshot["language"],
-      detail: snapshot["detail"],
-      hashtag: snapshot["hashtag"],
-      like: snapshot["like"],
+      username: snapshot["username"],
+      hashTag: snapshot["hashTag"],
+      thumbnailUrl: snapshot["thumbnailUrl"],
+      description: snapshot["description"],
+      price: snapshot["price"],
+      devLanguage: snapshot["devLanguage"],
+      devFramework: snapshot["devFramework"],
+      codeImage: snapshot["codeImage"],
+      bookMark: snapshot["bookMark"],
+      buyer: snapshot["buyer"],
     );
   }
 
   Map<String, dynamic> toJson() => {
+        "uid": uid,
+        "snapId": snapId,
         "title": title,
-        "photoUrl": photoUrl,
-        "language": language,
-        "detail": detail,
-        "hashtag": hashtag,
-        "like": like,
+        "username": username,
+        "HashTag": hashTag,
+        "thumbnailUrl": thumbnailUrl,
+        "description": description,
+        "price": price,
+        "devLanguage": devLanguage,
+        "devFramework": devFramework,
+        "codeImage": codeImage,
+        "bookMark": bookMark,
+        "buyer": buyer,
       };
 }

@@ -52,7 +52,7 @@ class AuthMethods {
           uid: cred.user!.uid,
           photoUrl: photoUrl,
           email: email,
-          skillSet: [],
+          skillSet: skillSets,
           interests: [],
           devExp: devExp,
         );
