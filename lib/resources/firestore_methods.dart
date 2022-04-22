@@ -45,19 +45,23 @@ class FireStoreMethods {
     return res;
   }
 
-  Future<String> likePost(String postId, String uid, List likes) async {
+  Future<String> bookmarkPost(String postId, String uid, List bookmark) async {
     String res = "Some error occurred";
     try {
-      if (likes.contains(uid)) {
+      if (bookmark.contains(uid)) {
         // if the likes list contains the user uid, we need to remove it
-        _firestore.collection('snaps').doc(postId).update({
-          'likes': FieldValue.arrayRemove([uid])
-        });
+        _firestore.collection('snaps').doc(postId).update(
+          {
+            'bookMark': FieldValue.arrayRemove([uid])
+          },
+        );
       } else {
         // else we need to add uid to the likes array
-        _firestore.collection('snaps').doc(postId).update({
-          'likes': FieldValue.arrayUnion([uid])
-        });
+        _firestore.collection('snaps').doc(postId).update(
+          {
+            'bookMark': FieldValue.arrayUnion([uid])
+          },
+        );
       }
       res = 'success';
     } catch (err) {
@@ -79,14 +83,16 @@ class FireStoreMethods {
             .doc(postId)
             .collection('comments')
             .doc(commentId)
-            .set({
-          'profilePic': profilePic,
-          'name': name,
-          'uid': uid,
-          'text': text,
-          'commentId': commentId,
-          'datePublished': DateTime.now(),
-        });
+            .set(
+          {
+            'profilePic': profilePic,
+            'name': name,
+            'uid': uid,
+            'text': text,
+            'commentId': commentId,
+            'datePublished': DateTime.now(),
+          },
+        );
         res = 'success';
       } else {
         res = "Please enter text";

@@ -7,6 +7,7 @@ List<Widget> homeScreenItems = [
   MainPage(),
   const SearchPage(),
   const AddSnapScreen(),
-  Center(child: Text('alert')),
-  Center(child: Text('meetup')),
+  Center(
+    child: Text('bookmark'),
+  ),
 ];

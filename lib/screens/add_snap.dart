@@ -1,8 +1,10 @@
 import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hashtagable/hashtagable.dart';
 import 'package:hashtagable/widgets/hashtag_text_field.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:code_editor/code_editor.dart';
 import 'package:snap_coding_2/utils/utils.dart';
 import 'package:snap_coding_2/utils/colors.dart';
 import 'package:snap_coding_2/widgets/text_field_input.dart';
@@ -74,7 +76,7 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
       String res = await FireStoreMethods().uploadPost(
         _titleController.text,
         _descriptionController.text,
-        extractHashTags(_hashtagController.text),
+        extractHashTags(_descriptionController.text),
         _file!,
         uid,
         username,
@@ -123,6 +125,68 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
   @override
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
+    List<String> contentOfPage1 = [
+      "#include <stdio.h>",
+      "",
+      "int main(void){",
+      "\tprintf(\"Hello world\");",
+      "\treturn 0;",
+      "}",
+    ];
+
+    List<String> contentOfPage2 = [
+      "public class HelloWorld {",
+      "\tpublic class void main(String[] args) {",
+      "\t\tSystem.out.println(\"Hello, world!\");",
+      "\t}",
+      "}",
+    ];
+
+    List<FileEditor> files = [
+      new FileEditor(
+        name: "C",
+        language: "C",
+        code: contentOfPage1.join("\n"),
+      ),
+      new FileEditor(
+        name: "C++",
+        language: "C++",
+        code: contentOfPage1.join("\n"),
+      ),
+      new FileEditor(
+        name: "C#",
+        language: "C#",
+        code: contentOfPage1.join("\n"),
+      ),
+      new FileEditor(
+        name: "Java",
+        language: "java",
+        code: contentOfPage2.join("\n"),
+      ),
+      new FileEditor(
+        name: "Python",
+        language: "python",
+        code: "print(\"Hello world!\")",
+      ),
+      new FileEditor(
+        name: "css",
+        language: "css",
+        code: "a { color: red; }",
+      ),
+    ];
+
+    EditorModel model = new EditorModel(
+      files: files,
+      styleOptions: new EditorModelStyleOptions(
+        fontSize: 13,
+        editorColor: mobileBackgroundColor,
+        editorBorderColor: mobileBackgroundColor,
+        // theme: TextTheme(),
+      ),
+    );
+
+    // since 1.3.1
+    model.styleOptions?.defineEditButtonPosition(top: 250.0, right: 10.0);
 
     return Scaffold(
       appBar: AppBar(
@@ -176,7 +240,7 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
                   ),
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.7,
+                  width: MediaQuery.of(context).size.width * 0.75,
                   child: TextFieldInput(
                     hintText: '타이틀을 입력하세요.',
                     textInputType: TextInputType.text,
@@ -197,7 +261,7 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
                   ),
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.7,
+                  width: MediaQuery.of(context).size.width * 0.75,
                   child: HashTagTextField(
                     basicStyle: TextStyle(fontSize: 15, color: Colors.white),
                     decoratedStyle: TextStyle(fontSize: 15, color: Colors.blue),
@@ -205,7 +269,7 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
 
                     /// Called when detection (word starts with #, or # and @) is being typed
                     onDetectionTyped: (text) {
-                      print(_hashtagController.text);
+                      print(_descriptionController.text);
                     },
 
                     /// Called when detection is fully typed
@@ -213,7 +277,7 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
                       print("detection finished");
                     },
                     maxLines: 10,
-                    controller: _hashtagController,
+                    controller: _descriptionController,
                   ),
                 ),
               ],
@@ -232,12 +296,12 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
                   ),
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.7,
+                  width: MediaQuery.of(context).size.width * 0.75,
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
                       Container(
-                        width: MediaQuery.of(context).size.width * 0.7,
+                        width: MediaQuery.of(context).size.width * 0.75,
                         height: 200,
                         decoration: BoxDecoration(
                           border: Border.all(
@@ -258,6 +322,35 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
                   ),
                 ),
               ],
+            ),
+            SizedBox(
+              height: 12,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.22,
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Text("코드입력: "),
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  child: CodeEditor(
+                    model: model,
+                    onSubmit: (String? language, String? value) {
+                      print("language = $language");
+                      print("value = '$value'");
+                    },
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 12,
             ),
           ],
         ),

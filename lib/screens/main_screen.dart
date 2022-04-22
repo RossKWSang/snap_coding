@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:snap_coding_2/screens/login_screen.dart';
+import 'package:snap_coding_2/screens/snap_specific.dart';
 import 'package:snap_coding_2/utils/colors.dart';
 import 'package:snap_coding_2/utils/utils.dart';
 import 'package:snap_coding_2/models/user.dart';
 import 'package:snap_coding_2/providers/user_provider.dart';
 import 'package:snap_coding_2/resources/auth_methods.dart';
-// import 'package:snap_coding_2/resources/firestore_methods.dart';
 import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {
@@ -18,6 +19,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage>
     with SingleTickerProviderStateMixin {
+  bool _isLoggedIn = false;
   late TabController _mainBannerTabController;
 
   @override
@@ -34,6 +36,10 @@ class _MainPageState extends State<MainPage>
 
   @override
   Widget build(BuildContext context) {
+    if (Provider.of<UserProvider>(context).getUser != null) {
+      _isLoggedIn = true;
+      final User user = Provider.of<UserProvider>(context).getUser;
+    }
     // final UserProvider userProvider = Provider.of<UserProvider>(context);
     // print(userProvider.getUser.username);
     return Scaffold(
@@ -51,11 +57,29 @@ class _MainPageState extends State<MainPage>
           ),
           onPressed: () {
             Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => LoginScreen()));
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => LoginScreen(),
+              ),
+            );
           },
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              CupertinoIcons.bell_fill,
+              color: secondaryColor,
+            ),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => LoginScreen(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('posts').snapshots(),
@@ -67,73 +91,159 @@ class _MainPageState extends State<MainPage>
             );
           }
           return SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Stack(
+            child: CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  automaticallyImplyLeading: false,
+                  pinned: true,
+                  toolbarHeight: 0,
+                  collapsedHeight: 0,
+                  expandedHeight: 252,
+                  backgroundColor: Colors.white,
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Stack(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          height: 300,
+                          child: TabBarView(
+                            controller: _mainBannerTabController,
+                            children: [
+                              Image.asset(
+                                'assets/images/banner1.jpg',
+                                fit: BoxFit.fill,
+                              ),
+                              Image.asset(
+                                'assets/images/banner2.jpg',
+                                fit: BoxFit.fill,
+                              ),
+                              Image.asset(
+                                'assets/images/banner3.jpg',
+                                fit: BoxFit.fill,
+                              ),
+                              Image.asset(
+                                'assets/images/banner4.jpg',
+                                fit: BoxFit.fill,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          height: 300,
+                          child: Column(
+                            children: [
+                              Spacer(),
+                              TabPageSelector(
+                                controller: _mainBannerTabController,
+                                selectedColor: secondaryColor,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ), // 없앨 영역
+                  // bottom: PreferredSize(
+                  //   preferredSize: Size.fromHeight(50),
+                  //   child: Container(
+                  //     padding: EdgeInsets.fromLTRB(20, 25, 10, 0),
+                  //     height: 60,
+                  //     child: Row(
+                  //       children: [
+                  //         Row(
+                  //           children: [
+                  //             Icon(
+                  //               Icons.mail_outline,
+                  //               color: Colors.grey,
+                  //             ),
+                  //             SizedBox(width: 10),
+                  //             Text("What's New"),
+                  //           ],
+                  //         ),
+                  //         SizedBox(width: 20),
+                  //         Row(
+                  //           children: [
+                  //             Icon(
+                  //               CupertinoIcons.ticket,
+                  //               color: Colors.grey,
+                  //             ),
+                  //             SizedBox(width: 10),
+                  //             Text("Coupon"),
+                  //           ],
+                  //         ),
+                  //         Spacer(),
+                  //         Stack(
+                  //           children: [
+                  //             Icon(
+                  //               CupertinoIcons.bell,
+                  //             ),
+                  //             Positioned(
+                  //               right: 0,
+                  //               child: Container(
+                  //                 width: 10,
+                  //                 height: 10,
+                  //                 padding: EdgeInsets.all(1),
+                  //                 decoration: BoxDecoration(
+                  //                     color: primaryColor,
+                  //                     borderRadius: BorderRadius.circular(20)),
+                  //               ),
+                  //             )
+                  //           ],
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ), // 남길 영역
+                ),
+                SliverToBoxAdapter(
+                  child: Column(
                     children: [
                       Container(
                         width: double.infinity,
-                        height: 300,
-                        child: TabBarView(
-                          controller: _mainBannerTabController,
-                          children: [
-                            Image.asset(
-                              'assets/images/banner1.jpg',
-                              fit: BoxFit.fill,
-                            ),
-                            Image.asset(
-                              'assets/images/banner2.jpg',
-                              fit: BoxFit.fill,
-                            ),
-                            Image.asset(
-                              'assets/images/banner3.jpg',
-                              fit: BoxFit.fill,
-                            ),
-                            Image.asset(
-                              'assets/images/banner4.jpg',
-                              fit: BoxFit.fill,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: double.infinity,
-                        height: 300,
-                        child: Column(
-                          children: [
-                            Spacer(),
-                            TabPageSelector(
-                              controller: _mainBannerTabController,
-                              selectedColor: secondaryColor,
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                          ],
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            return Column(
+                              children: [
+                                Row(),
+                                Divider(),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            SnapSpecific(
+                                          snapId: snapshot.data!.docs[index]
+                                              .data()['snapId'],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: 200,
+                                    child: Image.network(
+                                      snapshot.data!.docs[index]
+                                          .data()['thumbnailUrl'],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
                         ),
                       ),
                     ],
                   ),
-                  Divider(),
-                  Container(
-                    width: double.infinity,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            Row(),
-                            Divider(),
-                          ],
-                        );
-                      },
-                    ),
-                  )
-                ],
-              ),
+                ),
+              ],
             ),
           );
         },

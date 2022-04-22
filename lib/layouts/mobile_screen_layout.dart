@@ -80,15 +80,15 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout>
               Icons.home_filled,
               color: (_page == 0) ? blueColor : secondaryColor,
             ),
-            label: '',
-            backgroundColor: primaryColor,
+            label: '홈',
+            backgroundColor: Colors.white,
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.search,
               color: (_page == 1) ? blueColor : secondaryColor,
             ),
-            label: '',
+            label: '검색',
             backgroundColor: primaryColor,
           ),
           BottomNavigationBarItem(
@@ -96,23 +96,15 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout>
               Icons.add_circle,
               color: (_page == 2) ? blueColor : secondaryColor,
             ),
-            label: '',
+            label: '업로드',
             backgroundColor: primaryColor,
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              CupertinoIcons.bell_fill,
+              CupertinoIcons.bookmark,
               color: (_page == 3) ? blueColor : secondaryColor,
             ),
-            label: '',
-            backgroundColor: primaryColor,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.people,
-              color: (_page == 4) ? blueColor : secondaryColor,
-            ),
-            label: '',
+            label: '북마크',
             backgroundColor: primaryColor,
           ),
         ],
