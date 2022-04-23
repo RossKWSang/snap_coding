@@ -272,7 +272,8 @@ class _MainPageState extends State<MainPage>
                                               height: 8,
                                             ),
                                             Text(
-                                              '코드이름',
+                                              snapshot.data!.docs[index]
+                                                  .data()['title'],
                                               // snapshot.data!.docs[index]
                                               //     .data()['snapId'],
                                               style: TextStyle(
@@ -281,59 +282,62 @@ class _MainPageState extends State<MainPage>
                                             ),
                                             Text(
                                               snapshot.data!.docs[index]
-                                                  .data()['snapId'],
+                                                  .data()['description']
+                                                  .substring(0, 30),
                                               style:
                                                   TextStyle(color: Colors.grey),
                                             ),
                                             SizedBox(
                                               height: 6,
                                             ),
-                                            RichText(
-                                                text: TextSpan(
-                                                    children: <TextSpan>[
-                                                  TextSpan(
-                                                    text: '20% ',
-                                                    style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 24),
-                                                  ),
-                                                  TextSpan(
-                                                    text: '30,000',
-                                                    style: TextStyle(
-                                                        color: whiteColor,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 24),
-                                                  ),
-                                                ])),
-                                            SizedBox(
-                                              height: 8,
-                                            ),
+                                            // RichText(
+                                            //     text: TextSpan(
+                                            //         children: <TextSpan>[
+                                            //       TextSpan(
+                                            //         text: '20% ',
+                                            //         style: TextStyle(
+                                            //             color: Colors.red,
+                                            //             fontWeight:
+                                            //                 FontWeight.bold,
+                                            //             fontSize: 24),
+                                            //       ),
+                                            //       TextSpan(
+                                            //         text: '30,000',
+                                            //         style: TextStyle(
+                                            //             color: whiteColor,
+                                            //             fontWeight:
+                                            //                 FontWeight.bold,
+                                            //             fontSize: 24),
+                                            //       ),
+                                            //     ])),
+                                            // SizedBox(
+                                            //   height: 8,
+                                            // ),
                                             Row(
                                               children: [
                                                 Chip(
-                                                    backgroundColor: Colors
-                                                        .green.shade900
-                                                        .withOpacity(0.3),
-                                                    label: Text(
-                                                      '#JavaScript',
-                                                      style: TextStyle(
-                                                          fontSize: 12,
-                                                          color: Colors.green),
-                                                    )),
+                                                  backgroundColor: Colors
+                                                      .green.shade900
+                                                      .withOpacity(0.3),
+                                                  label: Text(
+                                                    '#JavaScript',
+                                                    style: TextStyle(
+                                                        fontSize: 12,
+                                                        color: Colors.green),
+                                                  ),
+                                                ),
                                                 SizedBox(width: 6),
                                                 Chip(
-                                                    backgroundColor: Colors
-                                                        .green.shade900
-                                                        .withOpacity(0.3),
-                                                    label: Text(
-                                                      '#마켓컬리',
-                                                      style: TextStyle(
-                                                          fontSize: 12,
-                                                          color: Colors.green),
-                                                    )),
+                                                  backgroundColor: Colors
+                                                      .green.shade900
+                                                      .withOpacity(0.3),
+                                                  label: Text(
+                                                    '#마켓컬리',
+                                                    style: TextStyle(
+                                                        fontSize: 12,
+                                                        color: Colors.green),
+                                                  ),
+                                                ),
                                               ],
                                             )
                                           ],
@@ -341,7 +345,7 @@ class _MainPageState extends State<MainPage>
                                       ],
                                     ),
                                   ),
-                                ),
+                                )
                               ],
                             );
                           },

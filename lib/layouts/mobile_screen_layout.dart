@@ -70,7 +70,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout>
         onTap: navigationTapped,
         selectedItemColor: blueColor, // 선택된 아이콘 색상
         unselectedItemColor: Colors.grey, // 선택되지 않은 아이콘 색상
-        backgroundColor: primaryColor,
+        backgroundColor: mobileBackgroundColor,
         showSelectedLabels: false, // 선택된 항목 label 숨기기
         showUnselectedLabels: false, // 선택되지 않은 항목 label 숨기기
         type: BottomNavigationBarType.fixed, // 선택시 아이콘 움직이지 않기
@@ -78,7 +78,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout>
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home_filled,
-              color: (_page == 0) ? blueColor : secondaryColor,
+              color: (_page == 0) ? Colors.green : secondaryColor,
             ),
             label: '홈',
             backgroundColor: Colors.white,
@@ -86,7 +86,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout>
           BottomNavigationBarItem(
             icon: Icon(
               Icons.search,
-              color: (_page == 1) ? blueColor : secondaryColor,
+              color: (_page == 1) ? Colors.green : secondaryColor,
             ),
             label: '검색',
             backgroundColor: primaryColor,
@@ -94,7 +94,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout>
           BottomNavigationBarItem(
             icon: Icon(
               Icons.add_circle,
-              color: (_page == 2) ? blueColor : secondaryColor,
+              color: (_page == 2) ? Colors.green : secondaryColor,
             ),
             label: '업로드',
             backgroundColor: primaryColor,
@@ -102,7 +102,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout>
           BottomNavigationBarItem(
             icon: Icon(
               CupertinoIcons.bookmark,
-              color: (_page == 3) ? blueColor : secondaryColor,
+              color: (_page == 3) ? Colors.green : secondaryColor,
             ),
             label: '북마크',
             backgroundColor: primaryColor,
