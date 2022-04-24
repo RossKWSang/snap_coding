@@ -40,8 +40,6 @@ class _MainPageState extends State<MainPage>
       _isLoggedIn = true;
       final User user = Provider.of<UserProvider>(context).getUser;
     }
-    // final UserProvider userProvider = Provider.of<UserProvider>(context);
-    // print(userProvider.getUser.username);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mobileBackgroundColor,

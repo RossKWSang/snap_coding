@@ -10,7 +10,6 @@ class Snap {
   final String description;
   final int price;
   final List<String> devLanguage;
-  final List<String> devFramework;
   final List<String> codeImage;
   final List<String> bookMark;
   final List<String> buyer;
@@ -26,7 +25,6 @@ class Snap {
     required this.description,
     required this.price,
     required this.devLanguage,
-    required this.devFramework,
     required this.codeImage,
     required this.bookMark,
     required this.buyer,
@@ -45,7 +43,6 @@ class Snap {
       description: snapshot["description"],
       price: snapshot["price"],
       devLanguage: snapshot["devLanguage"],
-      devFramework: snapshot["devFramework"],
       codeImage: snapshot["codeImage"],
       bookMark: snapshot["bookMark"],
       buyer: snapshot["buyer"],
@@ -62,7 +59,6 @@ class Snap {
         "description": description,
         "price": price,
         "devLanguage": devLanguage,
-        "devFramework": devFramework,
         "codeImage": codeImage,
         "bookMark": bookMark,
         "buyer": buyer,
