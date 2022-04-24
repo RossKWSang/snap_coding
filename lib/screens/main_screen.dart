@@ -36,12 +36,10 @@ class _MainPageState extends State<MainPage>
 
   @override
   Widget build(BuildContext context) {
-    // if (Provider.of<UserProvider>(context).getUser != null) {
-    //   _isLoggedIn = true;
-    //   final User user = Provider.of<UserProvider>(context).getUser;
-    // }
-    final UserProvider userProvider = Provider.of<UserProvider>(context);
-    // print(userProvider.getUser.username);
+    if (Provider.of<UserProvider>(context).getUser != null) {
+      _isLoggedIn = true;
+      final User user = Provider.of<UserProvider>(context).getUser;
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mobileBackgroundColor,

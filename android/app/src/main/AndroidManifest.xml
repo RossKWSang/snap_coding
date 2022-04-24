@@ -3,7 +3,8 @@
    <application
         android:label="snap_coding_2"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -31,4 +32,6 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+    <!-- Add this to your androidManifest file(app/src/main/) -->
+    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>

@@ -241,7 +241,9 @@ class _SignupScreenState extends State<SignupScreen> {
                       child: Slider(
                         value: _developerExperience,
                         onChanged: (newRating) {
-                          setState(() => _developerExperience = newRating);
+                          setState(
+                            () => _developerExperience = newRating,
+                          );
                         },
                         divisions: 30,
                         label: "${(_developerExperience * 30).round()} 년차",
@@ -328,22 +330,6 @@ class _SignupScreenState extends State<SignupScreen> {
                         icon: Icon(Icons.add_circle_rounded))
                   ],
                 ),
-
-                // Wrap(
-                //   spacing: 6,
-                //   runSpacing: 4,
-                //   children: List.generate(
-                //       chipSkillSets.length,
-                //       (index) => ChoiceChip(
-                //             label: Text(chipSkillSets[index]),
-                //             selected: isSelected,
-                //             onSelected: (selected) => {
-                //               setState((() {
-                //                 isSelected = selected;
-                //               }))
-                //             },
-                //           )),
-                // ),
                 Wrap(
                   children: chipSkillSets.map(
                     (chipskills) {
@@ -362,19 +348,21 @@ class _SignupScreenState extends State<SignupScreen> {
                               _skillSets.add(chipskills);
                               setState(() {});
                             } else {
-                              setState((() {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    // return object of type Dialog
-                                    return AlertDialog(
-                                      title: Text("경고"),
-                                      content: Text("5개를 초과할 수 없습니다."),
-                                      actions: <Widget>[],
-                                    );
-                                  },
-                                );
-                              }));
+                              setState(
+                                (() {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      // return object of type Dialog
+                                      return AlertDialog(
+                                        title: Text("경고"),
+                                        content: Text("5개를 초과할 수 없습니다."),
+                                        actions: <Widget>[],
+                                      );
+                                    },
+                                  );
+                                }),
+                              );
                             }
                           }
                         },
@@ -405,7 +393,6 @@ class _SignupScreenState extends State<SignupScreen> {
                     },
                   ).toList(),
                 ),
-
                 Container(
                   height: _skillSets.length * 50,
                   child: ListView.builder(
@@ -415,24 +402,17 @@ class _SignupScreenState extends State<SignupScreen> {
                       return ListTile(
                         title: Text(lang),
                         trailing: IconButton(
-                            onPressed: () => {
-                                  setState((() {
-                                    _skillSets.remove(lang);
-                                  }))
-                                },
-                            icon: Icon(Icons.delete_rounded)),
+                          onPressed: () => {
+                            setState((() {
+                              _skillSets.remove(lang);
+                            }))
+                          },
+                          icon: Icon(Icons.delete_rounded),
+                        ),
                       );
                     },
                   ),
                 ),
-                // TextFieldInput(
-                //   hintText: 'Enter your bio',
-                //   textInputType: TextInputType.text,
-                //   textEditingController: _bioController,
-                // ),
-                // const SizedBox(
-                //   height: 24,
-                // ),
                 const SizedBox(
                   height: 12,
                 ),
@@ -450,7 +430,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     decoration: const ShapeDecoration(
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(4),
+                        ),
                       ),
                       color: secondaryColor,
                     ),
@@ -460,10 +442,6 @@ class _SignupScreenState extends State<SignupScreen> {
                 const SizedBox(
                   height: 12,
                 ),
-                // Flexible(
-                //   child: Container(),
-                //   flex: 2,
-                // ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

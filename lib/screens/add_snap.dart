@@ -25,6 +25,26 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
   final TextEditingController _hashtagController = TextEditingController();
   Uint8List? _file;
   bool isLoading = false;
+  final List<String> _devLanguage = [];
+  String dropdownValue = '언어를 선택하세요';
+  List chipSkillSets = [
+    'C',
+    'C++',
+    'C#',
+    'Java',
+    'Python',
+    'Ruby',
+    'PHP',
+    'Javascript',
+    'dart',
+    'go',
+    'rust',
+    'html',
+    'css',
+    'bash',
+    'typescript',
+    'R',
+  ];
 
   _selectImage(BuildContext parentContext) async {
     return showDialog(
@@ -77,6 +97,7 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
         _titleController.text,
         _descriptionController.text,
         extractHashTags(_descriptionController.text),
+        _devLanguage,
         _file!,
         uid,
         username,
@@ -329,6 +350,86 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.22,
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Text("언어: "),
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  child: Wrap(
+                    children: chipSkillSets.map(
+                      (chipskills) {
+                        bool isSelected = false;
+                        if (_devLanguage.contains(chipskills)) {
+                          isSelected = true;
+                        }
+                        return GestureDetector(
+                          onTap: () {
+                            if (_devLanguage.contains(chipskills)) {
+                              _devLanguage.removeWhere(
+                                  (element) => element == chipskills);
+                              setState(() {});
+                            } else {
+                              if (_devLanguage.length < 5) {
+                                _devLanguage.add(chipskills);
+                                setState(() {});
+                              } else {
+                                setState(
+                                  (() {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        // return object of type Dialog
+                                        return AlertDialog(
+                                          title: Text("경고"),
+                                          content: Text("5개를 초과할 수 없습니다."),
+                                          actions: <Widget>[],
+                                        );
+                                      },
+                                    );
+                                  }),
+                                );
+                              }
+                            }
+                          },
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 4),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 12),
+                              decoration: BoxDecoration(
+                                  color:
+                                      isSelected ? primaryColor : Colors.white,
+                                  borderRadius: BorderRadius.circular(18),
+                                  border: Border.all(
+                                      color: isSelected
+                                          ? primaryColor
+                                          : Colors.grey,
+                                      width: 2)),
+                              child: Text(
+                                chipskills,
+                                style: TextStyle(
+                                    color:
+                                        isSelected ? Colors.white : Colors.grey,
+                                    fontSize: 14),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ).toList(),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
                   width: MediaQuery.of(context).size.width * 0.22,
@@ -350,6 +451,29 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
               ],
             ),
             SizedBox(
+              height: 12,
+            ),
+            Container(
+              height: _devLanguage.length * 50,
+              child: ListView.builder(
+                itemCount: _devLanguage.length,
+                itemBuilder: (BuildContext context, int index) {
+                  String lang = _devLanguage[index];
+                  return ListTile(
+                    title: Text(lang),
+                    trailing: IconButton(
+                      onPressed: () => {
+                        setState((() {
+                          _devLanguage.remove(lang);
+                        }))
+                      },
+                      icon: Icon(Icons.delete_rounded),
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(
               height: 12,
             ),
           ],
