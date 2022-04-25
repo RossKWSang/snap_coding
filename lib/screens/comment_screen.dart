@@ -75,9 +75,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
             itemBuilder: (ctx, index) => Text(
               'Review',
             ),
-            // CommentCard(
-            //   snap: snapshot.data!.docs[index],
-            // ),
           );
         },
       ),

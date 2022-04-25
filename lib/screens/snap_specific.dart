@@ -51,31 +51,6 @@ class _SnapSpecificState extends State<SnapSpecific> {
                 width: 200,
               ),
               centerTitle: true,
-              // leading: IconButton(
-              //   icon: Icon(
-              //     Icons.person_rounded,
-              //     color: secondaryColor,
-              //   ),
-              //   onPressed: () {
-              //     // Navigator.pushReplacement(text);
-              //   },
-              // ),
-              // actions: [
-              //   IconButton(
-              //     icon: Icon(
-              //       CupertinoIcons.bell_fill,
-              //       color: secondaryColor,
-              //     ),
-              //     onPressed: () {
-              //       Navigator.pushReplacement(
-              //         context,
-              //         MaterialPageRoute(
-              //           builder: (BuildContext context) => LoginScreen(),
-              //         ),
-              //       );
-              //     },
-              //   ),
-              // ],
             ),
             body: SafeArea(
                 child: Text(
@@ -86,45 +61,6 @@ class _SnapSpecificState extends State<SnapSpecific> {
         return const Center(
           child: CircularProgressIndicator(),
         );
-        // Scaffold(
-        //   appBar: AppBar(
-        //     backgroundColor: mobileBackgroundColor,
-        //     title: Image.asset(
-        //       'SnapCoding.png',
-        //       width: 200,
-        //     ),
-        //     centerTitle: true,
-        //     // leading: IconButton(
-        //     //   icon: Icon(
-        //     //     Icons.person_rounded,
-        //     //     color: secondaryColor,
-        //     //   ),
-        //     //   onPressed: () {
-        //     //     // Navigator.pushReplacement(text);
-        //     //   },
-        //     // ),
-        //     // actions: [
-        //     //   IconButton(
-        //     //     icon: Icon(
-        //     //       CupertinoIcons.bell_fill,
-        //     //       color: secondaryColor,
-        //     //     ),
-        //     //     onPressed: () {
-        //     //       Navigator.pushReplacement(
-        //     //         context,
-        //     //         MaterialPageRoute(
-        //     //           builder: (BuildContext context) => LoginScreen(),
-        //     //         ),
-        //     //       );
-        //     //     },
-        //     //   ),
-        //     // ],
-        //   ),
-        //   body: Text(
-        //     // documentSnapshot.snapshots().toString(),
-
-        //   ),
-        // );
       },
     );
   }

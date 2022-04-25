@@ -9,14 +9,16 @@ class FireStoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<String> uploadPost(
-      String title,
-      String description,
-      List<String> hashTag,
-      List<String> devLanguage,
-      Uint8List file,
-      String uid,
-      String username,
-      String profImage) async {
+    String title,
+    String description,
+    List<String> hashTag,
+    List<String> devLanguage,
+    Uint8List file,
+    String uid,
+    String username,
+    String profImage,
+    Map<String, String> codeSnippet,
+  ) async {
     // asking uid here because we dont want to make extra calls to firebase auth when we can just get from our state management
     String res = "Some error occurred";
     try {
@@ -34,8 +36,8 @@ class FireStoreMethods {
         price: 10000,
         devLanguage: devLanguage,
         codeImage: [],
-        bookMark: [],
         buyer: [],
+        codeSnippet: codeSnippet,
       );
       _firestore.collection('posts').doc(snapId).set(post.toJson());
       res = "success";

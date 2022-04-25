@@ -9,6 +9,7 @@ class User {
   final List skillSet;
   final List interests;
   final double devExp;
+  final List recentSearch;
 
   const User({
     required this.username,
@@ -19,6 +20,7 @@ class User {
     required this.skillSet,
     required this.interests,
     required this.devExp,
+    required this.recentSearch,
   });
 
   static User fromSnap(DocumentSnapshot snap) {
@@ -33,6 +35,7 @@ class User {
       skillSet: snapshot["skillSet"],
       interests: snapshot["interests"],
       devExp: snapshot["devExp"],
+      recentSearch: snapshot["recentSearch"],
     );
   }
 
@@ -45,5 +48,6 @@ class User {
         "skillSet": skillSet,
         "interests": interests,
         "devExp": devExp,
+        "recentSearch": recentSearch,
       };
 }

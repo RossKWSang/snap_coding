@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:snap_coding_2/models/user.dart' as model;
@@ -55,6 +56,7 @@ class AuthMethods {
           skillSet: skillSets,
           interests: [],
           devExp: devExp,
+          recentSearch: [],
         );
 
         // adding user in our database
@@ -90,6 +92,40 @@ class AuthMethods {
       } else {
         res = "Please enter all the fields";
       }
+    } catch (err) {
+      return err.toString();
+    }
+    return res;
+  }
+
+  Future<String> recentSearchUpdate({
+    required String userId,
+    required List<dynamic> searchKeyWord,
+  }) async {
+    String res = "invalid search";
+    try {
+      _firestore.collection('users').doc(userId).update(
+        {
+          'recentSearch': searchKeyWord,
+        },
+      );
+    } catch (err) {
+      return err.toString();
+    }
+    return res;
+  }
+
+  Future<String> recentSearchInitialize({
+    required String userId,
+  }) async {
+    String res = "success";
+    List<dynamic> _initializedList = [];
+    try {
+      _firestore.collection('users').doc(userId).update(
+        {
+          'recentSearch': _initializedList,
+        },
+      );
     } catch (err) {
       return err.toString();
     }
