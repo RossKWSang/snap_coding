@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:snap_coding_2/utils/colors.dart';
 import 'package:snap_coding_2/utils/utils.dart';
-
 import 'package:snap_coding_2/screens/login_screen.dart';
 import 'package:snap_coding_2/resources/auth_methods.dart';
 import 'package:snap_coding_2/widgets/text_field_input.dart';
@@ -31,7 +30,7 @@ class _SignupScreenState extends State<SignupScreen> {
   Uint8List? _image;
   final List _skillSets = [];
   String dropdownValue = '언어를 선택하세요';
-  List chipSkillSets = [
+  final List chipSkillSets = [
     'C',
     'C++',
     'C#',
@@ -42,7 +41,12 @@ class _SignupScreenState extends State<SignupScreen> {
     'Javascript',
     'dart',
     'go',
-    'rust'
+    'rust',
+    'html',
+    'css',
+    'bash',
+    'typescript',
+    'R',
   ];
 
   // final _skillSets = [];
@@ -254,7 +258,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ],
                 ),
                 Text(
-                  '사용 언어/프레임워크',
+                  '사용 언어',
                   style: TextStyle(
                     fontSize: 20,
                   ),

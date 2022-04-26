@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snap_coding_2/screens/login_screen.dart';
 import 'package:snap_coding_2/providers/user_provider.dart';
+import 'package:snap_coding_2/providers/search_provider.dart';
 import 'package:snap_coding_2/utils/colors.dart';
 import 'package:snap_coding_2/utils/global_variables.dart';
 import 'package:snap_coding_2/models/user.dart' as model;
@@ -19,6 +20,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout>
     with SingleTickerProviderStateMixin {
   late TabController _mainBannerTabController;
   late PageController pageController;
+  late IsSearchProvider _isSearchedProvider;
   int _page = 0;
 
   @override
@@ -51,6 +53,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout>
 
   int currentIndex = 0;
   void navigationTapped(int page) {
+    _isSearchedProvider.unSearched();
     pageController.jumpToPage(page);
   }
 
@@ -58,6 +61,8 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout>
   Widget build(BuildContext context) {
     // print(Provider.of<UserProvider>(context).getUser == Null);
     // model.User user = Provider.of<UserProvider>(context).getUser;
+    _isSearchedProvider = Provider.of<IsSearchProvider>(context);
+
     return Scaffold(
       body: PageView(
         children: homeScreenItems,

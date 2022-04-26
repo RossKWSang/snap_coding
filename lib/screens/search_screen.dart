@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snap_coding_2/models/user.dart';
 import 'package:snap_coding_2/providers/user_provider.dart';
+import 'package:snap_coding_2/providers/search_provider.dart';
 import 'package:snap_coding_2/resources/auth_methods.dart';
 import 'package:snap_coding_2/resources/firestore_methods.dart';
 import 'package:snap_coding_2/utils/colors.dart';
 import 'package:snap_coding_2/utils/utils.dart';
+import 'package:snap_coding_2/widgets/snap_card.dart';
 import 'package:snap_coding_2/widgets/text_field_input.dart';
 
 class SearchPage extends StatefulWidget {
@@ -19,6 +21,26 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   TextEditingController _searchKeyWord = TextEditingController();
   bool _isLoggedIn = false;
+  late IsSearchProvider _isSearchedProvider;
+  final List _skillSets = [];
+  final List chipSkillSets = [
+    'C',
+    'C++',
+    'C#',
+    'Java',
+    'Python',
+    'Ruby',
+    'PHP',
+    'Javascript',
+    'dart',
+    'go',
+    'rust',
+    'html',
+    'css',
+    'bash',
+    'typescript',
+    'R',
+  ];
 
   List<dynamic> queueRecentSearchList(
       List<dynamic> currentQueue, String recentKeyword) {
@@ -66,7 +88,7 @@ class _SearchPageState extends State<SearchPage> {
       );
 
       if (res != 'success') {
-        clearSearchBar();
+        //clearSearchBar();
       }
       setState(() {});
     } catch (err) {
@@ -76,6 +98,10 @@ class _SearchPageState extends State<SearchPage> {
       );
     }
   }
+
+  // AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> searchSnapshot(
+  //   String searchKeyword,
+  // ) async {}
 
   // List<Widget> searchResult(String searchKeyWord) {}
 
@@ -88,10 +114,9 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     if (Provider.of<UserProvider>(context).getUser != null) {
-      _isLoggedIn = true;
       final User user = Provider.of<UserProvider>(context).getUser;
       final String uid = user.uid;
-      bool _searchOn = false;
+      _isSearchedProvider = Provider.of<IsSearchProvider>(context);
 
       return StreamBuilder(
         stream:
@@ -103,132 +128,320 @@ class _SearchPageState extends State<SearchPage> {
             );
           }
           List<dynamic> recentSearch = snapshot.data!['recentSearch'];
-          return SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 10,
-                horizontal: 10,
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    height: 35,
-                    child: TextField(
-                      controller: _searchKeyWord,
-                      style: TextStyle(
-                        color: secondaryColor,
-                      ),
-                      cursorColor: Colors.white,
-                      decoration: InputDecoration(
-                        focusColor: secondaryColor,
-                        border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(20.0),
-                          ),
-                        ),
-                        enabledBorder: const OutlineInputBorder(
-                          // borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
-                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                        ),
-                        focusedBorder: const OutlineInputBorder(
-                          // borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
-                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                        ),
-                        filled: true,
-                        contentPadding: const EdgeInsets.all(10),
-                        suffixIcon: GestureDetector(
-                          child: const Icon(
-                            Icons.search,
-                            color: secondaryColor,
-                          ),
-                          onTap: () {
-                            List<dynamic> updatedList = queueRecentSearchList(
-                                recentSearch, _searchKeyWord.text);
-
-                            updateUserSearch(uid, updatedList);
-                            print('button clicked! ${recentSearch}');
-                          },
-                        ),
-                      ),
-                      keyboardType: TextInputType.text,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        '최근 검색어',
+          return SingleChildScrollView(
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 5,
+                  horizontal: 5,
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 35,
+                      child: TextField(
+                        controller: _searchKeyWord,
                         style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
+                          color: secondaryColor,
                         ),
-                      ),
-                      Spacer(),
-                      TextButton(
-                        onPressed: () async {
-                          initializeUserSearch(
-                            uid,
-                          );
-                        },
-                        child: Text(
-                          '전체삭제',
-                          style: TextStyle(
-                            color: secondaryColor,
-                            fontSize: 12.0,
-                            decoration: TextDecoration.underline,
+                        cursorColor: Colors.white,
+                        decoration: InputDecoration(
+                          focusColor: secondaryColor,
+                          border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20.0),
+                            ),
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                            // borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0)),
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            // borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0)),
+                          ),
+                          filled: true,
+                          contentPadding: const EdgeInsets.all(10),
+                          suffixIcon: GestureDetector(
+                            child: const Icon(
+                              Icons.search,
+                              color: secondaryColor,
+                            ),
+                            onTap: () {
+                              List<dynamic> updatedList = queueRecentSearchList(
+                                recentSearch,
+                                _searchKeyWord.text,
+                              );
+
+                              updateUserSearch(uid, updatedList);
+                              print('button clicked! ${recentSearch}');
+                              _isSearchedProvider.searched();
+                            },
                           ),
                         ),
+                        keyboardType: TextInputType.text,
                       ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  !_searchOn
-                      ? Container(
-                          width: double.infinity,
-                          height: 30,
-                          child: ListView.builder(
-                            shrinkWrap: false,
-                            // physics: const NeverScrollableScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: recentSearch.length,
-                            itemBuilder: (context, index) {
-                              return Container(
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    !_isSearchedProvider.isSearched
+                        ? Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    '최근 검색어',
+                                    style: TextStyle(
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  TextButton(
+                                    onPressed: () async {
+                                      initializeUserSearch(
+                                        uid,
+                                      );
+                                    },
+                                    child: Text(
+                                      '전체삭제',
+                                      style: TextStyle(
+                                        color: secondaryColor,
+                                        fontSize: 12.0,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Container(
+                                width: double.infinity,
+                                height: 30,
+                                child: recentSearch.length > 0
+                                    ? ListView.builder(
+                                        shrinkWrap: false,
+                                        // physics: const NeverScrollableScrollPhysics(),
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: recentSearch.length,
+                                        itemBuilder: (context, index) {
+                                          return Container(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 5,
+                                            ),
+                                            height: 30,
+                                            child: InputChip(
+                                              padding: EdgeInsets.all(1.0),
+                                              label: Text(
+                                                recentSearch[index],
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              onDeleted: () {
+                                                recentSearch.removeAt(index);
+                                                updateUserSearch(
+                                                    uid, recentSearch);
+                                              },
+                                            ),
+                                          );
+                                        },
+                                      )
+                                    : Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 5,
+                                        ),
+                                        height: 30,
+                                        child: Text(
+                                          '최근 검색 키워드가 없습니다.',
+                                        ),
+                                      ),
+                              ),
+                              SizedBox(
+                                height: 25,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    '현재 사람들이 많이 찾는 검색어',
+                                    style: TextStyle(
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Spacer(),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Container(
                                 padding: EdgeInsets.symmetric(
                                   horizontal: 5,
                                 ),
+                                width: double.infinity,
                                 height: 30,
-                                child: InputChip(
-                                  padding: EdgeInsets.all(1.0),
-                                  label: Text(
-                                    recentSearch[index],
+                                child: Text(
+                                  '최근 검색 키워드가 없습니다.',
+                                  textAlign: TextAlign.start,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 25,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    '검색 언어 선택',
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  onDeleted: () {
-                                    recentSearch.removeAt(index);
-                                    updateUserSearch(uid, recentSearch);
+                                  Spacer(),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Wrap(
+                                children: chipSkillSets.map(
+                                  (chipskills) {
+                                    bool isSelected = false;
+                                    if (_skillSets.contains(chipskills)) {
+                                      isSelected = true;
+                                    }
+                                    return GestureDetector(
+                                      onTap: () {
+                                        if (_skillSets.contains(chipskills)) {
+                                          _skillSets.removeWhere((element) =>
+                                              element == chipskills);
+                                          setState(() {});
+                                        } else {
+                                          if (_skillSets.length < 5) {
+                                            _skillSets.add(chipskills);
+                                            setState(() {});
+                                          } else {
+                                            setState(
+                                              (() {
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    // return object of type Dialog
+                                                    return AlertDialog(
+                                                      title: Text("경고"),
+                                                      content: Text(
+                                                          "5개를 초과할 수 없습니다."),
+                                                      actions: <Widget>[],
+                                                    );
+                                                  },
+                                                );
+                                              }),
+                                            );
+                                          }
+                                        }
+                                      },
+                                      child: Container(
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 5, vertical: 4),
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 5, horizontal: 12),
+                                          decoration: BoxDecoration(
+                                              color: isSelected
+                                                  ? primaryColor
+                                                  : Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(18),
+                                              border: Border.all(
+                                                  color: isSelected
+                                                      ? primaryColor
+                                                      : Colors.grey,
+                                                  width: 2)),
+                                          child: Text(
+                                            chipskills,
+                                            style: TextStyle(
+                                                color: isSelected
+                                                    ? Colors.white
+                                                    : Colors.grey,
+                                                fontSize: 14),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ).toList(),
+                              ),
+                            ],
+                          )
+                        : StreamBuilder(
+                            stream: FirebaseFirestore.instance
+                                .collection('posts')
+                                .where(
+                                  'HashTag',
+                                  arrayContains: _searchKeyWord.text,
+                                )
+                                .snapshots(),
+                            builder: (context,
+                                AsyncSnapshot<
+                                        QuerySnapshot<Map<String, dynamic>>>
+                                    snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              return Container(
+                                width: double.infinity,
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: snapshot.data!.docs.length,
+                                  itemBuilder: (context, index) {
+                                    List<
+                                            QueryDocumentSnapshot<
+                                                Map<String, dynamic>>>
+                                        filteredSnap = snapshot.data!.docs;
+                                    List<dynamic> filteredLanguageList =
+                                        filteredSnap[index]
+                                            .data()['devLanguage'];
+                                    filteredLanguageList.remove('All');
+
+                                    // print(filteredLanguageList);
+                                    return SnapCardMain(
+                                      snapId:
+                                          filteredSnap[index].data()['snapId'],
+                                      thumbnailUrl: filteredSnap[index]
+                                          .data()['thumbnailUrl'],
+                                      title:
+                                          filteredSnap[index].data()['title'],
+                                      hashTagList:
+                                          filteredSnap[index].data()['HashTag'],
+                                      filteredLanguageList:
+                                          filteredLanguageList,
+                                    );
                                   },
                                 ),
                               );
                             },
-                          ),
-                        )
-                      : Text(
-                          '검색 결과 나옴',
-                        ),
-                  // recentSearch.isEmpty
-                  //     ? Text(
-                  //         '최근 검색어가 없습니다.',
-                  //       )
-                  //     : Text(
-                  //         'Loaded',
-                  //       ),
-                ],
+                          )
+
+                    // recentSearch.isEmpty
+                    //     ? Text(
+                    //         '최근 검색어가 없습니다.',
+                    //       )
+                    //     : Text(
+                    //         'Loaded',
+                    //       ),
+                  ],
+                ),
               ),
             ),
           );
