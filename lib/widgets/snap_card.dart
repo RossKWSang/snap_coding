@@ -34,7 +34,7 @@ class SnapCardMain extends StatelessWidget {
             );
           },
           child: Container(
-            width: double.infinity,
+            width: MediaQuery.of(context).size.width * 0.95,
             height: 140,
             child: Row(
               children: [
@@ -42,7 +42,7 @@ class SnapCardMain extends StatelessWidget {
                   children: [
                     Container(
                       height: 120,
-                      width: 120,
+                      width: 110,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(color: Colors.white)),
@@ -82,7 +82,7 @@ class SnapCardMain extends StatelessWidget {
                     ),
                     Container(
                       height: 50,
-                      width: 270,
+                      width: 260,
                       child: Wrap(
                         alignment: WrapAlignment.start, // 정렬 방식
 
@@ -117,7 +117,9 @@ class SnapCardMain extends StatelessWidget {
                               label: Text(
                                 devLang,
                                 style: TextStyle(
-                                    fontSize: 10, color: Colors.green),
+                                  fontSize: 10,
+                                  color: Colors.green,
+                                ),
                               ),
                             ),
                           );

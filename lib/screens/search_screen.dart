@@ -400,35 +400,60 @@ class _SearchPageState extends State<SearchPage> {
                               }
                               return Container(
                                 width: double.infinity,
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: snapshot.data!.docs.length,
-                                  itemBuilder: (context, index) {
-                                    List<
-                                            QueryDocumentSnapshot<
-                                                Map<String, dynamic>>>
-                                        filteredSnap = snapshot.data!.docs;
-                                    List<dynamic> filteredLanguageList =
-                                        filteredSnap[index]
-                                            .data()['devLanguage'];
-                                    filteredLanguageList.remove('All');
+                                child: snapshot.data!.docs.length > 0
+                                    ? ListView.builder(
+                                        shrinkWrap: true,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        itemCount: snapshot.data!.docs.length,
+                                        itemBuilder: (context, index) {
+                                          List<
+                                                  QueryDocumentSnapshot<
+                                                      Map<String, dynamic>>>
+                                              filteredSnap =
+                                              snapshot.data!.docs;
+                                          List<dynamic> filteredLanguageList =
+                                              filteredSnap[index]
+                                                  .data()['devLanguage'];
+                                          filteredLanguageList.remove('All');
 
-                                    // print(filteredLanguageList);
-                                    return SnapCardMain(
-                                      snapId:
-                                          filteredSnap[index].data()['snapId'],
-                                      thumbnailUrl: filteredSnap[index]
-                                          .data()['thumbnailUrl'],
-                                      title:
-                                          filteredSnap[index].data()['title'],
-                                      hashTagList:
-                                          filteredSnap[index].data()['HashTag'],
-                                      filteredLanguageList:
-                                          filteredLanguageList,
-                                    );
-                                  },
-                                ),
+                                          // print(filteredLanguageList);
+                                          return SnapCardMain(
+                                            snapId: filteredSnap[index]
+                                                .data()['snapId'],
+                                            thumbnailUrl: filteredSnap[index]
+                                                .data()['thumbnailUrl'],
+                                            title: filteredSnap[index]
+                                                .data()['title'],
+                                            hashTagList: filteredSnap[index]
+                                                .data()['HashTag'],
+                                            filteredLanguageList:
+                                                filteredLanguageList,
+                                          );
+                                        },
+                                      )
+                                    : Builder(
+                                        builder: (context) {
+                                          String _failedSearchKeyWord =
+                                              _searchKeyWord.text;
+                                          // _searchKeyWord.;
+                                          return Column(
+                                            children: [
+                                              RichText(
+                                                text: TextSpan(
+                                                  text:
+                                                      "\'${_failedSearchKeyWord}\'",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 25,
+                                                    color: primaryColor,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ),
                               );
                             },
                           )
@@ -452,24 +477,21 @@ class _SearchPageState extends State<SearchPage> {
   }
 }
 
-      //     SafeArea(
-      //   child: Column(
-      //     children: [
-      //       Container(
-      //         height: 35,
-      //         child: TextFieldSearch(
-      //           textEditingController: _searchKeyWord,
-      //           textInputType: TextInputType.text,
-      //         ),
-      //       ),
+//     SafeArea(
+//   child: Column(
+//     children: [
+//       Container(
+//         height: 35,
+//         child: TextFieldSearch(
+//           textEditingController: _searchKeyWord,
+//           textInputType: TextInputType.text,
+//         ),
+//       ),
 
-
-            
-      //       Text('${user.uid}'),
-      //     ],
-      //   ),
-      // );
-
+//       Text('${user.uid}'),
+//     ],
+//   ),
+// );
 
 //     return SafeArea(
 //       child: Column(
