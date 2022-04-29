@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 flex: 2,
               ),
               Image.asset(
-                'SnapCoding.png',
+                'FramesnapCodingLogo.png',
               ),
               const SizedBox(
                 height: 64,

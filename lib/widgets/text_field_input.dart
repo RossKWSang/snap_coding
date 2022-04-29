@@ -57,9 +57,10 @@ class TextFieldComment extends StatelessWidget {
 
     return Container(
       width: MediaQuery.of(context).size.width * 0.95,
-      height: 250,
       child: TextField(
         controller: textEditingController,
+        minLines: 4,
+        maxLines: 4,
         decoration: InputDecoration(
           hintText: hintText,
           border: inputBorder,

@@ -27,7 +27,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
         commentEditingController.text,
         uid,
         name,
-        profilePic,
       );
 
       if (res != 'success') {

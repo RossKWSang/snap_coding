@@ -68,7 +68,7 @@ class _MainPageState extends State<MainPage>
       appBar: AppBar(
         backgroundColor: mobileBackgroundColor,
         title: Image.asset(
-          'SnapCoding.png',
+          'FramesnapCodingLogo.png',
           width: 200,
         ),
         centerTitle: true,
@@ -126,23 +126,23 @@ class _MainPageState extends State<MainPage>
                 pinned: true,
                 toolbarHeight: 0,
                 collapsedHeight: 70,
-                expandedHeight: 300,
+                expandedHeight: 400,
                 backgroundColor: mobileBackgroundColor,
                 flexibleSpace: FlexibleSpaceBar(
                   background: Stack(
                     children: [
                       Container(
                         width: double.infinity,
-                        height: 250,
+                        height: 350,
                         child: TabBarView(
                           controller: _mainBannerTabController,
                           children: [
                             Image.asset(
-                              'assets/images/banner1.jpg',
+                              'assets/images/banner1.png',
                               fit: BoxFit.fill,
                             ),
                             Image.asset(
-                              'assets/images/banner2.jpg',
+                              'assets/images/banner2.png',
                               fit: BoxFit.fill,
                             ),
                             Image.asset(
@@ -158,7 +158,7 @@ class _MainPageState extends State<MainPage>
                       ),
                       Container(
                         width: double.infinity,
-                        height: 250,
+                        height: 350,
                         child: Column(
                           children: [
                             Spacer(),

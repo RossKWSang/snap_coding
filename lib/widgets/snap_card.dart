@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snap_coding_2/screens/snap_specific.dart';
+import 'package:snap_coding_2/utils/colors.dart';
 
 class SnapCardMain extends StatelessWidget {
   final String snapId;
@@ -44,8 +45,11 @@ class SnapCardMain extends StatelessWidget {
                       height: 120,
                       width: 110,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: Colors.white)),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: Colors.white,
+                        ),
+                      ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: SizedBox.fromSize(
@@ -93,7 +97,7 @@ class SnapCardMain extends StatelessWidget {
                               hashTag,
                               style: TextStyle(
                                 fontSize: 15,
-                                color: Colors.blue,
+                                color: primaryColor,
                               ),
                             ),
                           );

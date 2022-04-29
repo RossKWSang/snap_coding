@@ -73,8 +73,12 @@ class FireStoreMethods {
   }
 
   // Post comment
-  Future<String> postComment(String postId, String text, String uid,
-      String name, String profilePic) async {
+  Future<String> postComment(
+    String postId,
+    String text,
+    String uid,
+    String name,
+  ) async {
     String res = "Some error occurred";
     try {
       if (text.isNotEmpty) {
@@ -87,11 +91,11 @@ class FireStoreMethods {
             .doc(commentId)
             .set(
           {
-            'profilePic': profilePic,
             'name': name,
             'uid': uid,
             'text': text,
             'commentId': commentId,
+            'reported': [],
             'datePublished': DateTime.now(),
           },
         );
