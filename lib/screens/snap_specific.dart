@@ -9,7 +9,7 @@ import 'package:snap_coding_2/utils/colors.dart';
 import '../providers/user_provider.dart';
 
 class SnapSpecific extends StatefulWidget {
-  final String snapId;
+  final String? snapId;
   const SnapSpecific({
     Key? key,
     required this.snapId,
@@ -25,8 +25,8 @@ class _SnapSpecificState extends State<SnapSpecific> {
 
   @override
   Widget build(BuildContext context) {
-    //final DocumentReference<Object?> documentSnapshot =
-    //    _firestore.doc(widget.snapId);
+    final DocumentReference<Object?> documentSnapshot =
+        _firestore.doc(widget.snapId);
     final User user = Provider.of<UserProvider>(context).getUser;
     return FutureBuilder<DocumentSnapshot>(
       future: _firestore.doc(widget.snapId).get(),

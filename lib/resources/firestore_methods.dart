@@ -37,7 +37,7 @@ class FireStoreMethods {
         bookMark: [],
         buyer: [],
       );
-      _firestore.collection('posts').doc(snapId).set(post.toJson());
+      _firestore.collection('snaps').doc(snapId).set(post.toJson());
       res = "success";
     } catch (err) {
       res = err.toString();
@@ -45,7 +45,11 @@ class FireStoreMethods {
     return res;
   }
 
-  Future<String> bookmarkPost(String postId, String uid, List bookmark) async {
+  Future<String> bookmarkPost(
+    String postId,
+    String uid,
+    List bookmark,
+  ) async {
     String res = "Some error occurred";
     try {
       if (bookmark.contains(uid)) {

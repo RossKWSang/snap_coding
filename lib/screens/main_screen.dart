@@ -10,6 +10,8 @@ import 'package:snap_coding_2/providers/user_provider.dart';
 import 'package:snap_coding_2/resources/auth_methods.dart';
 import 'package:provider/provider.dart';
 
+import '../resources/firestore_methods.dart';
+
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
@@ -20,7 +22,27 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage>
     with SingleTickerProviderStateMixin {
   bool _isLoggedIn = false;
+  bool isMarked = false;
+  List markedPosts = [];
+
   late TabController _mainBannerTabController;
+
+  void bookmarkImage(String snapId, String uid) async {
+    if (markedPosts.contains(snapId)) {
+      markedPosts.remove(snapId);
+    } else {
+      markedPosts.add(snapId);
+    }
+  }
+  //   setState(() {});
+  //   try {
+  //     String res = await FireStoreMethods.bookmarkPost(
+  //       _,
+  //   ,
+  //   ,
+  //     );
+  //   } catch (err) {}
+  // }
 
   @override
   void initState() {
@@ -36,8 +58,11 @@ class _MainPageState extends State<MainPage>
 
   @override
   Widget build(BuildContext context) {
+    // isMarked = false;
     if (Provider.of<UserProvider>(context).getUser != null) {
       _isLoggedIn = true;
+      bool isMarked = false;
+
       final User user = Provider.of<UserProvider>(context).getUser;
     }
     return Scaffold(
@@ -252,10 +277,32 @@ class _MainPageState extends State<MainPage>
                                               ),
                                             ),
                                             Positioned(
-                                              child: Icon(Icons
-                                                  .bookmark_border_outlined),
-                                              bottom: 8,
-                                              right: 8,
+                                              child: IconButton(
+                                                icon: Icon(
+                                                  Icons
+                                                      .bookmark_border_outlined,
+                                                  color: markedPosts.contains(
+                                                          snapshot
+                                                              .data?.docs[index]
+                                                              .data()['snapId'])
+                                                      ? Colors.white
+                                                      : Colors.black,
+                                                ),
+                                                onPressed: () => {
+                                                  setState(() {
+                                                    isMarked = !isMarked;
+                                                    bookmarkImage(
+                                                        snapshot
+                                                            .data?.docs[index]
+                                                            .data()['snapId'],
+                                                        snapshot
+                                                            .data?.docs[index]
+                                                            .data()['uid']);
+                                                  })
+                                                },
+                                              ),
+                                              bottom: 0,
+                                              right: 0,
                                             )
                                           ],
                                         ),
