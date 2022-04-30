@@ -7,6 +7,7 @@ import 'package:hashtagable/widgets/hashtag_text.dart';
 import 'package:provider/provider.dart';
 import 'package:snap_coding_2/models/user.dart';
 import 'package:snap_coding_2/resources/firestore_methods.dart';
+import 'package:snap_coding_2/screens/comment_specific.dart';
 import 'package:snap_coding_2/screens/snap_description.dart';
 import 'package:snap_coding_2/screens/snap_specific.dart';
 import 'package:snap_coding_2/utils/colors.dart';
@@ -86,11 +87,8 @@ class _SnapSpecificState extends State<SnapSpecific> {
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
               backgroundColor: mobileBackgroundColor,
-              title: Image.asset(
-                'FramesnapCodingLogo.png',
-                width: 200,
-              ),
-              centerTitle: true,
+              title: Text(''),
+              centerTitle: false,
             ),
             body: StreamBuilder(
               stream: FirebaseFirestore.instance
@@ -355,7 +353,7 @@ class _SnapSpecificState extends State<SnapSpecific> {
                                           ),
                                         ),
                                       ),
-                                    )
+                                    ),
                                   ],
                                 )
                               : Column(
@@ -463,25 +461,28 @@ class _SnapSpecificState extends State<SnapSpecific> {
                             },
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    SnapDescription(
-                                  snapId: widget.snapId,
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.95,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      CommentSpecific(
+                                    snapId: widget.snapId,
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              '펼쳐보기',
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                color: primaryColor,
+                              );
+                            },
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                '펼쳐보기',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  color: primaryColor,
+                                ),
                               ),
                             ),
                           ),

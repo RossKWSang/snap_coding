@@ -29,7 +29,7 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
     'All',
   ];
   Map<String, String> codeSnippet = {};
-  final String dropdownValue = '언어를 선택하세요';
+  List<String> bookMark = [];
   final List chipSkillSets = [
     'C',
     'C++',
@@ -105,6 +105,7 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
         uid,
         username,
         profImage,
+        bookMark,
         codeSnippet,
       );
       if (res == "success") {

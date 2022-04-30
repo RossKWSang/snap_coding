@@ -54,6 +54,7 @@ class AuthMethods {
           photoUrl: photoUrl,
           email: email,
           skillSet: skillSets,
+          bookMark: [],
           interests: [],
           devExp: devExp,
           recentSearch: [],

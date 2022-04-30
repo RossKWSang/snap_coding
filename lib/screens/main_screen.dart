@@ -8,6 +8,7 @@ import 'package:snap_coding_2/utils/utils.dart';
 import 'package:snap_coding_2/models/user.dart';
 import 'package:snap_coding_2/providers/user_provider.dart';
 import 'package:snap_coding_2/resources/auth_methods.dart';
+import 'package:snap_coding_2/resources/firestore_methods.dart';
 import 'package:provider/provider.dart';
 import 'package:snap_coding_2/widgets/snap_card.dart';
 
@@ -21,6 +22,8 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage>
     with SingleTickerProviderStateMixin {
   bool _isLoggedIn = false;
+  bool isMarked = false;
+  List markedPost = [];
   late TabController _mainBannerTabController;
 
   @override
@@ -59,11 +62,14 @@ class _MainPageState extends State<MainPage>
 
   @override
   Widget build(BuildContext context) {
-    // if (Provider.of<UserProvider>(context).getUser != null) {
-    //   _isLoggedIn = true;
-    //   final User user = Provider.of<UserProvider>(context).getUser;
-    // }
-
+    if (Provider.of<UserProvider>(context).getUser != null) {
+      _isLoggedIn = true;
+      final User user = Provider.of<UserProvider>(context).getUser;
+      markedPost = user.bookMark;
+      print(
+        user.recentSearch,
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mobileBackgroundColor,

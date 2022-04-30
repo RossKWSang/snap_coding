@@ -8,6 +8,7 @@ class User {
   final String usercate;
   final List skillSet;
   final List interests;
+  final List bookMark;
   final double devExp;
   final List recentSearch;
 
@@ -19,6 +20,7 @@ class User {
     required this.usercate,
     required this.skillSet,
     required this.interests,
+    required this.bookMark,
     required this.devExp,
     required this.recentSearch,
   });
@@ -34,6 +36,7 @@ class User {
       photoUrl: snapshot["photoUrl"],
       skillSet: snapshot["skillSet"],
       interests: snapshot["interests"],
+      bookMark: snapshot["bookMark"],
       devExp: snapshot["devExp"],
       recentSearch: snapshot["recentSearch"],
     );
@@ -46,6 +49,7 @@ class User {
         "email": email,
         "photoUrl": photoUrl,
         "skillSet": skillSet,
+        "bookMark": bookMark,
         "interests": interests,
         "devExp": devExp,
         "recentSearch": recentSearch,

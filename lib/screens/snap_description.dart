@@ -81,11 +81,8 @@ class _SnapDescriptionState extends State<SnapDescription> {
           return Scaffold(
             appBar: AppBar(
               backgroundColor: mobileBackgroundColor,
-              title: Image.asset(
-                'FramesnapCodingLogo.png',
-                width: 200,
-              ),
-              centerTitle: true,
+              title: Text('스냅 정보'),
+              centerTitle: false,
             ),
             body: SafeArea(
               child: SingleChildScrollView(

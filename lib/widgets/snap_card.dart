@@ -61,9 +61,25 @@ class SnapCardMain extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                      child: Icon(Icons.bookmark_border_outlined),
-                      bottom: 8,
-                      right: 8,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.bookmark_border_outlined,
+                          // color: markedPosts.contains(
+                          //         snapshot.data?.docs[index].data()['snapId'])
+                          //     ? Colors.white
+                          //     : Colors.black,
+                        ),
+                        onPressed: () => {
+                          // setState(() {
+                          //   isMarked = !isMarked;
+                          //   bookmarkImage(
+                          //       snapshot.data?.docs[index].data()['snapId'],
+                          //       snapshot.data?.docs[index].data()['uid']);
+                          // })
+                        },
+                      ),
+                      bottom: 0,
+                      right: 0,
                     )
                   ],
                 ),
