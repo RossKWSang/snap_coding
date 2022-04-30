@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:snap_coding_2/providers/user_provider.dart';
+import 'package:snap_coding_2/providers/search_provider.dart';
 import 'package:snap_coding_2/screens/login_screen.dart';
 import 'package:snap_coding_2/layouts/mobile_screen_layout.dart';
 import 'package:snap_coding_2/utils/colors.dart';
@@ -36,6 +37,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => UserProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => IsSearchProvider(),
         )
       ],
       child: MaterialApp(

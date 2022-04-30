@@ -11,8 +11,8 @@ class Snap {
   final int price;
   final List<String> devLanguage;
   final List<String> codeImage;
-  final List<String> bookMark;
   final List<String> buyer;
+  final Map<String, String> codeSnippet;
   // final Buyer ???
 
   const Snap({
@@ -26,8 +26,8 @@ class Snap {
     required this.price,
     required this.devLanguage,
     required this.codeImage,
-    required this.bookMark,
     required this.buyer,
+    required this.codeSnippet,
   });
 
   static Snap fromSnap(DocumentSnapshot snap) {
@@ -44,8 +44,8 @@ class Snap {
       price: snapshot["price"],
       devLanguage: snapshot["devLanguage"],
       codeImage: snapshot["codeImage"],
-      bookMark: snapshot["bookMark"],
       buyer: snapshot["buyer"],
+      codeSnippet: snapshot["codeSnippet"],
     );
   }
 
@@ -60,7 +60,7 @@ class Snap {
         "price": price,
         "devLanguage": devLanguage,
         "codeImage": codeImage,
-        "bookMark": bookMark,
         "buyer": buyer,
+        "codeSnippet": codeSnippet,
       };
 }

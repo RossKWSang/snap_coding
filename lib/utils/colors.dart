@@ -7,5 +7,5 @@ const blueColor = Color.fromARGB(255, 0, 180, 246);
 // const primaryColor = Color.fromARGB(255, 0, 0, 255);
 const primaryColor = Color.fromRGBO(45, 152, 104, 1);
 
-const secondaryColor = Colors.grey;
+const secondaryColor = Color.fromARGB(255, 218, 217, 217);
 const whiteColor = Colors.white;

@@ -18,6 +18,7 @@ class FireStoreMethods {
     String username,
     String profImage,
     List bookMark,
+    Map<String, String> codeSnippet,
   ) async {
     // asking uid here because we dont want to make extra calls to firebase auth when we can just get from our state management
     String res = "Some error occurred";
@@ -36,8 +37,8 @@ class FireStoreMethods {
         price: 10000,
         devLanguage: devLanguage,
         codeImage: [],
-        bookMark: [],
         buyer: [],
+        codeSnippet: codeSnippet,
       );
       _firestore.collection('snaps').doc(snapId).set(post.toJson());
       res = "success";
@@ -77,7 +78,7 @@ class FireStoreMethods {
         // );
         await _firestore.collection('posts').doc(snapId).update(
           {
-            'bookMark': FieldValue.arrayUnion([uid])
+            'bookMark': FieldValue.arrayUnion([uid]),
           },
         );
       }
@@ -130,8 +131,12 @@ class FireStoreMethods {
   }
 
   // Post comment
-  Future<String> postComment(String postId, String text, String uid,
-      String name, String profilePic) async {
+  Future<String> postComment(
+    String postId,
+    String text,
+    String uid,
+    String name,
+  ) async {
     String res = "Some error occurred";
     try {
       if (text.isNotEmpty) {
@@ -144,11 +149,11 @@ class FireStoreMethods {
             .doc(commentId)
             .set(
           {
-            'profilePic': profilePic,
             'name': name,
             'uid': uid,
             'text': text,
             'commentId': commentId,
+            'reported': [],
             'datePublished': DateTime.now(),
           },
         );

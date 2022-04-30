@@ -27,7 +27,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
         commentEditingController.text,
         uid,
         name,
-        profilePic,
       );
 
       if (res != 'success') {
@@ -75,9 +74,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
             itemBuilder: (ctx, index) => Text(
               'Review',
             ),
-            // CommentCard(
-            //   snap: snapshot.data!.docs[index],
-            // ),
           );
         },
       ),

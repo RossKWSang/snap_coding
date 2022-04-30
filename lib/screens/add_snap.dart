@@ -27,6 +27,7 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
   bool isLoading = false;
   final List<String> _devLanguage = [];
   List bookMark = [];
+  Map<String, String> codeSnippet = {};
   List chipSkillSets = [
     'C',
     'C++',
@@ -94,15 +95,17 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
     try {
       // upload to storage and db
       String res = await FireStoreMethods().uploadPost(
-          _titleController.text,
-          _descriptionController.text,
-          extractHashTags(_descriptionController.text),
-          _devLanguage,
-          _file!,
-          uid,
-          username,
-          profImage,
-          bookMark);
+        _titleController.text,
+        _descriptionController.text,
+        extractHashTags(_descriptionController.text),
+        _devLanguage,
+        _file!,
+        uid,
+        username,
+        profImage,
+        bookMark,
+        codeSnippet,
+      );
       if (res == "success") {
         setState(() {
           isLoading = false;
@@ -212,14 +215,6 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mobileBackgroundColor,
-        leading: InkWell(
-          child: CircleAvatar(
-            radius: 5,
-            backgroundImage: NetworkImage(
-                'https://firebasestorage.googleapis.com/v0/b/snapcoding-2.appspot.com/o/profilePics%2F8gWv58goIdb6AMux6y3lsLWEgRl2?alt=media&token=7962f19f-58d0-417a-87d4-ed9a2e5aaf1d'),
-          ),
-          onTap: () {},
-        ),
         title: Text(
           'New 스냅코드 등록',
           style: TextStyle(
@@ -374,7 +369,7 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
                                   (element) => element == chipskills);
                               setState(() {});
                             } else {
-                              if (_devLanguage.length < 5) {
+                              if (_devLanguage.length < 6) {
                                 _devLanguage.add(chipskills);
                                 setState(() {});
                               } else {
@@ -443,35 +438,13 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
                   child: CodeEditor(
                     model: model,
                     onSubmit: (String? language, String? value) {
-                      print("language = $language");
-                      print("value = '$value'");
+                      codeSnippet[language!] = value!;
+                      // print("language = $language");
+                      // print("value = '$value'");
                     },
                   ),
                 ),
               ],
-            ),
-            SizedBox(
-              height: 12,
-            ),
-            Container(
-              height: _devLanguage.length * 50,
-              child: ListView.builder(
-                itemCount: _devLanguage.length,
-                itemBuilder: (BuildContext context, int index) {
-                  String lang = _devLanguage[index];
-                  return ListTile(
-                    title: Text(lang),
-                    trailing: IconButton(
-                      onPressed: () => {
-                        setState((() {
-                          _devLanguage.remove(lang);
-                        }))
-                      },
-                      icon: Icon(Icons.delete_rounded),
-                    ),
-                  );
-                },
-              ),
             ),
             const SizedBox(
               height: 12,

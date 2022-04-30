@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:snap_coding_2/utils/colors.dart';
 import 'package:snap_coding_2/utils/utils.dart';
-
 import 'package:snap_coding_2/screens/login_screen.dart';
 import 'package:snap_coding_2/resources/auth_methods.dart';
 import 'package:snap_coding_2/widgets/text_field_input.dart';
@@ -31,7 +30,7 @@ class _SignupScreenState extends State<SignupScreen> {
   Uint8List? _image;
   final List _skillSets = [];
   String dropdownValue = '언어를 선택하세요';
-  List chipSkillSets = [
+  final List chipSkillSets = [
     'C',
     'C++',
     'C#',
@@ -42,7 +41,12 @@ class _SignupScreenState extends State<SignupScreen> {
     'Javascript',
     'dart',
     'go',
-    'rust'
+    'rust',
+    'html',
+    'css',
+    'bash',
+    'typescript',
+    'R',
   ];
 
   // final _skillSets = [];
@@ -254,81 +258,10 @@ class _SignupScreenState extends State<SignupScreen> {
                   ],
                 ),
                 Text(
-                  '사용 언어/프레임워크',
+                  '사용 언어',
                   style: TextStyle(
                     fontSize: 20,
                   ),
-                ),
-                Row(
-                  children: [
-                    Container(
-                      width: 280,
-                      child: DropdownButton(
-                        value: dropdownValue,
-                        isExpanded: true,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            dropdownValue = newValue!;
-                          });
-                        },
-                        items: <String>[
-                          '언어를 선택하세요',
-                          'C',
-                          'C++',
-                          'C#',
-                          'Java',
-                          'Python',
-                          'Ruby',
-                          'PHP',
-                          'Javascript',
-                          'dart',
-                          'go',
-                          'rust'
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                    Spacer(),
-                    IconButton(
-                        onPressed: () => {
-                              if (dropdownValue != '언어를 선택하세요')
-                                {
-                                  if (_skillSets.contains(dropdownValue))
-                                    {}
-                                  else
-                                    {
-                                      if (_skillSets.length < 3)
-                                        {
-                                          setState(() {
-                                            _skillSets.add(dropdownValue);
-                                          })
-                                        }
-                                      else
-                                        {
-                                          setState((() {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                // return object of type Dialog
-                                                return AlertDialog(
-                                                  title: Text("경고"),
-                                                  content:
-                                                      Text("10개를 초과할 수 없습니다."),
-                                                  actions: <Widget>[],
-                                                );
-                                              },
-                                            );
-                                          }))
-                                        }
-                                    }
-                                }
-                            },
-                        icon: Icon(Icons.add_circle_rounded))
-                  ],
                 ),
                 Wrap(
                   children: chipSkillSets.map(
@@ -392,26 +325,6 @@ class _SignupScreenState extends State<SignupScreen> {
                       );
                     },
                   ).toList(),
-                ),
-                Container(
-                  height: _skillSets.length * 50,
-                  child: ListView.builder(
-                    itemCount: _skillSets.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      String lang = _skillSets[index];
-                      return ListTile(
-                        title: Text(lang),
-                        trailing: IconButton(
-                          onPressed: () => {
-                            setState((() {
-                              _skillSets.remove(lang);
-                            }))
-                          },
-                          icon: Icon(Icons.delete_rounded),
-                        ),
-                      );
-                    },
-                  ),
                 ),
                 const SizedBox(
                   height: 12,
