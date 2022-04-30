@@ -26,7 +26,7 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
   Uint8List? _file;
   bool isLoading = false;
   final List<String> _devLanguage = [];
-  String dropdownValue = '언어를 선택하세요';
+  List bookMark = [];
   List chipSkillSets = [
     'C',
     'C++',
@@ -94,15 +94,15 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
     try {
       // upload to storage and db
       String res = await FireStoreMethods().uploadPost(
-        _titleController.text,
-        _descriptionController.text,
-        extractHashTags(_descriptionController.text),
-        _devLanguage,
-        _file!,
-        uid,
-        username,
-        profImage,
-      );
+          _titleController.text,
+          _descriptionController.text,
+          extractHashTags(_descriptionController.text),
+          _devLanguage,
+          _file!,
+          uid,
+          username,
+          profImage,
+          bookMark);
       if (res == "success") {
         setState(() {
           isLoading = false;

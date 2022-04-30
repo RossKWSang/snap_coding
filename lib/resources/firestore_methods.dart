@@ -9,14 +9,16 @@ class FireStoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<String> uploadPost(
-      String title,
-      String description,
-      List<String> hashTag,
-      List<String> devLanguage,
-      Uint8List file,
-      String uid,
-      String username,
-      String profImage) async {
+    String title,
+    String description,
+    List<String> hashTag,
+    List<String> devLanguage,
+    Uint8List file,
+    String uid,
+    String username,
+    String profImage,
+    List bookMark,
+  ) async {
     // asking uid here because we dont want to make extra calls to firebase auth when we can just get from our state management
     String res = "Some error occurred";
     try {
@@ -45,27 +47,80 @@ class FireStoreMethods {
     return res;
   }
 
-  Future<String> bookmarkPost(
-    String postId,
+  Future<String> bookmarkforPost(
+    //add bookMark to posts collection
+    String snapId,
     String uid,
-    List bookmark,
+    List bookmarkPost,
   ) async {
     String res = "Some error occurred";
     try {
-      if (bookmark.contains(uid)) {
+      if (bookmarkPost.contains(uid)) {
+        // check if list of bookmark contains uid
         // if the likes list contains the user uid, we need to remove it
-        _firestore.collection('snaps').doc(postId).update(
+        // await _firestore.collection('users').doc(uid).update(
+        //   {
+        //     'bookMark': FieldValue.arrayRemove([snapId]),
+        //   },
+        // );
+        await _firestore.collection('posts').doc(snapId).update(
           {
-            'bookMark': FieldValue.arrayRemove([uid])
+            'bookMark': FieldValue.arrayRemove([uid]),
           },
         );
       } else {
         // else we need to add uid to the likes array
-        _firestore.collection('snaps').doc(postId).update(
+        // await _firestore.collection('users').doc(uid).update(
+        //   {
+        //     'bookMark': FieldValue.arrayUnion([snapId])
+        //   },
+        // );
+        await _firestore.collection('posts').doc(snapId).update(
           {
             'bookMark': FieldValue.arrayUnion([uid])
           },
         );
+      }
+      res = 'success';
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
+  Future<String> bookmarkforUser(
+    //add bookMark to posts collection
+    String snapId,
+    String uid,
+    List bookmarkUser,
+  ) async {
+    String res = "Some error occurred";
+    try {
+      if (bookmarkUser.contains(snapId)) {
+        // check if list of bookmark contains uid
+        // if the likes list contains the user uid, we need to remove it
+        await _firestore.collection('users').doc(uid).update(
+          {
+            'bookMark': FieldValue.arrayRemove([snapId]),
+          },
+        );
+        // await _firestore.collection('posts').doc(snapId).update(
+        //   {
+        //     'bookMark': FieldValue.arrayRemove([uid]),
+        //   },
+        // );
+      } else {
+        // else we need to add uid to the likes array
+        await _firestore.collection('users').doc(uid).update(
+          {
+            'bookMark': FieldValue.arrayUnion([snapId])
+          },
+        );
+        // await _firestore.collection('posts').doc(snapId).update(
+        //   {
+        //     'bookMark': FieldValue.arrayUnion([uid])
+        //   },
+        // );
       }
       res = 'success';
     } catch (err) {

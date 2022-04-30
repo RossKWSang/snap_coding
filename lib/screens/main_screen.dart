@@ -23,17 +23,17 @@ class _MainPageState extends State<MainPage>
     with SingleTickerProviderStateMixin {
   bool _isLoggedIn = false;
   bool isMarked = false;
-  List markedPosts = [];
+  List markedPost = [];
 
   late TabController _mainBannerTabController;
 
-  void bookmarkImage(String snapId, String uid) async {
-    if (markedPosts.contains(snapId)) {
-      markedPosts.remove(snapId);
-    } else {
-      markedPosts.add(snapId);
-    }
-  }
+  // void bookmarkImage(String snapId, String uid) async {
+  //   if (markedPosts.contains(snapId)) {
+  //     markedPosts.remove(snapId);
+  //   } else {
+  //     markedPosts.add(snapId);
+  //   }
+  // }
   //   setState(() {});
   //   try {
   //     String res = await FireStoreMethods.bookmarkPost(
@@ -281,24 +281,42 @@ class _MainPageState extends State<MainPage>
                                                 icon: Icon(
                                                   Icons
                                                       .bookmark_border_outlined,
-                                                  color: markedPosts.contains(
+                                                  color: markedPost.contains(
                                                           snapshot
                                                               .data?.docs[index]
                                                               .data()['snapId'])
                                                       ? Colors.white
                                                       : Colors.black,
                                                 ),
-                                                onPressed: () => {
-                                                  setState(() {
-                                                    isMarked = !isMarked;
-                                                    bookmarkImage(
-                                                        snapshot
-                                                            .data?.docs[index]
-                                                            .data()['snapId'],
-                                                        snapshot
-                                                            .data?.docs[index]
-                                                            .data()['uid']);
-                                                  })
+                                                onPressed: () async {
+                                                  //isMarked = !isMarked;
+                                                  await FireStoreMethods()
+                                                      .bookmarkforPost(
+                                                    snapshot.data?.docs[index]
+                                                        .data()['snapId'],
+                                                    snapshot.data?.docs[index]
+                                                        .data()['uid'],
+                                                    snapshot.data?.docs[index]
+                                                        .data()['bookMark'],
+                                                  );
+                                                  markedPost.contains(snapshot
+                                                          .data?.docs[index]
+                                                          .data()['snapId'])
+                                                      ? markedPost.remove(
+                                                          snapshot
+                                                              .data?.docs[index]
+                                                              .data()['snapId'])
+                                                      : markedPost.add(snapshot
+                                                          .data?.docs[index]
+                                                          .data()['snapId']);
+
+                                                  // bookmarkImage(
+                                                  //     snapshot
+                                                  //         .data?.docs[index]
+                                                  //         .data()['snapId'],
+                                                  //     snapshot
+                                                  //         .data?.docs[index]
+                                                  //         .data()['uid']);
                                                 },
                                               ),
                                               bottom: 0,
