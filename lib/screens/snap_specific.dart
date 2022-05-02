@@ -37,7 +37,7 @@ class _SnapSpecificState extends State<SnapSpecific> {
   void postComment(String uid, String name) async {
     try {
       String res = await FireStoreMethods().postComment(
-        widget.snapId,
+        widget.snapId!,
         _commentController.text,
         uid,
         name,
@@ -338,7 +338,7 @@ class _SnapSpecificState extends State<SnapSpecific> {
                                           MaterialPageRoute(
                                             builder: (BuildContext context) =>
                                                 SnapDescription(
-                                              snapId: widget.snapId,
+                                              snapId: widget.snapId!,
                                             ),
                                           ),
                                         );
@@ -470,7 +470,7 @@ class _SnapSpecificState extends State<SnapSpecific> {
                                 MaterialPageRoute(
                                   builder: (BuildContext context) =>
                                       CommentSpecific(
-                                    snapId: widget.snapId,
+                                    snapId: widget.snapId!,
                                   ),
                                 ),
                               );

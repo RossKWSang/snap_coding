@@ -11,7 +11,6 @@ import 'package:snap_coding_2/resources/auth_methods.dart';
 import 'package:snap_coding_2/resources/firestore_methods.dart';
 import 'package:provider/provider.dart';
 import 'package:snap_coding_2/widgets/snap_card.dart';
-
 import '../resources/firestore_methods.dart';
 
 class MainPage extends StatefulWidget {
@@ -26,10 +25,7 @@ class _MainPageState extends State<MainPage>
   bool _isLoggedIn = false;
   bool isMarked = false;
   List markedPost = [];
-<<<<<<< HEAD
 
-=======
->>>>>>> 6bd2761f9892354b256a5242b4e394ac8cc72fd2
   late TabController _mainBannerTabController;
 
   // void bookmarkImage(String snapId, String uid) async {
@@ -61,28 +57,6 @@ class _MainPageState extends State<MainPage>
     super.dispose();
   }
 
-  final List<String> chipSkillSets = [
-    'All',
-    'C',
-    'C++',
-    'C#',
-    'Java',
-    'Python',
-    'Ruby',
-    'PHP',
-    'Javascript',
-    'dart',
-    'go',
-    'rust',
-    'html',
-    'css',
-    'bash',
-    'typescript',
-    'R',
-  ];
-
-  String curLanguage = 'All';
-
   @override
   Widget build(BuildContext context) {
     // isMarked = false;
@@ -91,16 +65,12 @@ class _MainPageState extends State<MainPage>
       bool isMarked = false;
 
       final User user = Provider.of<UserProvider>(context).getUser;
-      markedPost = user.bookMark;
-      print(
-        user.recentSearch,
-      );
     }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mobileBackgroundColor,
         title: Image.asset(
-          'FramesnapCodingLogo.png',
+          'SnapCoding.png',
           width: 200,
         ),
         centerTitle: true,
@@ -136,13 +106,7 @@ class _MainPageState extends State<MainPage>
         ],
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('posts')
-            .where(
-              'devLanguage',
-              arrayContains: curLanguage,
-            )
-            .snapshots(),
+        stream: FirebaseFirestore.instance.collection('posts').snapshots(),
         builder: (context,
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -150,22 +114,120 @@ class _MainPageState extends State<MainPage>
               child: CircularProgressIndicator(),
             );
           }
-
           return SafeArea(
-            child: CustomScrollView(slivers: [
-              SliverAppBar(
-                automaticallyImplyLeading: false,
-                pinned: true,
-                toolbarHeight: 0,
-                collapsedHeight: 70,
-                expandedHeight: 400,
-                backgroundColor: mobileBackgroundColor,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Stack(
+            child: CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  automaticallyImplyLeading: false,
+                  pinned: true,
+                  toolbarHeight: 0,
+                  collapsedHeight: 0,
+                  expandedHeight: 252,
+                  backgroundColor: Colors.white,
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Stack(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          height: 300,
+                          child: TabBarView(
+                            controller: _mainBannerTabController,
+                            children: [
+                              Image.asset(
+                                'assets/images/banner1.jpg',
+                                fit: BoxFit.fill,
+                              ),
+                              Image.asset(
+                                'assets/images/banner2.jpg',
+                                fit: BoxFit.fill,
+                              ),
+                              Image.asset(
+                                'assets/images/banner3.jpg',
+                                fit: BoxFit.fill,
+                              ),
+                              Image.asset(
+                                'assets/images/banner4.jpg',
+                                fit: BoxFit.fill,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          height: 300,
+                          child: Column(
+                            children: [
+                              Spacer(),
+                              TabPageSelector(
+                                controller: _mainBannerTabController,
+                                selectedColor: secondaryColor,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ), // 없앨 영역
+                  // bottom: PreferredSize(
+                  //   preferredSize: Size.fromHeight(50),
+                  //   child: Container(
+                  //     padding: EdgeInsets.fromLTRB(20, 25, 10, 0),
+                  //     height: 60,
+                  //     child: Row(
+                  //       children: [
+                  //         Row(
+                  //           children: [
+                  //             Icon(
+                  //               Icons.mail_outline,
+                  //               color: Colors.grey,
+                  //             ),
+                  //             SizedBox(width: 10),
+                  //             Text("What's New"),
+                  //           ],
+                  //         ),
+                  //         SizedBox(width: 20),
+                  //         Row(
+                  //           children: [
+                  //             Icon(
+                  //               CupertinoIcons.ticket,
+                  //               color: Colors.grey,
+                  //             ),
+                  //             SizedBox(width: 10),
+                  //             Text("Coupon"),
+                  //           ],
+                  //         ),
+                  //         Spacer(),
+                  //         Stack(
+                  //           children: [
+                  //             Icon(
+                  //               CupertinoIcons.bell,
+                  //             ),
+                  //             Positioned(
+                  //               right: 0,
+                  //               child: Container(
+                  //                 width: 10,
+                  //                 height: 10,
+                  //                 padding: EdgeInsets.all(1),
+                  //                 decoration: BoxDecoration(
+                  //                     color: primaryColor,
+                  //                     borderRadius: BorderRadius.circular(20)),
+                  //               ),
+                  //             )
+                  //           ],
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ), // 남길 영역
+                ),
+                SliverToBoxAdapter(
+                  child: Column(
                     children: [
                       Container(
                         width: double.infinity,
-<<<<<<< HEAD
                         child: ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
@@ -248,14 +310,6 @@ class _MainPageState extends State<MainPage>
                                                       : markedPost.add(snapshot
                                                           .data?.docs[index]
                                                           .data()['snapId']);
-
-                                                  // bookmarkImage(
-                                                  //     snapshot
-                                                  //         .data?.docs[index]
-                                                  //         .data()['snapId'],
-                                                  //     snapshot
-                                                  //         .data?.docs[index]
-                                                  //         .data()['uid']);
                                                 },
                                               ),
                                               bottom: 0,
@@ -351,142 +405,13 @@ class _MainPageState extends State<MainPage>
                               ],
                             );
                           },
-=======
-                        height: 350,
-                        child: TabBarView(
-                          controller: _mainBannerTabController,
-                          children: [
-                            Image.asset(
-                              'assets/images/banner1.png',
-                              fit: BoxFit.fill,
-                            ),
-                            Image.asset(
-                              'assets/images/banner2.png',
-                              fit: BoxFit.fill,
-                            ),
-                            Image.asset(
-                              'assets/images/banner3.jpg',
-                              fit: BoxFit.fill,
-                            ),
-                            Image.asset(
-                              'assets/images/banner4.jpg',
-                              fit: BoxFit.fill,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: double.infinity,
-                        height: 350,
-                        child: Column(
-                          children: [
-                            Spacer(),
-                            TabPageSelector(
-                              controller: _mainBannerTabController,
-                              selectedColor: secondaryColor,
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                          ],
->>>>>>> 6bd2761f9892354b256a5242b4e394ac8cc72fd2
                         ),
                       ),
                     ],
                   ),
-                ), // 없앨 영역
-                bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(0),
-                  child: Container(
-                    // padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    height: 40,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 40,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        // physics: const NeverScrollableScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: chipSkillSets.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              setState(
-                                () {
-                                  curLanguage = chipSkillSets[index];
-                                },
-                              );
-                            },
-                            child: Container(
-                              margin: EdgeInsets.symmetric(
-                                horizontal: 5,
-                                vertical: 4,
-                              ),
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: 5,
-                                  horizontal: 12,
-                                ),
-                                decoration: BoxDecoration(
-                                    color: chipSkillSets[index] == curLanguage
-                                        ? primaryColor
-                                        : Colors.white,
-                                    borderRadius: BorderRadius.circular(18),
-                                    border: Border.all(
-                                        color:
-                                            chipSkillSets[index] == curLanguage
-                                                ? primaryColor
-                                                : Colors.grey,
-                                        width: 2)),
-                                child: Text(
-                                  chipSkillSets[index],
-                                  style: TextStyle(
-                                      color: chipSkillSets[index] == curLanguage
-                                          ? Colors.white
-                                          : Colors.grey,
-                                      fontSize: 14),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ), // 남길 영역
-              ),
-              SliverToBoxAdapter(
-                child: Column(
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index) {
-                          List<QueryDocumentSnapshot<Map<String, dynamic>>>
-                              filteredSnap = snapshot.data!.docs;
-                          List<dynamic> filteredLanguageList =
-                              filteredSnap[index].data()['devLanguage'];
-                          filteredLanguageList.remove('All');
-
-                          // print(filteredLanguageList);
-                          return SnapCardMain(
-                            snapId: filteredSnap[index].data()['snapId'],
-                            thumbnailUrl:
-                                filteredSnap[index].data()['thumbnailUrl'],
-                            title: filteredSnap[index].data()['title'],
-                            hashTagList: filteredSnap[index].data()['HashTag'],
-                            filteredLanguageList: filteredLanguageList,
-                          );
-                        },
-                      ),
-                    ),
-                  ],
                 ),
-              ),
-            ]),
+              ],
+            ),
           );
         },
       ),
