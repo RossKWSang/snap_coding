@@ -438,17 +438,137 @@ class _SearchPageState extends State<SearchPage> {
                                               _searchKeyWord.text;
                                           // _searchKeyWord.;
                                           return Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
-                                              RichText(
-                                                text: TextSpan(
-                                                  text:
-                                                      "\'${_failedSearchKeyWord}\'",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 25,
-                                                    color: primaryColor,
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                              Container(
+                                                width: double.infinity,
+                                                child: RichText(
+                                                  textAlign: TextAlign.center,
+                                                  text: TextSpan(
+                                                    text:
+                                                        "\'${_failedSearchKeyWord}\'",
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 25,
+                                                      color: primaryColor,
+                                                    ),
+                                                    children: [
+                                                      TextSpan(
+                                                        text:
+                                                            '에 대한\n검색결과가 없습니다',
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                          fontSize: 25,
+                                                          color: secondaryColor,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
+                                              ),
+                                              SizedBox(
+                                                height: 30,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  SizedBox(
+                                                    width: 30,
+                                                  ),
+                                                  Text(
+                                                    '·  단어의 철자가 정확한지 확인해 보세요.',
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      fontSize: 17,
+                                                      color: secondaryColor,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  SizedBox(
+                                                    width: 30,
+                                                  ),
+                                                  Text(
+                                                    '·  한글을 영어로 혹은 영어를 한글로 입력했는지\n   확인해 보세요.',
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      fontSize: 17,
+                                                      color: secondaryColor,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  SizedBox(
+                                                    width: 30,
+                                                  ),
+                                                  Text(
+                                                    '·  검색어의 단어 수를 줄이거나,\n   보다 일반적인 검색어로 다시 검색해 보세요.',
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      fontSize: 17,
+                                                      color: secondaryColor,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  SizedBox(
+                                                    width: 30,
+                                                  ),
+                                                  Text(
+                                                    '·  띄어쓰기를 확인해 보세요.',
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      fontSize: 17,
+                                                      color: secondaryColor,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  SizedBox(
+                                                    width: 30,
+                                                  ),
+                                                  Text(
+                                                    '·  검색 옵션을 변경해서 다시 검색해 보세요.',
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      fontSize: 17,
+                                                      color: secondaryColor,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 15,
                                               ),
                                             ],
                                           );
