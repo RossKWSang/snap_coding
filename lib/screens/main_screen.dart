@@ -60,12 +60,14 @@ class _MainPageState extends State<MainPage>
   @override
   Widget build(BuildContext context) {
     // isMarked = false;
-    if (Provider.of<UserProvider>(context).getUser != null) {
-      _isLoggedIn = true;
-      bool isMarked = false;
+    // null check operator 문제로 주석처리함. (2022.05.03.)
+    // if (Provider.of<UserProvider>(context).getUser != null) {
+    //   _isLoggedIn = true;
+    //   bool isMarked = false;
 
-      final User user = Provider.of<UserProvider>(context).getUser;
-    }
+    //   final User user = Provider.of<UserProvider>(context).getUser;
+    // }
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mobileBackgroundColor,
@@ -295,8 +297,7 @@ class _MainPageState extends State<MainPage>
                                                       .bookmarkforPost(
                                                     snapshot.data?.docs[index]
                                                         .data()['snapId'],
-                                                    snapshot.data?.docs[index]
-                                                        .data()['uid'],
+                                                    userProvider.getUser.uid,
                                                     snapshot.data?.docs[index]
                                                         .data()['bookMark'],
                                                   );
@@ -310,6 +311,14 @@ class _MainPageState extends State<MainPage>
                                                       : markedPost.add(snapshot
                                                           .data?.docs[index]
                                                           .data()['snapId']);
+                                                  await FireStoreMethods()
+                                                      .bookmarkforUser(
+                                                    snapshot.data?.docs[index]
+                                                        .data()['snapId'],
+                                                    userProvider.getUser.uid,
+                                                    snapshot.data?.docs[index]
+                                                        .data()['bookMark'],
+                                                  );
                                                 },
                                               ),
                                               bottom: 0,

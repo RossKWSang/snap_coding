@@ -22,10 +22,9 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
               height: 100,
             ),
             buildMenuItem(
-              text: '프로필',
-              icon: CupertinoIcons.person_2_fill,
-              onClicked: () => 
-            ),
+                text: '프로필',
+                icon: CupertinoIcons.person_2_fill,
+                onClicked: () => {}),
             buildMenuItem(
               text: '내가 등록한 코딩',
               icon: CupertinoIcons.check_mark_circled_solid,
@@ -89,8 +88,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
   void selectedItem(BuildContext context, int index) {
     switch (index) {
       case 0:
-      Navigator.of(context).push(MaterialPageRoute)
+      //Navigator.of(context).push(MaterialPageRoute);
     }
   }
-
 }

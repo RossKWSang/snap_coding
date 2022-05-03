@@ -43,7 +43,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
           child: SingleChildScrollView(
             child: StreamBuilder(
               stream:
-                  FirebaseFirestore.instance.collection('snaps').snapshots(),
+                  FirebaseFirestore.instance.collection('users').snapshots(),
               builder: (context,
                   AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
