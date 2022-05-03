@@ -166,24 +166,6 @@ class _SnapSpecificState extends State<SnapSpecific> {
                                     child: Text(
                                       "Author: " + data['username'],
                                     ),
-
-                                    // Wrap(
-                                    //   alignment: WrapAlignment.start, // 정렬 방식
-
-                                    //   children:
-                                    //       data['HashTag'].map<Widget>((hashTag) {
-                                    //     return Container(
-                                    //       padding: EdgeInsets.all(2),
-                                    //       child: Text(
-                                    //         hashTag,
-                                    //         style: TextStyle(
-                                    //           fontSize: 15,
-                                    //           color: primaryColor,
-                                    //         ),
-                                    //       ),
-                                    //     );
-                                    //   }).toList(),
-                                    // ),
                                   ),
                                   Container(
                                     height: 15,
@@ -438,55 +420,80 @@ class _SnapSpecificState extends State<SnapSpecific> {
                           height: 20,
                         ),
                         SizedBox(
-                          height: 250,
+                          // height: 250,
                           child: ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: 3,
+                            itemCount: snapshot.data!.docs.length >= 3
+                                ? 3
+                                : snapshot.data!.docs.length != 0
+                                    ? snapshot.data!.docs.length
+                                    : 1,
                             //snapshot.data!.docs.length,
                             itemBuilder: (context, index) {
-                              return Column(
-                                children: [
-                                  commentCard(
-                                    snapId: snapshot.data!.docs[index]['uid'],
-                                    username: snapshot.data!.docs[index]
-                                        ['name'],
-                                    comment: snapshot.data!.docs[index]['text'],
-                                    datePublished: snapshot.data!.docs[index]
-                                        ['datePublished'],
-                                    isReported: false,
-                                  ),
-                                ],
-                              );
+                              print(snapshot.data!.docs.length);
+                              return snapshot.data!.docs.length != 0
+                                  ? Column(
+                                      children: [
+                                        commentCard(
+                                          snapId: snapshot.data!.docs[index]
+                                              ['uid'],
+                                          username: snapshot.data!.docs[index]
+                                              ['name'],
+                                          comment: snapshot.data!.docs[index]
+                                              ['text'],
+                                          datePublished: snapshot.data!
+                                              .docs[index]['datePublished'],
+                                          isReported: false,
+                                        ),
+                                      ],
+                                    )
+                                  : Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                      ),
+                                      width: MediaQuery.of(context).size.width *
+                                          0.95,
+                                      child: Text(
+                                        '리뷰가 없네요 .. 의견을 남겨보세요!',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    );
                             },
                           ),
                         ),
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.95,
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      CommentSpecific(
-                                    snapId: widget.snapId,
+                        snapshot.data!.docs.length != 0
+                            ? Container(
+                                width: MediaQuery.of(context).size.width * 0.95,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            CommentSpecific(
+                                          snapId: widget.snapId,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      '펼쳐보기',
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                        color: primaryColor,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              );
-                            },
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                '펼쳐보기',
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                  color: primaryColor,
-                                ),
+                              )
+                            : SizedBox(
+                                height: 20,
                               ),
-                            ),
-                          ),
-                        )
                       ],
                     ),
                   ),
