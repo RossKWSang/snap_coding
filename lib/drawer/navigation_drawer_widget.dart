@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:snap_coding_2/utils/colors.dart';
+import 'package:snap_coding_2/drawer/notice_page.dart';
 
 class NavigationDrawerWidget extends StatefulWidget {
   const NavigationDrawerWidget({Key? key}) : super(key: key);
@@ -24,7 +25,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
             buildMenuItem(
               text: '프로필',
               icon: CupertinoIcons.person_2_fill,
-              onClicked: () => 
+              onClicked: () => selectedItem(context, 0),
             ),
             buildMenuItem(
               text: '내가 등록한 코딩',
@@ -89,8 +90,12 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
   void selectedItem(BuildContext context, int index) {
     switch (index) {
       case 0:
-      Navigator.of(context).push(MaterialPageRoute)
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => NoticePage(),
+          ),
+        );
+        break;
     }
   }
-
 }

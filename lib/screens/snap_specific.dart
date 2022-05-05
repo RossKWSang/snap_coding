@@ -377,6 +377,7 @@ class _SnapSpecificState extends State<SnapSpecific> {
                           textEditingController: _commentController,
                           hintText: '리뷰 내용을 작성해주세요.',
                           textInputType: TextInputType.text,
+                          cursorColor: primaryColor,
                         ),
                         SizedBox(
                           height: 25,

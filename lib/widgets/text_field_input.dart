@@ -6,12 +6,14 @@ class TextFieldInput extends StatelessWidget {
   final bool isPass;
   final String hintText;
   final TextInputType textInputType;
+  final Color cursorColor;
   const TextFieldInput({
     Key? key,
     required this.textEditingController,
     this.isPass = false,
     required this.hintText,
     required this.textInputType,
+    required this.cursorColor,
   }) : super(key: key);
 
   @override
@@ -32,6 +34,7 @@ class TextFieldInput extends StatelessWidget {
       ),
       keyboardType: textInputType,
       obscureText: isPass,
+      cursorColor: cursorColor,
     );
   }
 }
@@ -41,12 +44,14 @@ class TextFieldComment extends StatelessWidget {
   final bool isPass;
   final String hintText;
   final TextInputType textInputType;
+  final Color cursorColor;
   const TextFieldComment({
     Key? key,
     required this.textEditingController,
     this.isPass = false,
     required this.hintText,
     required this.textInputType,
+    required this.cursorColor,
   }) : super(key: key);
 
   @override
@@ -58,6 +63,7 @@ class TextFieldComment extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width * 0.95,
       child: TextField(
+        cursorColor: cursorColor,
         controller: textEditingController,
         minLines: 4,
         maxLines: 4,

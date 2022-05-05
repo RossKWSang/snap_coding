@@ -151,6 +151,18 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
   @override
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
+
+    Map<String, dynamic> languageTemplate = {
+      "C": [
+        "#include <stdio.h>",
+        "",
+        "int main(void){",
+        "\tprintf(\"Hello world\");",
+        "\treturn 0;",
+        "}",
+      ],
+    };
+
     List<String> contentOfPage1 = [
       "#include <stdio.h>",
       "",
@@ -170,7 +182,7 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
 
     List<FileEditor> files = [
       new FileEditor(
-        name: "C",
+        name: "이건가?",
         language: "C",
         code: contentOfPage1.join("\n"),
       ),
@@ -204,10 +216,46 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
     EditorModel model = new EditorModel(
       files: files,
       styleOptions: new EditorModelStyleOptions(
+        theme: {
+          'root': TextStyle(
+            backgroundColor: mobileDrawerColor,
+            color: Color(0xffdddddd),
+          ),
+          'keyword': TextStyle(color: keywordColor),
+          'params': TextStyle(color: Color(0xffde935f)),
+          'selector-tag': TextStyle(color: attrColor),
+          'selector-id': TextStyle(color: idColor),
+          'selector-class': TextStyle(color: classColor),
+          'regexp': TextStyle(color: Color(0xffcc6666)),
+          'literal': TextStyle(color: Colors.white),
+          'section': TextStyle(color: Colors.white),
+          'link': TextStyle(color: Colors.white),
+          'subst': TextStyle(color: Color(0xffdddddd)),
+          'string': TextStyle(color: quoteColor),
+          'title': TextStyle(color: titlesColor),
+          'name': TextStyle(color: tagColor),
+          'type': TextStyle(color: tagColor),
+          'attribute': TextStyle(color: propertyColor),
+          'symbol': TextStyle(color: tagColor),
+          'bullet': TextStyle(color: tagColor),
+          'built_in': TextStyle(color: methodsColor),
+          'addition': TextStyle(color: tagColor),
+          'variable': TextStyle(color: tagColor),
+          'template-tag': TextStyle(color: tagColor),
+          'template-variable': TextStyle(color: tagColor),
+          'comment': TextStyle(color: Color(0xff777777)),
+          'quote': TextStyle(color: Color(0xff777777)),
+          'deletion': TextStyle(color: Color(0xff777777)),
+          'meta': TextStyle(color: Color(0xff777777)),
+          'emphasis': TextStyle(fontStyle: FontStyle.italic),
+        },
+        padding: EdgeInsets.all(
+          3,
+        ),
+        tabSize: 4,
         fontSize: 13,
-        editorColor: mobileBackgroundColor,
-        editorBorderColor: mobileBackgroundColor,
-        // theme: TextTheme(),
+        editorColor: mobileDrawerColor,
+        // editorBorderColor: mobileBackgroundColor,
       ),
     );
 
@@ -218,12 +266,12 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
       appBar: AppBar(
         backgroundColor: mobileBackgroundColor,
         title: Text(
-          'New 스냅코드 등록',
+          '    스냅 등록',
           style: TextStyle(
             color: secondaryColor,
           ),
         ),
-        centerTitle: true,
+        centerTitle: false,
         actions: <Widget>[
           TextButton(
             onPressed: () => postImage(
@@ -232,9 +280,9 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
               userProvider.getUser.photoUrl,
             ),
             child: const Text(
-              "Post",
+              "등록하기",
               style: TextStyle(
-                color: Colors.blueAccent,
+                color: primaryColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 16.0,
               ),
@@ -243,215 +291,236 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            const Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.22,
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Text("타이틀: "),
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.75,
-                  child: TextFieldInput(
-                    hintText: '타이틀을 입력하세요.',
-                    textInputType: TextInputType.text,
-                    textEditingController: _titleController,
-                    isPass: false,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.22,
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Text("설명: "),
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.75,
-                  child: HashTagTextField(
-                    basicStyle: TextStyle(fontSize: 15, color: Colors.white),
-                    decoratedStyle: TextStyle(fontSize: 15, color: Colors.blue),
-                    keyboardType: TextInputType.multiline,
-
-                    /// Called when detection (word starts with #, or # and @) is being typed
-                    onDetectionTyped: (text) {
-                      print(_descriptionController.text);
-                    },
-
-                    /// Called when detection is fully typed
-                    onDetectionFinished: () {
-                      print("detection finished");
-                    },
-                    maxLines: 10,
-                    controller: _descriptionController,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 12,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.22,
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Text("썸네일: "),
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.75,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.75,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: secondaryColor,
-                            // style: BorderStyle.,
-                            width: 1,
-                          ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 7,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                width: MediaQuery.of(context).size.width * 0.95,
+                child: Row(
+                  children: [
+                    Container(
+                      height: 120,
+                      width: 110,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: Colors.white,
                         ),
-                        child: _file != null
-                            ? Image.memory(_file!)
-                            : Image.asset('assets/images/banner4.jpg'),
                       ),
-                      IconButton(
-                        onPressed: () => _selectImage(context),
-                        icon: const Icon(Icons.add_a_photo),
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 12,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.22,
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Text("언어: "),
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.75,
-                  child: Wrap(
-                    children: chipSkillSets.map(
-                      (chipskills) {
-                        bool isSelected = false;
-                        if (_devLanguage.contains(chipskills)) {
-                          isSelected = true;
-                        }
-                        return GestureDetector(
-                          onTap: () {
-                            if (_devLanguage.contains(chipskills)) {
-                              _devLanguage.removeWhere(
-                                  (element) => element == chipskills);
-                              setState(() {});
-                            } else {
-                              if (_devLanguage.length < 6) {
-                                _devLanguage.add(chipskills);
-                                setState(() {});
-                              } else {
-                                setState(
-                                  (() {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        // return object of type Dialog
-                                        return AlertDialog(
-                                          title: Text("경고"),
-                                          content: Text("5개를 초과할 수 없습니다."),
-                                          actions: <Widget>[],
-                                        );
-                                      },
-                                    );
-                                  }),
-                                );
-                              }
-                            }
-                          },
-                          child: Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 4),
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 12),
-                              decoration: BoxDecoration(
-                                  color:
-                                      isSelected ? primaryColor : Colors.white,
-                                  borderRadius: BorderRadius.circular(18),
-                                  border: Border.all(
-                                      color: isSelected
-                                          ? primaryColor
-                                          : Colors.grey,
-                                      width: 2)),
-                              child: Text(
-                                chipskills,
-                                style: TextStyle(
-                                    color:
-                                        isSelected ? Colors.white : Colors.grey,
-                                    fontSize: 14),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          IconButton(
+                            onPressed: () => _selectImage(context),
+                            icon: const Icon(Icons.add_a_photo),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    _file != null
+                        ? Container(
+                            height: 120,
+                            width: 110,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: Colors.white,
                               ),
                             ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: Image.memory(
+                                _file!,
+                                width: double.infinity,
+                                height: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          )
+                        : SizedBox()
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 12,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.95,
+                child: TextFieldInput(
+                  hintText: '제목을 입력하세요.',
+                  textInputType: TextInputType.text,
+                  textEditingController: _titleController,
+                  isPass: false,
+                  cursorColor: primaryColor,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.95,
+                child: HashTagTextField(
+                  decoration: InputDecoration(
+                    filled: true,
+                    hintText: '#해시태그_등록',
+                    contentPadding: const EdgeInsets.all(8),
+                    border: OutlineInputBorder(
+                      borderSide: Divider.createBorderSide(context),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: Divider.createBorderSide(context),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: Divider.createBorderSide(context),
+                    ),
+                  ),
+                  cursorColor: primaryColor,
+                  basicStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                  ),
+                  decoratedStyle: TextStyle(
+                    fontSize: 15,
+                    color: primaryColor,
+                  ),
+                  keyboardType: TextInputType.multiline,
+
+                  /// Called when detection (word starts with #, or # and @) is being typed
+                  onDetectionTyped: (text) {
+                    print(_descriptionController.text);
+                  },
+
+                  /// Called when detection is fully typed
+                  onDetectionFinished: () {
+                    print("detection finished");
+                  },
+                  minLines: 10,
+                  maxLines: 10,
+                  controller: _descriptionController,
+                ),
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.95,
+                child: Text(
+                  "개발 언어 선택",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 12,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.95,
+                child: Wrap(
+                  children: chipSkillSets.map(
+                    (chipskills) {
+                      bool isSelected = false;
+                      if (_devLanguage.contains(chipskills)) {
+                        isSelected = true;
+                      }
+                      return GestureDetector(
+                        onTap: () {
+                          if (_devLanguage.contains(chipskills)) {
+                            _devLanguage.removeWhere(
+                                (element) => element == chipskills);
+                            setState(() {});
+                          } else {
+                            if (_devLanguage.length < 6) {
+                              _devLanguage.add(chipskills);
+                              setState(() {});
+                            } else {
+                              setState(
+                                (() {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      // return object of type Dialog
+                                      return AlertDialog(
+                                        title: Text("경고"),
+                                        content: Text("5개를 초과할 수 없습니다."),
+                                        actions: <Widget>[],
+                                      );
+                                    },
+                                  );
+                                }),
+                              );
+                            }
+                          }
+                        },
+                        child: Container(
+                          margin:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 12),
+                            decoration: BoxDecoration(
+                                color: isSelected ? primaryColor : Colors.white,
+                                borderRadius: BorderRadius.circular(18),
+                                border: Border.all(
+                                    color:
+                                        isSelected ? primaryColor : Colors.grey,
+                                    width: 2)),
+                            child: Text(
+                              chipskills,
+                              style: TextStyle(
+                                  color:
+                                      isSelected ? Colors.white : Colors.grey,
+                                  fontSize: 14),
+                            ),
                           ),
-                        );
-                      },
-                    ).toList(),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.22,
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Text("코드입력: "),
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.75,
-                  child: CodeEditor(
-                    model: model,
-                    onSubmit: (String? language, String? value) {
-                      codeSnippet[language!] = value!;
-                      // print("language = $language");
-                      // print("value = '$value'");
+                        ),
+                      );
                     },
+                  ).toList(),
+                ),
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.95,
+                child: Text(
+                  "코드 스니펫 등록",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-          ],
+              ),
+              SizedBox(
+                height: 12,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.95,
+                child: CodeEditor(
+                  model: model,
+                  onSubmit: (String? language, String? value) {
+                    codeSnippet[language!] = value!;
+                    // print("language = $language");
+                    // print("value = '$value'");
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+            ],
+          ),
         ),
       ),
     );

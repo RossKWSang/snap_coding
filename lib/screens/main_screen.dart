@@ -12,6 +12,8 @@ import 'package:snap_coding_2/resources/firestore_methods.dart';
 import 'package:provider/provider.dart';
 import 'package:snap_coding_2/widgets/snap_card.dart';
 
+import '../drawer/navigation_drawer_widget.dart';
+
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
@@ -66,11 +68,11 @@ class _MainPageState extends State<MainPage>
       _isLoggedIn = true;
       final User user = Provider.of<UserProvider>(context).getUser;
       markedPost = user.bookMark;
-      print(
-        user.recentSearch,
-      );
+      print(user.recentSearch);
+      print(_isLoggedIn);
     }
     return Scaffold(
+      drawer: NavigationDrawerWidget(),
       appBar: AppBar(
         backgroundColor: mobileBackgroundColor,
         title: Image.asset(
@@ -78,20 +80,37 @@ class _MainPageState extends State<MainPage>
           width: 200,
         ),
         centerTitle: true,
-        leading: IconButton(
-          icon: Icon(
-            Icons.person_rounded,
-            color: secondaryColor,
-          ),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (BuildContext context) => LoginScreen(),
-              ),
-            );
-          },
-        ),
+        leading: Builder(builder: (context) {
+          return IconButton(
+            icon: Icon(
+              Icons.person_rounded,
+              color: secondaryColor,
+            ),
+            onPressed: () =>
+                //{
+                _isLoggedIn
+                    ? Scaffold.of(context).openDrawer()
+                    : Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => LoginScreen(),
+                        ),
+                      ),
+            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+
+            // if (_isLoggedIn) {
+            //   Scaffold.of(context).openDrawer();
+            // } else {
+            //   Navigator.pushReplacement(
+            //     context,
+            //     MaterialPageRoute(
+            //       builder: (BuildContext context) => LoginScreen(),
+            //     ),
+            //   );
+            // }
+            //},
+          );
+        }),
         actions: [
           IconButton(
             icon: Icon(

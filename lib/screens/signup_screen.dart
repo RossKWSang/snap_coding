@@ -155,6 +155,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   hintText: '계정 이름을 입력하세요.',
                   textInputType: TextInputType.text,
                   textEditingController: _usernameController,
+                  cursorColor: primaryColor,
                 ),
                 const SizedBox(
                   height: 12,
@@ -163,6 +164,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   hintText: '이메일을 입력하세요.',
                   textInputType: TextInputType.emailAddress,
                   textEditingController: _emailController,
+                  cursorColor: primaryColor,
                 ),
                 const SizedBox(
                   height: 12,
@@ -172,6 +174,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   textInputType: TextInputType.text,
                   textEditingController: _passwordController,
                   isPass: true,
+                  cursorColor: primaryColor,
                 ),
                 const SizedBox(
                   height: 12,

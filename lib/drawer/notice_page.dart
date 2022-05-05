@@ -10,6 +10,10 @@ class NoticePage extends StatefulWidget {
 class _NoticePageState extends State<NoticePage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      child: Text(
+        'Test',
+      ),
+    );
   }
 }

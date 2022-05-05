@@ -76,6 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 hintText: 'Enter your email',
                 textInputType: TextInputType.emailAddress,
                 textEditingController: _emailController,
+                cursorColor: primaryColor,
               ),
               const SizedBox(
                 height: 24,
@@ -85,6 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 textInputType: TextInputType.text,
                 textEditingController: _passwordController,
                 isPass: true,
+                cursorColor: primaryColor,
               ),
               const SizedBox(
                 height: 24,
