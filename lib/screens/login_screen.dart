@@ -112,17 +112,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 onTap: loginUser, // loginUser,
               ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => MainPage(),
-                    ),
-                  );
-                },
-                child: Text('Back to MainPage'),
-              ),
               const SizedBox(
                 height: 12,
               ),

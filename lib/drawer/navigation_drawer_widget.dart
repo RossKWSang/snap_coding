@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:snap_coding_2/drawer/contract_policy_page.dart';
+import 'package:snap_coding_2/resources/auth_methods.dart';
+import 'package:snap_coding_2/screens/login_screen.dart';
 import 'package:snap_coding_2/utils/colors.dart';
 import 'package:snap_coding_2/drawer/notice_page.dart';
 
@@ -62,6 +64,15 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
             buildMenuItem(
               text: '로그아웃',
               icon: Icons.logout_rounded,
+              onClicked: () => {
+                AuthMethods().signOut(),
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => LoginScreen(),
+                  ),
+                ),
+              },
             ),
           ],
         ),
@@ -133,6 +144,8 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
             builder: (context) => PolicyPage(),
           ),
         );
+        break;
+      case 6:
         break;
     }
   }

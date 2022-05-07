@@ -38,7 +38,7 @@ class _SnapDescriptionState extends State<SnapDescription> {
   Widget build(BuildContext context) {
     //final DocumentReference<Object?> documentSnapshot =
     //    _firestore.doc(widget.snapId);
-    final User user = Provider.of<UserProvider>(context).getUser;
+    final User? user = Provider.of<UserProvider>(context).getUser;
     return FutureBuilder<DocumentSnapshot>(
       future: _firestore.doc(widget.snapId).get(),
       builder:
@@ -130,10 +130,7 @@ class _SnapDescriptionState extends State<SnapDescription> {
                               Container(
                                 height: 15,
                                 child: Wrap(
-                                  // spacing: 5, // 상하(좌우) 공간
-                                  // runSpacing: 2,
                                   alignment: WrapAlignment.start, // 정렬 방식
-
                                   children: filteredLanguageList.map<Widget>(
                                     (devLang) {
                                       return Transform(

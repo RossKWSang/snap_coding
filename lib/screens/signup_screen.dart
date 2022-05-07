@@ -23,8 +23,9 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
+  final TextEditingController _expController = TextEditingController();
 
-  double _developerExperience = 0.0;
+  int _developerExperience = 0;
   MembershipCate _membershipCate = MembershipCate.individual;
   bool _isLoading = false;
   Uint8List? _image;
@@ -69,15 +70,15 @@ class _SignupScreenState extends State<SignupScreen> {
 
     // signup user using our authmethodds
     String res = await AuthMethods().signUpUser(
-        email: _emailController.text,
-        password: _passwordController.text,
-        username: _usernameController.text,
-        usercate: _membershipCate == MembershipCate.individual
-            ? 'individual'
-            : 'enterprise',
-        devExp: _developerExperience * 30,
-        skillSets: _skillSets,
-        file: _image!);
+      email: _emailController.text,
+      password: _passwordController.text,
+      username: _usernameController.text,
+      usercate: _membershipCate == MembershipCate.individual
+          ? 'individual'
+          : 'enterprise',
+      devExp: _expController.text,
+      skillSets: _skillSets,
+    );
     // if string returned is success, user has been created
     if (res == "success") {
       setState(() {
@@ -119,37 +120,18 @@ class _SignupScreenState extends State<SignupScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset(
-                  'SnapCoding.png',
+                SizedBox(
+                  height: 50,
                 ),
                 Center(
-                  child: Stack(
-                    children: [
-                      _image != null
-                          ? CircleAvatar(
-                              radius: 64,
-                              backgroundImage: MemoryImage(_image!),
-                              backgroundColor: Colors.red,
-                            )
-                          : const CircleAvatar(
-                              radius: 64,
-                              backgroundImage: NetworkImage(
-                                  'https://i.stack.imgur.com/l60Hf.png'),
-                              backgroundColor: Colors.red,
-                            ),
-                      Positioned(
-                        bottom: -10,
-                        left: 80,
-                        child: IconButton(
-                          onPressed: selectImage,
-                          icon: const Icon(Icons.add_a_photo),
-                        ),
-                      )
-                    ],
+                  child: Image.asset(
+                    'FramesnapCodingLogo.png',
+                    width: 100,
+                    height: 50,
                   ),
                 ),
-                const SizedBox(
-                  height: 24,
+                SizedBox(
+                  height: 20,
                 ),
                 TextFieldInput(
                   hintText: '계정 이름을 입력하세요.',
@@ -239,32 +221,26 @@ class _SignupScreenState extends State<SignupScreen> {
                     fontSize: 20,
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text('0'),
-                    Container(
-                      width: 300,
-                      child: Slider(
-                        value: _developerExperience,
-                        onChanged: (newRating) {
-                          setState(
-                            () => _developerExperience = newRating,
-                          );
-                        },
-                        divisions: 30,
-                        label: "${(_developerExperience * 30).round()} 년차",
-                        activeColor: primaryColor,
-                      ),
-                    ),
-                    Text('30'),
-                  ],
+                const SizedBox(
+                  height: 12,
+                ),
+                TextFieldInput(
+                  hintText: '개발 경력을 입력하세요.',
+                  textInputType: TextInputType.number,
+                  textEditingController: _expController,
+                  cursorColor: primaryColor,
+                ),
+                const SizedBox(
+                  height: 12,
                 ),
                 Text(
                   '사용 언어',
                   style: TextStyle(
                     fontSize: 20,
                   ),
+                ),
+                const SizedBox(
+                  height: 12,
                 ),
                 Wrap(
                   children: chipSkillSets.map(

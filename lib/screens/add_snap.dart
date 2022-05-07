@@ -1,10 +1,12 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fireAuth;
 import 'package:flutter/material.dart';
 import 'package:hashtagable/hashtagable.dart';
 import 'package:hashtagable/widgets/hashtag_text_field.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:code_editor/code_editor.dart';
+import 'package:snap_coding_2/screens/login_screen.dart';
 import 'package:snap_coding_2/utils/utils.dart';
 import 'package:snap_coding_2/utils/colors.dart';
 import 'package:snap_coding_2/utils/language_template.dart';
@@ -30,6 +32,7 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
   String uploadedSnapId = '';
   Uint8List? _file;
   bool isLoading = false;
+  bool _isLoggedIn = false;
   final List<String> _devLanguage = [
     'All',
   ];
@@ -98,7 +101,11 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
     );
   }
 
-  void postImage(String uid, String username, String profImage) async {
+  void postImage(
+    String uid,
+    String username,
+    // String profImage\
+  ) async {
     setState(
       () {
         isLoading = true;
@@ -115,7 +122,7 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
         _file!,
         uid,
         username,
-        profImage,
+        // profImage,
         bookMark,
         codeSnippet,
       );
@@ -189,6 +196,15 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    final fireAuth.FirebaseAuth _auth = fireAuth.FirebaseAuth.instance;
+    if (_auth.currentUser != null) {
+      fireAuth.User currentUser = _auth.currentUser!;
+      _isLoggedIn = true;
+      print(
+        currentUser.uid.toString(),
+      );
+    } else {}
     final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     EditorModel modelMaker(widName, widLanguage, codeInput) {
@@ -258,21 +274,38 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
         ),
         centerTitle: false,
         actions: <Widget>[
-          TextButton(
-            onPressed: () => postImage(
-              userProvider.getUser.uid,
-              userProvider.getUser.username,
-              userProvider.getUser.photoUrl,
-            ),
-            child: const Text(
-              "등록하기",
-              style: TextStyle(
-                color: primaryColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 16.0,
-              ),
-            ),
-          ),
+          _isLoggedIn
+              ? TextButton(
+                  onPressed: () => postImage(
+                    userProvider.getUser.uid,
+                    userProvider.getUser.username,
+                    // userProvider.getUser.photoUrl,
+                  ),
+                  child: const Text(
+                    "등록하기",
+                    style: TextStyle(
+                      color: primaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.0,
+                    ),
+                  ),
+                )
+              : TextButton(
+                  onPressed: () => Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => LoginScreen(),
+                    ),
+                  ),
+                  child: const Text(
+                    "로그인",
+                    style: TextStyle(
+                      color: primaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.0,
+                    ),
+                  ),
+                )
         ],
       ),
       body: SingleChildScrollView(

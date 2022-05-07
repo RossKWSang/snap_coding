@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fireAuth;
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:snap_coding_2/screens/login_screen.dart';
@@ -64,13 +65,33 @@ class _MainPageState extends State<MainPage>
 
   @override
   Widget build(BuildContext context) {
-    if (Provider.of<UserProvider>(context).getUser != null) {
+    // if (Provider.of<UserProvider>(context).getUser != null) {
+    //   _isLoggedIn = true;
+    //   final User user = Provider.of<UserProvider>(context).getUser;
+    //   markedPost = user.bookMark;
+    // }
+    // final User user = Provider.of<UserProvider>(context).getUser;
+    // print(user.username);
+
+    // print("userprovider print >> ");
+    // print(userProvider.getUser);
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    final fireAuth.FirebaseAuth _auth = fireAuth.FirebaseAuth.instance;
+    if (_auth.currentUser != null) {
+      fireAuth.User currentUser = _auth.currentUser!;
       _isLoggedIn = true;
-      final User user = Provider.of<UserProvider>(context).getUser;
-      markedPost = user.bookMark;
-      print(user.recentSearch);
-      print(_isLoggedIn);
-    }
+      print(
+        currentUser.uid.toString(),
+      );
+    } else {}
+
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
+
+    // if (currentUser.uid != null) {
+    //   _isLoggedIn = true;
+    // }
+    // print(currentUser.uid);
+
     return Scaffold(
       drawer: NavigationDrawerWidget(),
       appBar: AppBar(

@@ -12,6 +12,9 @@ class AuthMethods {
   // get user details
   Future<model.User> getUserDetails() async {
     User currentUser = _auth.currentUser!;
+    // if (currentUser == null) {
+    //   return null;
+    // }
 
     DocumentSnapshot documentSnapshot =
         await _firestore.collection('users').doc(currentUser.uid).get();
@@ -26,9 +29,8 @@ class AuthMethods {
     required String password,
     required String username,
     required String usercate,
-    required double devExp,
+    required String devExp,
     required List skillSets,
-    required Uint8List file,
   }) async {
     String res = "Some error Occurred";
     try {
@@ -36,22 +38,21 @@ class AuthMethods {
           password.isNotEmpty ||
           username.isNotEmpty ||
           usercate.isNotEmpty ||
-          skillSets != null ||
-          file != null) {
+          skillSets != null) {
         // registering user in auth with email and password
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
 
-        String photoUrl = await StorageMethods()
-            .uploadImageToStorage('profilePics', file, false);
+        // String photoUrl = await StorageMethods()
+        //     .uploadImageToStorage('profilePics', file, false);
 
         model.User _user = model.User(
           username: username,
           usercate: usercate,
           uid: cred.user!.uid,
-          photoUrl: photoUrl,
+          // photoUrl: photoUrl,
           email: email,
           skillSet: skillSets,
           bookMark: [],

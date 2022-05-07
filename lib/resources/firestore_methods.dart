@@ -16,7 +16,7 @@ class FireStoreMethods {
     Uint8List file,
     String uid,
     String username,
-    String profImage,
+    // String profImage,
     List<String> bookMark,
     Map<String, dynamic> codeSnippet,
   ) async {
