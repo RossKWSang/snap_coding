@@ -18,7 +18,7 @@ class FireStoreMethods {
     String username,
     String profImage,
     List<String> bookMark,
-    Map<String, String> codeSnippet,
+    Map<String, dynamic> codeSnippet,
   ) async {
     // asking uid here because we dont want to make extra calls to firebase auth when we can just get from our state management
     String res = "Some error occurred";

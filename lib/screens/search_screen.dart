@@ -416,7 +416,6 @@ class _SearchPageState extends State<SearchPage> {
                                               filteredSnap[index]
                                                   .data()['devLanguage'];
                                           filteredLanguageList.remove('All');
-
                                           // print(filteredLanguageList);
                                           return SnapCardMain(
                                             snapId: filteredSnap[index]

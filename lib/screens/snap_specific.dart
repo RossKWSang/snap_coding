@@ -7,6 +7,7 @@ import 'package:hashtagable/widgets/hashtag_text.dart';
 import 'package:provider/provider.dart';
 import 'package:snap_coding_2/models/user.dart';
 import 'package:snap_coding_2/resources/firestore_methods.dart';
+import 'package:snap_coding_2/screens/code_display.dart';
 import 'package:snap_coding_2/screens/comment_specific.dart';
 import 'package:snap_coding_2/screens/snap_description.dart';
 import 'package:snap_coding_2/screens/snap_specific.dart';
@@ -110,7 +111,6 @@ class _SnapSpecificState extends State<SnapSpecific> {
                       children: [
                         Container(
                           width: MediaQuery.of(context).size.width * 0.95,
-                          // width: double.infinity,
                           height: 140,
                           child: Row(
                             children: [
@@ -173,27 +173,28 @@ class _SnapSpecificState extends State<SnapSpecific> {
                                       // spacing: 5, // 상하(좌우) 공간
                                       // runSpacing: 2,
                                       alignment: WrapAlignment.start, // 정렬 방식
-
-                                      children: filteredLanguageList
-                                          .map<Widget>((devLang) {
-                                        return Transform(
-                                          transform: new Matrix4.identity()
-                                            ..scale(1.0),
-                                          child: Chip(
-                                            padding: EdgeInsets.all(0.5),
-                                            backgroundColor: Colors
-                                                .green.shade900
-                                                .withOpacity(0.3),
-                                            label: Text(
-                                              devLang,
-                                              style: TextStyle(
-                                                fontSize: 10,
-                                                color: Colors.green,
+                                      children:
+                                          filteredLanguageList.map<Widget>(
+                                        (devLang) {
+                                          return Transform(
+                                            transform: new Matrix4.identity()
+                                              ..scale(1.0),
+                                            child: Chip(
+                                              padding: EdgeInsets.all(0.5),
+                                              backgroundColor: Colors
+                                                  .green.shade900
+                                                  .withOpacity(0.3),
+                                              label: Text(
+                                                devLang,
+                                                style: TextStyle(
+                                                  fontSize: 10,
+                                                  color: Colors.green,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        );
-                                      }).toList(),
+                                          );
+                                        },
+                                      ).toList(),
                                     ),
                                   ),
                                 ],
@@ -261,7 +262,17 @@ class _SnapSpecificState extends State<SnapSpecific> {
                             style: ElevatedButton.styleFrom(
                               primary: primaryColor,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      CodeDisplay(
+                                    codeSnippet: data['codeSnippet'],
+                                  ),
+                                ),
+                              );
+                            },
                             child: Text(
                               '코드보러 가기',
                               style: TextStyle(
@@ -277,7 +288,6 @@ class _SnapSpecificState extends State<SnapSpecific> {
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width * 0.95,
-                          // width: double.infinity,
                           child: Text(
                             '스냅 정보',
                             style: TextStyle(
@@ -292,7 +302,6 @@ class _SnapSpecificState extends State<SnapSpecific> {
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width * 0.95,
-                          // width: double.infinity,
                           child: data['description'].length > 100
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -320,6 +329,9 @@ class _SnapSpecificState extends State<SnapSpecific> {
                                           MaterialPageRoute(
                                             builder: (BuildContext context) =>
                                                 SnapDescription(
+                                              authorName: data['username'],
+                                              reviewNum:
+                                                  snapshot.data!.docs.length,
                                               snapId: widget.snapId,
                                             ),
                                           ),
@@ -432,7 +444,6 @@ class _SnapSpecificState extends State<SnapSpecific> {
                                     : 1,
                             //snapshot.data!.docs.length,
                             itemBuilder: (context, index) {
-                              print(snapshot.data!.docs.length);
                               return snapshot.data!.docs.length != 0
                                   ? Column(
                                       children: [
@@ -498,16 +509,11 @@ class _SnapSpecificState extends State<SnapSpecific> {
                       ],
                     ),
                   ),
-
-                  // Text(
-                  //   "Full Name: ${data['title']} ${data['description']} ${data['thumbnailUrl']}",
-                  // ),
                 );
               },
             ),
           );
         }
-
         return const Center(
           child: CircularProgressIndicator(),
         );

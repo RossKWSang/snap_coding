@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:code_editor/code_editor.dart';
 import 'package:snap_coding_2/utils/utils.dart';
 import 'package:snap_coding_2/utils/colors.dart';
+import 'package:snap_coding_2/utils/language_template.dart';
 import 'package:snap_coding_2/widgets/text_field_input.dart';
 import 'package:snap_coding_2/providers/user_provider.dart';
 import 'package:snap_coding_2/resources/firestore_methods.dart';
@@ -23,12 +24,18 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _hashtagController = TextEditingController();
+  final TextEditingController _snapTitleController = TextEditingController();
+  // final TextEditingController _snapLanguageController = TextEditingController();
   Uint8List? _file;
   bool isLoading = false;
   final List<String> _devLanguage = [
     'All',
   ];
-  Map<String, String> codeSnippet = {};
+  final List<String> _dropDownOption = [
+    '언어',
+  ];
+  String _selectedDropDownOption = '언어';
+  Map<String, dynamic> codeSnippet = {};
   List<String> bookMark = [];
   final List chipSkillSets = [
     'C',
@@ -90,9 +97,11 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
   }
 
   void postImage(String uid, String username, String profImage) async {
-    setState(() {
-      isLoading = true;
-    });
+    setState(
+      () {
+        isLoading = true;
+      },
+    );
     // start the loading
     try {
       // upload to storage and db
@@ -118,6 +127,14 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
         );
         clearImage();
         clearText();
+        final List<String> _devLanguage = [
+          'All',
+        ];
+        final List<String> _dropDownOption = [
+          '언어',
+        ];
+        _snapTitleController.clear();
+        _selectedDropDownOption = '언어';
       } else {
         showSnackBar(context, res);
       }
@@ -130,6 +147,26 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
         err.toString(),
       );
     }
+  }
+
+  void addCodeSnippet() {
+    setState(
+      () {
+        if (_selectedDropDownOption == '언어') {
+          showSnackBar(
+            context,
+            '언어를 선택하세요!!',
+          );
+          return;
+        }
+        codeSnippet[_snapTitleController.text] = [
+          _selectedDropDownOption,
+          languageTemplate[_selectedDropDownOption].join("\n"),
+        ];
+        _snapTitleController.clear();
+        _selectedDropDownOption = '언어';
+      },
+    );
   }
 
   void clearImage() {
@@ -152,116 +189,62 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
 
-    Map<String, dynamic> languageTemplate = {
-      "C": [
-        "#include <stdio.h>",
-        "",
-        "int main(void){",
-        "\tprintf(\"Hello world\");",
-        "\treturn 0;",
-        "}",
-      ],
-    };
-
-    List<String> contentOfPage1 = [
-      "#include <stdio.h>",
-      "",
-      "int main(void){",
-      "\tprintf(\"Hello world\");",
-      "\treturn 0;",
-      "}",
-    ];
-
-    List<String> contentOfPage2 = [
-      "public class HelloWorld {",
-      "\tpublic class void main(String[] args) {",
-      "\t\tSystem.out.println(\"Hello, world!\");",
-      "\t}",
-      "}",
-    ];
-
-    List<FileEditor> files = [
-      new FileEditor(
-        name: "이건가?",
-        language: "C",
-        code: contentOfPage1.join("\n"),
-      ),
-      new FileEditor(
-        name: "C++",
-        language: "C++",
-        code: contentOfPage1.join("\n"),
-      ),
-      new FileEditor(
-        name: "C#",
-        language: "C#",
-        code: contentOfPage1.join("\n"),
-      ),
-      new FileEditor(
-        name: "Java",
-        language: "java",
-        code: contentOfPage2.join("\n"),
-      ),
-      new FileEditor(
-        name: "Python",
-        language: "python",
-        code: "print(\"Hello world!\")",
-      ),
-      new FileEditor(
-        name: "css",
-        language: "css",
-        code: "a { color: red; }",
-      ),
-    ];
-
-    EditorModel model = new EditorModel(
-      files: files,
-      styleOptions: new EditorModelStyleOptions(
-        theme: {
-          'root': TextStyle(
-            backgroundColor: mobileDrawerColor,
-            color: Color(0xffdddddd),
+    EditorModel modelMaker(widName, widLanguage, codeInput) {
+      List<FileEditor> file_formed = [
+        FileEditor(
+          name: widName,
+          language: widLanguage,
+          code: codeInput,
+        )
+      ];
+      return new EditorModel(
+        files: file_formed,
+        styleOptions: EditorModelStyleOptions(
+          theme: {
+            'root': TextStyle(
+              backgroundColor: mobileDrawerColor,
+              color: Color(0xffdddddd),
+            ),
+            'keyword': TextStyle(color: keywordColor),
+            'params': TextStyle(color: Color(0xffde935f)),
+            'selector-tag': TextStyle(color: attrColor),
+            'selector-id': TextStyle(color: idColor),
+            'selector-class': TextStyle(color: classColor),
+            'regexp': TextStyle(color: Color(0xffcc6666)),
+            'literal': TextStyle(color: Colors.white),
+            'section': TextStyle(color: Colors.white),
+            'link': TextStyle(color: Colors.white),
+            'subst': TextStyle(color: Color(0xffdddddd)),
+            'string': TextStyle(color: quoteColor),
+            'title': TextStyle(color: titlesColor),
+            'name': TextStyle(color: tagColor),
+            'type': TextStyle(color: tagColor),
+            'attribute': TextStyle(color: propertyColor),
+            'symbol': TextStyle(color: tagColor),
+            'bullet': TextStyle(color: tagColor),
+            'built_in': TextStyle(color: methodsColor),
+            'addition': TextStyle(color: tagColor),
+            'variable': TextStyle(color: tagColor),
+            'template-tag': TextStyle(color: tagColor),
+            'template-variable': TextStyle(color: tagColor),
+            'comment': TextStyle(color: Color(0xff777777)),
+            'quote': TextStyle(color: Color(0xff777777)),
+            'deletion': TextStyle(color: Color(0xff777777)),
+            'meta': TextStyle(color: Color(0xff777777)),
+            'emphasis': TextStyle(fontStyle: FontStyle.italic),
+          },
+          padding: EdgeInsets.all(
+            3,
           ),
-          'keyword': TextStyle(color: keywordColor),
-          'params': TextStyle(color: Color(0xffde935f)),
-          'selector-tag': TextStyle(color: attrColor),
-          'selector-id': TextStyle(color: idColor),
-          'selector-class': TextStyle(color: classColor),
-          'regexp': TextStyle(color: Color(0xffcc6666)),
-          'literal': TextStyle(color: Colors.white),
-          'section': TextStyle(color: Colors.white),
-          'link': TextStyle(color: Colors.white),
-          'subst': TextStyle(color: Color(0xffdddddd)),
-          'string': TextStyle(color: quoteColor),
-          'title': TextStyle(color: titlesColor),
-          'name': TextStyle(color: tagColor),
-          'type': TextStyle(color: tagColor),
-          'attribute': TextStyle(color: propertyColor),
-          'symbol': TextStyle(color: tagColor),
-          'bullet': TextStyle(color: tagColor),
-          'built_in': TextStyle(color: methodsColor),
-          'addition': TextStyle(color: tagColor),
-          'variable': TextStyle(color: tagColor),
-          'template-tag': TextStyle(color: tagColor),
-          'template-variable': TextStyle(color: tagColor),
-          'comment': TextStyle(color: Color(0xff777777)),
-          'quote': TextStyle(color: Color(0xff777777)),
-          'deletion': TextStyle(color: Color(0xff777777)),
-          'meta': TextStyle(color: Color(0xff777777)),
-          'emphasis': TextStyle(fontStyle: FontStyle.italic),
-        },
-        padding: EdgeInsets.all(
-          3,
+          tabSize: 4,
+          fontSize: 13,
+          editorColor: mobileDrawerColor,
+          // editorBorderColor: mobileBackgroundColor,
         ),
-        tabSize: 4,
-        fontSize: 13,
-        editorColor: mobileDrawerColor,
-        // editorBorderColor: mobileBackgroundColor,
-      ),
-    );
+      );
+    }
 
-    // since 1.3.1
-    model.styleOptions?.defineEditButtonPosition(top: 250.0, right: 10.0);
-
+    print(codeSnippet);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mobileBackgroundColor,
@@ -437,10 +420,13 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
                           if (_devLanguage.contains(chipskills)) {
                             _devLanguage.removeWhere(
                                 (element) => element == chipskills);
+                            _dropDownOption.removeWhere(
+                                (element) => element == chipskills);
                             setState(() {});
                           } else {
                             if (_devLanguage.length < 6) {
                               _devLanguage.add(chipskills);
+                              _dropDownOption.add(chipskills);
                               setState(() {});
                             } else {
                               setState(
@@ -468,17 +454,19 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
                             padding: EdgeInsets.symmetric(
                                 vertical: 5, horizontal: 12),
                             decoration: BoxDecoration(
-                                color: isSelected ? primaryColor : Colors.white,
-                                borderRadius: BorderRadius.circular(18),
-                                border: Border.all(
-                                    color:
-                                        isSelected ? primaryColor : Colors.grey,
-                                    width: 2)),
+                              color:
+                                  isSelected ? primaryColor : Colors.grey[900],
+                              borderRadius: BorderRadius.circular(18),
+                              border: Border.all(
+                                  color:
+                                      isSelected ? primaryColor : Colors.grey,
+                                  width: 2),
+                            ),
                             child: Text(
                               chipskills,
                               style: TextStyle(
                                   color:
-                                      isSelected ? Colors.white : Colors.grey,
+                                      isSelected ? Colors.white : Colors.white,
                                   fontSize: 14),
                             ),
                           ),
@@ -505,20 +493,135 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
               SizedBox(
                 height: 12,
               ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.95,
-                child: CodeEditor(
-                  model: model,
-                  onSubmit: (String? language, String? value) {
-                    codeSnippet[language!] = value!;
-                    // print("language = $language");
-                    // print("value = '$value'");
-                  },
-                ),
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      addCodeSnippet();
+                    },
+                    icon: const Icon(
+                      Icons.add_circle_outline_rounded,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.55,
+                    child: TextFieldInput(
+                      hintText: '코드스니펫 이름',
+                      textInputType: TextInputType.text,
+                      textEditingController: _snapTitleController,
+                      isPass: false,
+                      cursorColor: primaryColor,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    color: mobileDrawerColor,
+                    width: MediaQuery.of(context).size.width * 0.25,
+                    child: DropdownButton(
+                      value: _selectedDropDownOption,
+                      items: _dropDownOption.map(
+                        (value) {
+                          print(_selectedDropDownOption);
+                          return DropdownMenuItem(
+                            value: value,
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                              width: 73,
+                              child: Text(
+                                value,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: secondaryColor,
+                                  background: Paint()
+                                    ..color = Colors.transparent,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ).toList(),
+                      onChanged: (String? value) {
+                        setState(
+                          () {
+                            _selectedDropDownOption = value!;
+                          },
+                        );
+                      },
+                    ),
+                  )
+                ],
               ),
               const SizedBox(
                 height: 12,
               ),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: codeSnippet.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.95,
+                        child: Stack(
+                          children: [
+                            CodeEditor(
+                              model: modelMaker(
+                                codeSnippet.keys.elementAt(index),
+                                codeSnippet[codeSnippet.keys.elementAt(index)]
+                                    [0],
+                                codeSnippet[codeSnippet.keys.elementAt(index)]
+                                    [1],
+                              ),
+                              onSubmit: (String? language, String? value) {
+                                codeSnippet[codeSnippet.keys.elementAt(index)]
+                                    [1] = value!;
+                              },
+                            ),
+                            Positioned(
+                              right: 5,
+                              top: 5,
+                              child: IconButton(
+                                onPressed: () {
+                                  setState(
+                                    () {
+                                      codeSnippet.remove(
+                                        codeSnippet.keys.elementAt(index),
+                                      );
+                                    },
+                                  );
+                                },
+                                icon: const Icon(
+                                  Icons.remove_circle_outline_rounded,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                    ],
+                  );
+                },
+              )
+              // Container(
+              //   width: MediaQuery.of(context).size.width * 0.95,
+              //   child: CodeEditor(
+              //     model: model,
+              //     onSubmit: (String? language, String? value) {
+              //       codeSnippet[language!] = value!;
+              //       // print("language = $language");
+              //       // print("value = '$value'");
+              //     },
+              //   ),
+              // ),
             ],
           ),
         ),

@@ -12,7 +12,7 @@ class Snap {
   final List<String> devLanguage;
   final List<String> codeImage;
   final List<String> buyer;
-  final Map<String, String> codeSnippet;
+  final Map<String, dynamic> codeSnippet;
   // final Buyer ???
 
   const Snap({

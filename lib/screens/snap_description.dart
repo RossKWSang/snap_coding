@@ -14,9 +14,14 @@ import '../providers/user_provider.dart';
 
 class SnapDescription extends StatefulWidget {
   final String snapId;
+  final String authorName;
+
+  final int reviewNum;
   const SnapDescription({
     Key? key,
     required this.snapId,
+    required this.authorName,
+    required this.reviewNum,
   }) : super(key: key);
 
   @override
@@ -28,29 +33,6 @@ class _SnapDescriptionState extends State<SnapDescription> {
       FirebaseFirestore.instance.collection('posts');
 
   final TextEditingController _commentController = TextEditingController();
-
-  void postComment(String uid, String name) async {
-    try {
-      String res = await FireStoreMethods().postComment(
-        widget.snapId,
-        _commentController.text,
-        uid,
-        name,
-      );
-
-      if (res != 'success') {
-        showSnackBar(context, res);
-      }
-      setState(() {
-        _commentController.text = "";
-      });
-    } catch (err) {
-      showSnackBar(
-        context,
-        err.toString(),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -131,32 +113,18 @@ class _SnapDescriptionState extends State<SnapDescription> {
                                 data['title'],
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 18,
+                                  fontSize: 20,
                                   color: secondaryColor,
                                 ),
                               ),
                               SizedBox(
-                                height: 6,
+                                height: 10,
                               ),
                               Container(
                                 height: 50,
                                 width: 260,
-                                child: Wrap(
-                                  alignment: WrapAlignment.start, // 정렬 방식
-
-                                  children:
-                                      data['HashTag'].map<Widget>((hashTag) {
-                                    return Container(
-                                      padding: EdgeInsets.all(2),
-                                      child: Text(
-                                        hashTag,
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          color: primaryColor,
-                                        ),
-                                      ),
-                                    );
-                                  }).toList(),
+                                child: Text(
+                                  "Author: " + widget.authorName,
                                 ),
                               ),
                               Container(
@@ -166,25 +134,26 @@ class _SnapDescriptionState extends State<SnapDescription> {
                                   // runSpacing: 2,
                                   alignment: WrapAlignment.start, // 정렬 방식
 
-                                  children: filteredLanguageList
-                                      .map<Widget>((devLang) {
-                                    return Transform(
-                                      transform: new Matrix4.identity()
-                                        ..scale(1.0),
-                                      child: Chip(
-                                        padding: EdgeInsets.all(0.5),
-                                        backgroundColor: Colors.green.shade900
-                                            .withOpacity(0.3),
-                                        label: Text(
-                                          devLang,
-                                          style: TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.green,
+                                  children: filteredLanguageList.map<Widget>(
+                                    (devLang) {
+                                      return Transform(
+                                        transform: new Matrix4.identity()
+                                          ..scale(1.0),
+                                        child: Chip(
+                                          padding: EdgeInsets.all(0.5),
+                                          backgroundColor: Colors.green.shade900
+                                              .withOpacity(0.3),
+                                          label: Text(
+                                            devLang,
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.green,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    );
-                                  }).toList(),
+                                      );
+                                    },
+                                  ).toList(),
                                 ),
                               ),
                             ],
@@ -192,89 +161,9 @@ class _SnapDescriptionState extends State<SnapDescription> {
                         ],
                       ),
                     ),
+                    Row(),
                     SizedBox(
-                      height: 50,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              CupertinoIcons.bookmark_fill,
-                              color: secondaryColor,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              '스크랩 90',
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: secondaryColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          '|',
-                          style: TextStyle(
-                            color: secondaryColor,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              CupertinoIcons.chat_bubble_fill,
-                              color: secondaryColor,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              '리뷰수 1,890',
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: secondaryColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.95,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: primaryColor,
-                        ),
-                        onPressed: () {},
-                        child: Text(
-                          '코드보러 가기',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: secondaryColor,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.95,
-                      child: Text(
-                        '스냅 정보',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: secondaryColor,
-                        ),
-                      ),
+                      height: 30,
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width * 0.95,
@@ -293,10 +182,6 @@ class _SnapDescriptionState extends State<SnapDescription> {
                   ],
                 ),
               ),
-
-              // Text(
-              //   "Full Name: ${data['title']} ${data['description']} ${data['thumbnailUrl']}",
-              // ),
             ),
           );
         }
