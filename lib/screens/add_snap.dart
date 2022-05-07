@@ -7,6 +7,7 @@ import 'package:hashtagable/widgets/hashtag_text_field.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:code_editor/code_editor.dart';
 import 'package:snap_coding_2/screens/login_screen.dart';
+import 'package:snap_coding_2/screens/snap_specific.dart';
 import 'package:snap_coding_2/utils/utils.dart';
 import 'package:snap_coding_2/utils/colors.dart';
 import 'package:snap_coding_2/utils/language_template.dart';
@@ -114,7 +115,7 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
     // start the loading
     try {
       // upload to storage and db
-      String res = await FireStoreMethods().uploadPost(
+      List<dynamic> res = await FireStoreMethods().uploadPost(
         _titleController.text,
         _descriptionController.text,
         extractHashTags(_descriptionController.text),
@@ -126,7 +127,7 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
         bookMark,
         codeSnippet,
       );
-      if (res == "success") {
+      if (res[0] == 0) {
         setState(() {
           isLoading = false;
         });
@@ -144,8 +145,17 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
         ];
         _snapTitleController.clear();
         _selectedDropDownOption = '언어';
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => SnapSpecific(
+              snapId: res[1],
+            ),
+          ),
+        );
       } else {
-        showSnackBar(context, res);
+        showSnackBar(context, res[0]);
       }
     } catch (err) {
       setState(() {
@@ -197,6 +207,7 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
       _dropDownOption = [
         '언어',
       ];
+      codeSnippet = {};
     });
   }
 

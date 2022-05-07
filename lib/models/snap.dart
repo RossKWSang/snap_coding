@@ -11,6 +11,7 @@ class Snap {
   final List<String> hashTag;
   final String thumbnailUrl;
   final String description;
+  final List<String> description_words;
   final int price;
   final List<String> devLanguage;
   final List<String> codeImage;
@@ -28,6 +29,7 @@ class Snap {
     required this.hashTag,
     required this.thumbnailUrl,
     required this.description,
+    required this.description_words,
     required this.price,
     required this.devLanguage,
     required this.codeImage,
@@ -48,6 +50,7 @@ class Snap {
       hashTag: snapshot["hashTag"],
       thumbnailUrl: snapshot["thumbnailUrl"],
       description: snapshot["description"],
+      description_words: snapshot["description_words"],
       price: snapshot["price"],
       devLanguage: snapshot["devLanguage"],
       codeImage: snapshot["codeImage"],
@@ -66,6 +69,7 @@ class Snap {
         "HashTag": hashTag,
         "thumbnailUrl": thumbnailUrl,
         "description": description,
+        "description_words": description_words,
         "price": price,
         "devLanguage": devLanguage,
         "codeImage": codeImage,

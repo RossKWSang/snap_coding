@@ -433,13 +433,16 @@ class _SearchPageState extends State<SearchPage> {
                       ],
                     )
                   : StreamBuilder(
-                      stream: FirebaseFirestore.instance
-                          .collection('posts')
-                          .where(
-                            'HashTag',
-                            arrayContains: currentlySearched,
-                          )
-                          .snapshots(),
+                      stream:
+                          FirebaseFirestore.instance.collection('posts').where(
+                        'description_words',
+                        arrayContainsAny: [
+                          "#" + currentlySearched,
+                          currentlySearched,
+                          currentlySearched.toLowerCase(),
+                          currentlySearched.toUpperCase(),
+                        ],
+                      ).snapshots(),
                       builder: (context,
                           AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
                               snapshot) {

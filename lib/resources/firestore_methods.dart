@@ -8,7 +8,7 @@ import 'package:uuid/uuid.dart';
 class FireStoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<String> uploadPost(
+  Future<List<dynamic>> uploadPost(
     String title,
     String description,
     List<String> hashTag,
@@ -21,7 +21,7 @@ class FireStoreMethods {
     Map<String, dynamic> codeSnippet,
   ) async {
     // asking uid here because we dont want to make extra calls to firebase auth when we can just get from our state management
-    String res = "Some error occurred";
+    List res = [];
     try {
       String thumbnailUrl =
           await StorageMethods().uploadImageToStorage('posts', file, true);
@@ -36,6 +36,7 @@ class FireStoreMethods {
         hashTag: hashTag,
         thumbnailUrl: thumbnailUrl,
         description: description,
+        description_words: description.split(' '),
         price: 10000,
         devLanguage: devLanguage,
         codeImage: [],
@@ -43,9 +44,9 @@ class FireStoreMethods {
         codeSnippet: codeSnippet,
       );
       _firestore.collection('posts').doc(snapId).set(post.toJson());
-      res = "success";
+      res = [0, snapId];
     } catch (err) {
-      res = err.toString();
+      res = [err.toString()];
     }
     return res;
   }
@@ -169,6 +170,26 @@ class FireStoreMethods {
     return res;
   }
 
+  Future<String> updateUserInfo(
+    String uid,
+    String nickName,
+    String devExp,
+  ) async {
+    String res = "Some error occurred";
+    try {
+      await _firestore.collection('users').doc(uid).update(
+        {
+          'username': nickName,
+          'devExp': devExp,
+        },
+      );
+
+      res = 'success';
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
   // Future<void> followUser(String uid, String followId) async {
   //   try {
   //     DocumentSnapshot snap =

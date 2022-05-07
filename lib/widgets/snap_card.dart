@@ -53,7 +53,7 @@ class _SnapCardMainState extends State<SnapCardMain> {
                   children: [
                     Container(
                       height: 120,
-                      width: 110,
+                      width: 105,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
@@ -116,8 +116,8 @@ class _SnapCardMainState extends State<SnapCardMain> {
                       height: 6,
                     ),
                     Container(
-                      height: 50,
-                      width: 260,
+                      height: 70,
+                      width: 250,
                       child: Wrap(
                         alignment: WrapAlignment.start, // 정렬 방식
 
@@ -136,12 +136,12 @@ class _SnapCardMainState extends State<SnapCardMain> {
                       ),
                     ),
                     Container(
-                      height: 15,
+                      width: 250,
+                      height: 40,
                       child: Wrap(
                         // spacing: 5, // 상하(좌우) 공간
                         // runSpacing: 2,
-                        alignment: WrapAlignment.start, // 정렬 방식
-
+                        alignment: WrapAlignment.start,
                         children:
                             widget.filteredLanguageList.map<Widget>((devLang) {
                           return Transform(

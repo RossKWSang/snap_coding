@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:snap_coding_2/drawer/contract_policy_page.dart';
+import 'package:snap_coding_2/drawer/customer_call_page.dart';
+import 'package:snap_coding_2/drawer/my_snap_page.dart';
+import 'package:snap_coding_2/drawer/profile_page.dart';
+import 'package:snap_coding_2/drawer/setting_page.dart';
 import 'package:snap_coding_2/resources/auth_methods.dart';
 import 'package:snap_coding_2/screens/login_screen.dart';
 import 'package:snap_coding_2/utils/colors.dart';
@@ -33,6 +37,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
             buildMenuItem(
               text: '내가 등록한 코딩',
               icon: CupertinoIcons.check_mark_circled_solid,
+              onClicked: () => selectedItem(context, 1),
             ),
             const SizedBox(
               height: 30,
@@ -43,6 +48,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
             buildMenuItem(
               text: '공지사항',
               icon: Icons.campaign_rounded,
+              onClicked: () => selectedItem(context, 2),
             ),
             buildMenuItem(
               text: '고객센터',
@@ -106,14 +112,14 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
       case 0:
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => NoticePage(),
+            builder: (context) => ProfileUpdate(),
           ),
         );
         break;
       case 1:
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => NoticePage(),
+            builder: (context) => MySnapPage(),
           ),
         );
         break;
@@ -127,14 +133,14 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
       case 3:
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => NoticePage(),
+            builder: (context) => CustomerCallPage(),
           ),
         );
         break;
       case 4:
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => NoticePage(),
+            builder: (context) => SettingPage(),
           ),
         );
         break;
@@ -144,8 +150,6 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
             builder: (context) => PolicyPage(),
           ),
         );
-        break;
-      case 6:
         break;
     }
   }
