@@ -5,6 +5,9 @@ class Snap {
   final String snapId;
   final String title;
   final String username;
+  final DateTime created;
+  final List bookMark;
+
   final List<String> hashTag;
   final String thumbnailUrl;
   final String description;
@@ -20,6 +23,8 @@ class Snap {
     required this.snapId,
     required this.title,
     required this.username,
+    required this.created,
+    required this.bookMark,
     required this.hashTag,
     required this.thumbnailUrl,
     required this.description,
@@ -38,6 +43,8 @@ class Snap {
       snapId: snapshot["snapId"],
       title: snapshot["title"],
       username: snapshot["username"],
+      created: snapshot["created"],
+      bookMark: snapshot["bookMark"],
       hashTag: snapshot["hashTag"],
       thumbnailUrl: snapshot["thumbnailUrl"],
       description: snapshot["description"],
@@ -54,6 +61,8 @@ class Snap {
         "snapId": snapId,
         "title": title,
         "username": username,
+        "created": created,
+        "bookMark": bookMark,
         "HashTag": hashTag,
         "thumbnailUrl": thumbnailUrl,
         "description": description,

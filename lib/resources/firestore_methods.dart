@@ -31,6 +31,8 @@ class FireStoreMethods {
         snapId: snapId,
         title: title,
         username: username,
+        created: DateTime.now(),
+        bookMark: [],
         hashTag: hashTag,
         thumbnailUrl: thumbnailUrl,
         description: description,

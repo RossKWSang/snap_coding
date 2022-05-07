@@ -33,10 +33,10 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
   Uint8List? _file;
   bool isLoading = false;
   bool _isLoggedIn = false;
-  final List<String> _devLanguage = [
+  List<String> _devLanguage = [
     'All',
   ];
-  final List<String> _dropDownOption = [
+  List<String> _dropDownOption = [
     '언어',
   ];
   String _selectedDropDownOption = '언어';
@@ -191,6 +191,12 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
       _titleController.clear();
       _descriptionController.clear();
       _hashtagController.clear();
+      _devLanguage = [
+        'All',
+      ];
+      _dropDownOption = [
+        '언어',
+      ];
     });
   }
 

@@ -170,7 +170,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
                                         Text(
                                           snapshot.data!.docs[index]
                                               .data()['description']
-                                              .substring(0, 30),
+                                              .substring(0, 10),
                                           style: TextStyle(color: Colors.grey),
                                         ),
                                         SizedBox(
