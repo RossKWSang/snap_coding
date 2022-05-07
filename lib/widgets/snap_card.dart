@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:snap_coding_2/resources/firestore_methods.dart';
 import 'package:snap_coding_2/screens/snap_specific.dart';
 import 'package:snap_coding_2/utils/colors.dart';
 
 class SnapCardMain extends StatelessWidget {
+  final String uid;
   final String snapId;
   final String thumbnailUrl;
   final String title;
   final List<dynamic> hashTagList;
   final List<dynamic> filteredLanguageList;
+  final List<String> bookmarkList;
   const SnapCardMain({
     Key? key,
+    required this.uid,
     required this.snapId,
     required this.thumbnailUrl,
     required this.title,
     required this.hashTagList,
     required this.filteredLanguageList,
+    required this.bookmarkList,
   }) : super(key: key);
 
   @override
@@ -64,18 +69,26 @@ class SnapCardMain extends StatelessWidget {
                       child: IconButton(
                         icon: Icon(
                           Icons.bookmark_border_outlined,
-                          // color: markedPosts.contains(
-                          //         snapshot.data?.docs[index].data()['snapId'])
+                          // color: markedPost.contains(
+                          //         snapshot
+                          //             .data?.docs[index]
+                          //             .data()['snapId'])
                           //     ? Colors.white
                           //     : Colors.black,
                         ),
-                        onPressed: () => {
-                          // setState(() {
-                          //   isMarked = !isMarked;
-                          //   bookmarkImage(
-                          //       snapshot.data?.docs[index].data()['snapId'],
-                          //       snapshot.data?.docs[index].data()['uid']);
-                          // })
+                        onPressed: () async {
+                          //isMarked = !isMarked;
+                          await FireStoreMethods().bookmarkPost(
+                            snapId,
+                            uid,
+                            bookmarkList,
+                          );
+
+                          await FireStoreMethods().bookmarkforUser(
+                            snapId,
+                            uid,
+                            bookmarkList,
+                          );
                         },
                       ),
                       bottom: 0,

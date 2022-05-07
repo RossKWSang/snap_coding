@@ -299,12 +299,14 @@ class _MainPageState extends State<MainPage>
 
                           // print(filteredLanguageList);
                           return SnapCardMain(
+                            uid: userProvider.getUser.uid,
                             snapId: filteredSnap[index].data()['snapId'],
                             thumbnailUrl:
                                 filteredSnap[index].data()['thumbnailUrl'],
                             title: filteredSnap[index].data()['title'],
                             hashTagList: filteredSnap[index].data()['HashTag'],
                             filteredLanguageList: filteredLanguageList,
+                            bookmarkList: userProvider.getUser.bookMark,
                           );
                         },
                       ),

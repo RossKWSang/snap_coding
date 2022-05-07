@@ -33,6 +33,7 @@ class AuthMethods {
     required List skillSets,
   }) async {
     String res = "Some error Occurred";
+    List<String> bookmark = [];
     try {
       if (email.isNotEmpty ||
           password.isNotEmpty ||
@@ -45,9 +46,6 @@ class AuthMethods {
           password: password,
         );
 
-        // String photoUrl = await StorageMethods()
-        //     .uploadImageToStorage('profilePics', file, false);
-
         model.User _user = model.User(
           username: username,
           usercate: usercate,
@@ -55,7 +53,7 @@ class AuthMethods {
           // photoUrl: photoUrl,
           email: email,
           skillSet: skillSets,
-          bookMark: [],
+          bookMark: bookmark,
           interests: [],
           devExp: devExp,
           recentSearch: [],

@@ -467,6 +467,7 @@ class _SearchPageState extends State<SearchPage> {
                                     filteredLanguageList.remove('All');
                                     // print(filteredLanguageList);
                                     return SnapCardMain(
+                                      uid: uid,
                                       snapId:
                                           filteredSnap[index].data()['snapId'],
                                       thumbnailUrl: filteredSnap[index]
@@ -477,6 +478,7 @@ class _SearchPageState extends State<SearchPage> {
                                           filteredSnap[index].data()['HashTag'],
                                       filteredLanguageList:
                                           filteredLanguageList,
+                                      bookmarkList: userData!.bookMark,
                                     );
                                   },
                                 )

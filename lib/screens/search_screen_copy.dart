@@ -432,18 +432,19 @@ class _SearchPageState extends State<SearchPage> {
                                                 .data()['devLanguage'];
                                         filteredLanguageList.remove('All');
                                         // print(filteredLanguageList);
-                                        return SnapCardMain(
-                                          snapId: filteredSnap[index]
-                                              .data()['snapId'],
-                                          thumbnailUrl: filteredSnap[index]
-                                              .data()['thumbnailUrl'],
-                                          title: filteredSnap[index]
-                                              .data()['title'],
-                                          hashTagList: filteredSnap[index]
-                                              .data()['HashTag'],
-                                          filteredLanguageList:
-                                              filteredLanguageList,
-                                        );
+                                        return Text('null');
+                                        // SnapCardMain(
+                                        //   snapId: filteredSnap[index]
+                                        //       .data()['snapId'],
+                                        //   thumbnailUrl: filteredSnap[index]
+                                        //       .data()['thumbnailUrl'],
+                                        //   title: filteredSnap[index]
+                                        //       .data()['title'],
+                                        //   hashTagList: filteredSnap[index]
+                                        //       .data()['HashTag'],
+                                        //   filteredLanguageList:
+                                        //       filteredLanguageList,
+                                        // );
                                       },
                                     )
                                   : Builder(
