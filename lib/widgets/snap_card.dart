@@ -3,14 +3,14 @@ import 'package:snap_coding_2/resources/firestore_methods.dart';
 import 'package:snap_coding_2/screens/snap_specific.dart';
 import 'package:snap_coding_2/utils/colors.dart';
 
-class SnapCardMain extends StatelessWidget {
+class SnapCardMain extends StatefulWidget {
   final String uid;
   final String snapId;
   final String thumbnailUrl;
   final String title;
   final List<dynamic> hashTagList;
   final List<dynamic> filteredLanguageList;
-  final List<String> bookmarkList;
+  final List bookmarkList;
   const SnapCardMain({
     Key? key,
     required this.uid,
@@ -23,6 +23,11 @@ class SnapCardMain extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<SnapCardMain> createState() => _SnapCardMainState();
+}
+
+class _SnapCardMainState extends State<SnapCardMain> {
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -34,7 +39,7 @@ class SnapCardMain extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (BuildContext context) => SnapSpecific(
-                  snapId: snapId,
+                  snapId: widget.snapId,
                 ),
               ),
             );
@@ -59,7 +64,7 @@ class SnapCardMain extends StatelessWidget {
                         borderRadius: BorderRadius.circular(16),
                         child: SizedBox.fromSize(
                           child: Image.network(
-                            thumbnailUrl,
+                            widget.thumbnailUrl,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -69,25 +74,22 @@ class SnapCardMain extends StatelessWidget {
                       child: IconButton(
                         icon: Icon(
                           Icons.bookmark_border_outlined,
-                          // color: markedPost.contains(
-                          //         snapshot
-                          //             .data?.docs[index]
-                          //             .data()['snapId'])
-                          //     ? Colors.white
-                          //     : Colors.black,
+                          color: widget.bookmarkList.contains(widget.snapId)
+                              ? Colors.white
+                              : Colors.black,
                         ),
                         onPressed: () async {
                           //isMarked = !isMarked;
                           await FireStoreMethods().bookmarkPost(
-                            snapId,
-                            uid,
-                            bookmarkList,
+                            widget.snapId,
+                            widget.uid,
+                            widget.bookmarkList,
                           );
 
                           await FireStoreMethods().bookmarkforUser(
-                            snapId,
-                            uid,
-                            bookmarkList,
+                            widget.snapId,
+                            widget.uid,
+                            widget.bookmarkList,
                           );
                         },
                       ),
@@ -106,7 +108,7 @@ class SnapCardMain extends StatelessWidget {
                       height: 8,
                     ),
                     Text(
-                      title,
+                      widget.title,
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
@@ -119,7 +121,7 @@ class SnapCardMain extends StatelessWidget {
                       child: Wrap(
                         alignment: WrapAlignment.start, // 정렬 방식
 
-                        children: hashTagList.map<Widget>((hashTag) {
+                        children: widget.hashTagList.map<Widget>((hashTag) {
                           return Container(
                             padding: EdgeInsets.all(2),
                             child: Text(
@@ -140,7 +142,8 @@ class SnapCardMain extends StatelessWidget {
                         // runSpacing: 2,
                         alignment: WrapAlignment.start, // 정렬 방식
 
-                        children: filteredLanguageList.map<Widget>((devLang) {
+                        children:
+                            widget.filteredLanguageList.map<Widget>((devLang) {
                           return Transform(
                             transform: new Matrix4.identity()..scale(1.0),
                             child: Chip(

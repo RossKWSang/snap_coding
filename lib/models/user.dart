@@ -8,7 +8,7 @@ class User {
   final String usercate;
   final List skillSet;
   final List interests;
-  final List<String> bookMark;
+  final List bookMark;
   final String devExp;
   final List recentSearch;
 

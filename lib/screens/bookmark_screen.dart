@@ -85,7 +85,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
                                 );
                               },
                               child: Container(
-                                width: double.infinity,
+                                width: MediaQuery.of(context).size.width * 0.95,
                                 height: 140,
                                 child: Row(
                                   children: [

@@ -218,7 +218,7 @@ class _SnapSpecificState extends State<SnapSpecific> {
                                   width: 5,
                                 ),
                                 Text(
-                                  '스크랩 90',
+                                  '스크랩 ${data['bookMark'].length}',
                                   style: TextStyle(
                                     fontSize: 15,
                                     color: secondaryColor,

@@ -51,7 +51,7 @@ class FireStoreMethods {
   Future<String> bookmarkPost(
     String snapId,
     String uid,
-    List<String> bookmarkPost,
+    List bookmarkPost,
   ) async {
     String res = "Some error occurred";
     try {
