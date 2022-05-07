@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:snap_coding_2/drawer/contract_policy_page.dart';
 import 'package:snap_coding_2/utils/colors.dart';
 import 'package:snap_coding_2/drawer/notice_page.dart';
 
@@ -48,10 +49,12 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
             buildMenuItem(
               text: '환경설정',
               icon: Icons.settings,
+              onClicked: () => selectedItem(context, 4),
             ),
             buildMenuItem(
               text: '약관 및 정책',
               icon: CupertinoIcons.square_list_fill,
+              onClicked: () => selectedItem(context, 5),
             ),
             const Divider(
               color: secondaryColor,
@@ -93,6 +96,41 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => NoticePage(),
+          ),
+        );
+        break;
+      case 1:
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => NoticePage(),
+          ),
+        );
+        break;
+      case 2:
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => NoticePage(),
+          ),
+        );
+        break;
+      case 3:
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => NoticePage(),
+          ),
+        );
+        break;
+      case 4:
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => NoticePage(),
+          ),
+        );
+        break;
+      case 5:
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => PolicyPage(),
           ),
         );
         break;

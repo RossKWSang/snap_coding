@@ -33,6 +33,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:839672250923:android:75cc717abb0fa68ea4e06e",
+        "android_client_info": {
+          "package_name": "com.wonsangkim.snap_coding_2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "839672250923-8ulc7mr621jptv48la5du63vfphtj8jt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR-ufcFAhA9ET7gCe6rKsdNnLIll4otr8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "839672250923-8ulc7mr621jptv48la5du63vfphtj8jt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

@@ -26,6 +26,8 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
   final TextEditingController _hashtagController = TextEditingController();
   final TextEditingController _snapTitleController = TextEditingController();
   // final TextEditingController _snapLanguageController = TextEditingController();
+
+  String uploadedSnapId = '';
   Uint8List? _file;
   bool isLoading = false;
   final List<String> _devLanguage = [

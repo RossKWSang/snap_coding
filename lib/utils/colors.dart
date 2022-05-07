@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const mobileBackgroundColor = Color.fromRGBO(0, 0, 0, 1);
+const mobileBackgroundColor = Color.fromRGBO(10, 10, 10, 1);
 const webBackgroundColor = Color.fromRGBO(18, 18, 18, 1);
 const mobileSearchColor = Color.fromRGBO(38, 38, 38, 1);
 const mobileDrawerColor = Color.fromRGBO(26, 26, 26, 1);
