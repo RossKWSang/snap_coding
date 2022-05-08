@@ -75,6 +75,7 @@ class _MainPageState extends State<MainPage>
 
     // print("userprovider print >> ");
     // print(userProvider.getUser);
+    User? userData;
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
     final fireAuth.FirebaseAuth _auth = fireAuth.FirebaseAuth.instance;
     if (_auth.currentUser != null) {
@@ -83,14 +84,11 @@ class _MainPageState extends State<MainPage>
       print(
         currentUser.uid.toString(),
       );
-    } else {}
+    } else {
+      print('anonymous');
+    }
 
     final UserProvider userProvider = Provider.of<UserProvider>(context);
-
-    // if (currentUser.uid != null) {
-    //   _isLoggedIn = true;
-    // }
-    // print(currentUser.uid);
 
     return Scaffold(
       drawer: NavigationDrawerWidget(),
@@ -313,10 +311,23 @@ class _MainPageState extends State<MainPage>
                                           context,
                                           MaterialPageRoute(
                                             builder: (BuildContext context) =>
-                                                SnapSpecific(
-                                              snapId: filteredSnap[index]
-                                                  .data()['snapId'],
-                                            ),
+                                                _isLoggedIn
+                                                    ? SnapSpecific(
+                                                        snapId: filteredSnap[
+                                                                index]
+                                                            .data()['snapId'],
+                                                        uid: userProvider
+                                                            .getUser.uid,
+                                                        username: userProvider
+                                                            .getUser.username,
+                                                      )
+                                                    : SnapSpecific(
+                                                        snapId: filteredSnap[
+                                                                index]
+                                                            .data()['snapId'],
+                                                        uid: 'notloggedin',
+                                                        username: 'notloggedin',
+                                                      ),
                                           ),
                                         );
                                       },
@@ -354,62 +365,77 @@ class _MainPageState extends State<MainPage>
                                                     ),
                                                   ),
                                                 ),
-                                                Positioned(
-                                                  child: IconButton(
-                                                    icon: filteredSnap[index]
-                                                            .data()['bookMark']
-                                                            .contains(
+                                                !_isLoggedIn
+                                                    ? Container()
+                                                    : Positioned(
+                                                        child: IconButton(
+                                                          icon: filteredSnap[
+                                                                      index]
+                                                                  .data()[
+                                                                      'bookMark']
+                                                                  .contains(
+                                                                    userProvider
+                                                                        .getUser
+                                                                        .uid,
+                                                                  )
+                                                              ? Icon(
+                                                                  Icons
+                                                                      .bookmark,
+                                                                  color:
+                                                                      primaryColor,
+                                                                )
+                                                              : Icon(
+                                                                  Icons
+                                                                      .bookmark_border_outlined,
+                                                                  color:
+                                                                      primaryColor,
+                                                                ),
+
+                                                          // Icon(
+                                                          //   Icons.bookmark_border_outlined,
+                                                          //   color: filteredSnap[index]
+                                                          //           .data()['bookMark']
+                                                          //           .contains(
+                                                          //             userProvider
+                                                          //                 .getUser.uid,
+                                                          //           )
+                                                          //       ? Colors.white
+                                                          //       : Colors.black,
+                                                          // ),
+                                                          onPressed: () async {
+                                                            //isMarked = !isMarked;
+                                                            await FireStoreMethods()
+                                                                .bookmarkPost(
+                                                              filteredSnap[
+                                                                          index]
+                                                                      .data()[
+                                                                  'snapId'],
                                                               userProvider
                                                                   .getUser.uid,
-                                                            )
-                                                        ? Icon(
-                                                            Icons.bookmark,
-                                                            color: primaryColor,
-                                                          )
-                                                        : Icon(
-                                                            Icons
-                                                                .bookmark_border_outlined,
-                                                            color: primaryColor,
-                                                          ),
+                                                              filteredSnap[
+                                                                          index]
+                                                                      .data()[
+                                                                  'bookMark'],
+                                                            );
 
-                                                    // Icon(
-                                                    //   Icons.bookmark_border_outlined,
-                                                    //   color: filteredSnap[index]
-                                                    //           .data()['bookMark']
-                                                    //           .contains(
-                                                    //             userProvider
-                                                    //                 .getUser.uid,
-                                                    //           )
-                                                    //       ? Colors.white
-                                                    //       : Colors.black,
-                                                    // ),
-                                                    onPressed: () async {
-                                                      //isMarked = !isMarked;
-                                                      await FireStoreMethods()
-                                                          .bookmarkPost(
-                                                        filteredSnap[index]
-                                                            .data()['snapId'],
-                                                        userProvider
-                                                            .getUser.uid,
-                                                        filteredSnap[index]
-                                                            .data()['bookMark'],
-                                                      );
-
-                                                      await FireStoreMethods()
-                                                          .bookmarkforUser(
-                                                        filteredSnap[index]
-                                                            .data()['snapId'],
-                                                        userProvider
-                                                            .getUser.uid,
-                                                        userProvider
-                                                            .getUser.bookMark,
-                                                      );
-                                                      //  setState(() {});
-                                                    },
-                                                  ),
-                                                  bottom: 0,
-                                                  right: 0,
-                                                )
+                                                            await FireStoreMethods()
+                                                                .bookmarkforUser(
+                                                              filteredSnap[
+                                                                          index]
+                                                                      .data()[
+                                                                  'snapId'],
+                                                              userProvider
+                                                                  .getUser.uid,
+                                                              userProvider
+                                                                  .getUser
+                                                                  .bookMark,
+                                                            );
+                                                            //  setState(() {});
+                                                          },
+                                                        ),
+                                                        bottom: 0,
+                                                        right: 0,
+                                                      )
                                               ],
                                             ),
                                             SizedBox(

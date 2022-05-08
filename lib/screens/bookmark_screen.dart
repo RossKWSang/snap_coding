@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fireAuth;
+import 'package:snap_coding_2/models/user.dart';
+import 'package:snap_coding_2/resources/auth_methods.dart';
 import 'package:snap_coding_2/resources/firestore_methods.dart';
 import 'package:provider/provider.dart';
 import 'package:snap_coding_2/providers/user_provider.dart';
@@ -15,6 +18,7 @@ class BookmarkPage extends StatefulWidget {
 
 class _BookmarkPageState extends State<BookmarkPage> {
   bool isMarked = false;
+  bool _isLoggedIn = false;
 
   // void bookmarkPost(String postId, String uid, List bookmark) async {
   //   setState(() {});
@@ -29,6 +33,18 @@ class _BookmarkPageState extends State<BookmarkPage> {
 
   @override
   Widget build(BuildContext context) {
+    User? userData;
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    final fireAuth.FirebaseAuth _auth = fireAuth.FirebaseAuth.instance;
+    if (_auth.currentUser != null) {
+      fireAuth.User currentUser = _auth.currentUser!;
+      _isLoggedIn = true;
+      print(
+        currentUser.uid.toString(),
+      );
+    } else {
+      print('anonymous');
+    }
     final UserProvider userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
@@ -77,10 +93,22 @@ class _BookmarkPageState extends State<BookmarkPage> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        SnapSpecific(
-                                      snapId: snapshot.data!.docs[index]
-                                          .data()['snapId'],
-                                    ),
+                                        _isLoggedIn
+                                            ? SnapSpecific(
+                                                snapId: snapshot
+                                                    .data!.docs[index]
+                                                    .data()['snapId'],
+                                                uid: userProvider.getUser.uid,
+                                                username: userProvider
+                                                    .getUser.username,
+                                              )
+                                            : SnapSpecific(
+                                                snapId: snapshot
+                                                    .data!.docs[index]
+                                                    .data()['snapId'],
+                                                uid: 'notloggedin',
+                                                username: 'notloggedin',
+                                              ),
                                   ),
                                 );
                               },

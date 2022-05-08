@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:snap_coding_2/models/user.dart' as model;
 import 'package:snap_coding_2/resources/storage_method.dart';
 
@@ -11,10 +12,22 @@ class AuthMethods {
 
   // get user details
   Future<model.User> getUserDetails() async {
-    User currentUser = _auth.currentUser!;
-    // if (currentUser == null) {
-    //   return null;
-    // }
+    User? currentUser = _auth.currentUser!;
+    if (currentUser == false || currentUser.isAnonymous) {
+      model.User dummyUser = model.User(
+        email: "dummy",
+        uid: "dummy",
+        username: "dummy",
+        usercate: "dummy",
+        postSnapId: [],
+        skillSet: [],
+        interests: [],
+        bookMark: [],
+        devExp: "dummy",
+        recentSearch: [],
+      );
+      return dummyUser;
+    }
 
     DocumentSnapshot documentSnapshot =
         await _firestore.collection('users').doc(currentUser.uid).get();
@@ -51,6 +64,7 @@ class AuthMethods {
           usercate: usercate,
           uid: cred.user!.uid,
           // photoUrl: photoUrl,
+          postSnapId: [],
           email: email,
           skillSet: skillSets,
           bookMark: bookmark,
@@ -129,6 +143,43 @@ class AuthMethods {
     } catch (err) {
       return err.toString();
     }
+    return res;
+  }
+
+  Future<String> changePassword(
+    String userEmail,
+    String currentPassword,
+    String newPassword,
+  ) async {
+    String res = "success";
+
+    final User? user = await FirebaseAuth.instance.currentUser!;
+    if (user == null) {
+      return 'User is null';
+    }
+    final cred = EmailAuthProvider.credential(
+      email: userEmail,
+      password: currentPassword,
+    );
+
+    user.reauthenticateWithCredential(cred).then(
+      (value) {
+        user.updatePassword(newPassword).then(
+          (_) {
+            return "success";
+            //Success, do something
+          },
+        ).catchError(
+          (error) {
+            return "error".toString();
+          },
+        );
+      },
+    ).catchError(
+      (err) {
+        return "err".toString();
+      },
+    );
     return res;
   }
 

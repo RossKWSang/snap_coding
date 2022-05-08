@@ -6,6 +6,7 @@ class User {
   //  final String photoUrl;
   final String username;
   final String usercate;
+  final List postSnapId;
   final List skillSet;
   final List interests;
   final List bookMark;
@@ -18,6 +19,7 @@ class User {
     // required this.photoUrl,
     required this.email,
     required this.usercate,
+    required this.postSnapId,
     required this.skillSet,
     required this.interests,
     required this.bookMark,
@@ -31,6 +33,7 @@ class User {
     return User(
       username: snapshot["username"],
       usercate: snapshot["usercate"],
+      postSnapId: snapshot["postSnapId"],
       uid: snapshot["uid"],
       email: snapshot["email"],
       // photoUrl: snapshot["photoUrl"],
@@ -48,6 +51,7 @@ class User {
         "uid": uid,
         "email": email,
         // "photoUrl": photoUrl,
+        "postSnapId": postSnapId,
         "skillSet": skillSet,
         "bookMark": bookMark,
         "interests": interests,

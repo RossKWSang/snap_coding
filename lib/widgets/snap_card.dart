@@ -40,6 +40,8 @@ class _SnapCardMainState extends State<SnapCardMain> {
               MaterialPageRoute(
                 builder: (BuildContext context) => SnapSpecific(
                   snapId: widget.snapId,
+                  uid: 'this widget no longer used',
+                  username: 'this widget no longer used',
                 ),
               ),
             );

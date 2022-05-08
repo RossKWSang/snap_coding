@@ -149,9 +149,17 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (BuildContext context) => SnapSpecific(
-              snapId: res[1],
-            ),
+            builder: (BuildContext context) => _isLoggedIn
+                ? SnapSpecific(
+                    snapId: res[1],
+                    uid: uid,
+                    username: username,
+                  )
+                : SnapSpecific(
+                    snapId: res[1],
+                    uid: "notloggedin",
+                    username: "notloggedin",
+                  ),
           ),
         );
       } else {

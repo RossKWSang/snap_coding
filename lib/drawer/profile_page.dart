@@ -2,6 +2,7 @@ import 'package:code_editor/code_editor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snap_coding_2/providers/user_provider.dart';
+import 'package:snap_coding_2/resources/auth_methods.dart';
 import 'package:snap_coding_2/resources/firestore_methods.dart';
 import 'package:snap_coding_2/utils/colors.dart';
 import 'package:snap_coding_2/utils/utils.dart';
@@ -76,6 +77,35 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
         _devexpController.clear();
         _nicknameEnabled = false;
       }
+    } catch (err) {
+      showSnackBar(
+        context,
+        err.toString(),
+      );
+    }
+  }
+
+  void changePassword(
+    String email,
+    String curPass,
+    String newPass,
+  ) async {
+    try {
+      dynamic res = await AuthMethods().changePassword(
+        email,
+        curPass,
+        newPass,
+      );
+      print(
+        res.toString(),
+      );
+      // if (res.toString() == 'success') {
+      showSnackBar(context, res);
+      _currentPassword.clear();
+      _newPassword.clear();
+      _newPasswordConfirm.clear();
+      _passwordConfirmed = false;
+      //}
     } catch (err) {
       showSnackBar(
         context,
@@ -506,6 +536,11 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                       ),
                 onPressed: () {
                   if (_passwordConfirmed) {
+                    changePassword(
+                      userProvider.getUser.email,
+                      _currentPassword.text,
+                      _newPassword.text,
+                    );
                   } else {}
                 },
                 child: Container(

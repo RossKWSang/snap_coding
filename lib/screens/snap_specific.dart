@@ -9,6 +9,7 @@ import 'package:snap_coding_2/models/user.dart';
 import 'package:snap_coding_2/resources/firestore_methods.dart';
 import 'package:snap_coding_2/screens/code_display.dart';
 import 'package:snap_coding_2/screens/comment_specific.dart';
+import 'package:snap_coding_2/screens/login_screen.dart';
 import 'package:snap_coding_2/screens/snap_description.dart';
 import 'package:snap_coding_2/screens/snap_specific.dart';
 import 'package:snap_coding_2/utils/colors.dart';
@@ -20,9 +21,13 @@ import '../providers/user_provider.dart';
 
 class SnapSpecific extends StatefulWidget {
   final String snapId;
+  final String uid;
+  final String username;
   const SnapSpecific({
     Key? key,
     required this.snapId,
+    required this.uid,
+    required this.username,
   }) : super(key: key);
 
   @override
@@ -30,6 +35,7 @@ class SnapSpecific extends StatefulWidget {
 }
 
 class _SnapSpecificState extends State<SnapSpecific> {
+  bool _isLoggedin = false;
   final CollectionReference _firestore =
       FirebaseFirestore.instance.collection('posts');
 
@@ -62,7 +68,7 @@ class _SnapSpecificState extends State<SnapSpecific> {
   Widget build(BuildContext context) {
     //final DocumentReference<Object?> documentSnapshot =
     //    _firestore.doc(widget.snapId);
-    final User user = Provider.of<UserProvider>(context).getUser;
+    // final User user = Provider.of<UserProvider>(context).getUser;
     return FutureBuilder<DocumentSnapshot>(
       future: _firestore.doc(widget.snapId).get(),
       builder:
@@ -394,26 +400,52 @@ class _SnapSpecificState extends State<SnapSpecific> {
                         SizedBox(
                           height: 25,
                         ),
-                        InkWell(
-                          onTap: () => postComment(
-                            user.uid,
-                            user.username,
-                          ),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.95,
-                            // width: double.infinity,
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                '리뷰쓰기',
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                  color: secondaryColor,
+                        _isLoggedin
+                            ? InkWell(
+                                onTap: () => postComment(
+                                  widget.uid,
+                                  widget.username,
+                                ),
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.95,
+                                  // width: double.infinity,
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      '리뷰쓰기',
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                        color: secondaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : InkWell(
+                                onTap: () => Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        LoginScreen(),
+                                  ),
+                                ),
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.95,
+                                  // width: double.infinity,
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      '리뷰를 쓰려면 로그인 하세요.',
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                        color: primaryColor,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ),
                         SizedBox(
                           height: 30,
                         ),
