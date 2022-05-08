@@ -53,6 +53,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
             buildMenuItem(
               text: '고객센터',
               icon: CupertinoIcons.phone_badge_plus,
+              onClicked: () => selectedItem(context, 3),
             ),
             buildMenuItem(
               text: '환경설정',

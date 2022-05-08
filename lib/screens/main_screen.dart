@@ -74,20 +74,22 @@ class _MainPageState extends State<MainPage>
     if (_auth.currentUser == null) {
       return;
     }
-    print(_auth.currentUser!.uid);
+    // print(_auth.currentUser!.uid);
     DocumentSnapshot documentSnapshot =
         await _firestore.collection('users').doc(_auth.currentUser!.uid).get();
     uid = model.User.fromSnap(documentSnapshot).uid;
     username = model.User.fromSnap(documentSnapshot).username;
     bookmark = model.User.fromSnap(documentSnapshot).bookMark;
-    print(model.User.fromSnap(documentSnapshot).bookMark);
+    // print(model.User.fromSnap(documentSnapshot).bookMark);
   }
 
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      getUserInfo();
-    });
+    setState(
+      () {
+        getUserInfo();
+      },
+    );
 
     // if (Provider.of<UserProvider>(context).getUser != null) {
     //   _isLoggedIn = true;
@@ -106,17 +108,17 @@ class _MainPageState extends State<MainPage>
       fireAuth.User currentUser = _auth.currentUser!;
       _isLoggedIn = true;
       uid = currentUser.uid;
-      print(
-        currentUser.uid.toString(),
-      );
+      // print(
+      //   currentUser.uid.toString(),
+      // );
     } else {
-      print('anonymous');
+      // print('anonymous');
     }
 
     final UserProvider userProvider = Provider.of<UserProvider>(context);
-    print(_isLoggedIn);
-    print(uid);
-    print('username ' + username);
+    // print(_isLoggedIn);
+    // print(uid);
+    // print('username ' + username);
     // print(currentUser.uid);
     // print(currentUser.username);
 
@@ -129,37 +131,27 @@ class _MainPageState extends State<MainPage>
           width: 200,
         ),
         centerTitle: true,
-        leading: Builder(builder: (context) {
-          return IconButton(
-            icon: Icon(
-              Icons.person_rounded,
-              color: secondaryColor,
-            ),
-            onPressed: () =>
-                //{
-                _isLoggedIn
-                    ? Scaffold.of(context).openDrawer()
-                    : Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (BuildContext context) => LoginScreen(),
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: Icon(
+                Icons.person_rounded,
+                color: secondaryColor,
+              ),
+              onPressed: () =>
+                  //{
+                  _isLoggedIn
+                      ? Scaffold.of(context).openDrawer()
+                      : Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => LoginScreen(),
+                          ),
                         ),
-                      ),
-            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-
-            // if (_isLoggedIn) {
-            //   Scaffold.of(context).openDrawer();
-            // } else {
-            //   Navigator.pushReplacement(
-            //     context,
-            //     MaterialPageRoute(
-            //       builder: (BuildContext context) => LoginScreen(),
-            //     ),
-            //   );
-            // }
-            //},
-          );
-        }),
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            );
+          },
+        ),
         actions: [
           IconButton(
             icon: Icon(
@@ -180,10 +172,6 @@ class _MainPageState extends State<MainPage>
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('posts')
-            // .where(
-            //   'devLanguage',
-            //   arrayContains: curLanguage,
-            // )
             .orderBy(
               'created',
               descending: true,
