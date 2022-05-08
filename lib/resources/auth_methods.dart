@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:snap_coding_2/models/user.dart' as model;
 import 'package:snap_coding_2/resources/storage_method.dart';
 
@@ -11,7 +12,22 @@ class AuthMethods {
 
   // get user details
   Future<model.User> getUserDetails() async {
-    User currentUser = _auth.currentUser!;
+    User? currentUser = _auth.currentUser!;
+    if (currentUser == false || currentUser.isAnonymous) {
+      model.User dummyUser = model.User(
+        email: "dummy",
+        uid: "dummy",
+        username: "dummy",
+        usercate: "dummy",
+        postSnapId: [],
+        skillSet: [],
+        interests: [],
+        bookMark: [],
+        devExp: "dummy",
+        recentSearch: [],
+      );
+      return dummyUser;
+    }
 
     DocumentSnapshot documentSnapshot =
         await _firestore.collection('users').doc(currentUser.uid).get();
@@ -26,35 +42,32 @@ class AuthMethods {
     required String password,
     required String username,
     required String usercate,
-    required double devExp,
+    required String devExp,
     required List skillSets,
-    required Uint8List file,
   }) async {
     String res = "Some error Occurred";
+    List<String> bookmark = [];
     try {
       if (email.isNotEmpty ||
           password.isNotEmpty ||
           username.isNotEmpty ||
           usercate.isNotEmpty ||
-          skillSets != null ||
-          file != null) {
+          skillSets != null) {
         // registering user in auth with email and password
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
 
-        String photoUrl = await StorageMethods()
-            .uploadImageToStorage('profilePics', file, false);
-
         model.User _user = model.User(
           username: username,
           usercate: usercate,
           uid: cred.user!.uid,
-          photoUrl: photoUrl,
+          // photoUrl: photoUrl,
+          postSnapId: [],
           email: email,
           skillSet: skillSets,
-          bookMark: [],
+          bookMark: bookmark,
           interests: [],
           devExp: devExp,
           recentSearch: [],
@@ -130,6 +143,43 @@ class AuthMethods {
     } catch (err) {
       return err.toString();
     }
+    return res;
+  }
+
+  Future<String> changePassword(
+    String userEmail,
+    String currentPassword,
+    String newPassword,
+  ) async {
+    String res = "success";
+
+    final User? user = await FirebaseAuth.instance.currentUser!;
+    if (user == null) {
+      return 'User is null';
+    }
+    final cred = EmailAuthProvider.credential(
+      email: userEmail,
+      password: currentPassword,
+    );
+
+    user.reauthenticateWithCredential(cred).then(
+      (value) {
+        user.updatePassword(newPassword).then(
+          (_) {
+            return "success";
+            //Success, do something
+          },
+        ).catchError(
+          (error) {
+            return "error".toString();
+          },
+        );
+      },
+    ).catchError(
+      (err) {
+        return "err".toString();
+      },
+    );
     return res;
   }
 

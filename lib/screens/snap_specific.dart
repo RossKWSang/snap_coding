@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fireAuth;
+
 import 'package:code_editor/code_editor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +9,9 @@ import 'package:hashtagable/widgets/hashtag_text.dart';
 import 'package:provider/provider.dart';
 import 'package:snap_coding_2/models/user.dart';
 import 'package:snap_coding_2/resources/firestore_methods.dart';
+import 'package:snap_coding_2/screens/code_display.dart';
 import 'package:snap_coding_2/screens/comment_specific.dart';
+import 'package:snap_coding_2/screens/login_screen.dart';
 import 'package:snap_coding_2/screens/snap_description.dart';
 import 'package:snap_coding_2/screens/snap_specific.dart';
 import 'package:snap_coding_2/utils/colors.dart';
@@ -18,10 +22,14 @@ import 'package:snap_coding_2/widgets/comment_card.dart';
 import '../providers/user_provider.dart';
 
 class SnapSpecific extends StatefulWidget {
-  final String? snapId;
+  final String snapId;
+  final String uid;
+  final String username;
   const SnapSpecific({
     Key? key,
     required this.snapId,
+    required this.uid,
+    required this.username,
   }) : super(key: key);
 
   @override
@@ -29,6 +37,7 @@ class SnapSpecific extends StatefulWidget {
 }
 
 class _SnapSpecificState extends State<SnapSpecific> {
+  bool _isLoggedin = false;
   final CollectionReference _firestore =
       FirebaseFirestore.instance.collection('posts');
 
@@ -59,9 +68,16 @@ class _SnapSpecificState extends State<SnapSpecific> {
 
   @override
   Widget build(BuildContext context) {
-    final DocumentReference<Object?> documentSnapshot =
-        _firestore.doc(widget.snapId);
-    final User user = Provider.of<UserProvider>(context).getUser;
+    //final DocumentReference<Object?> documentSnapshot =
+    //    _firestore.doc(widget.snapId);
+    final fireAuth.FirebaseAuth _auth = fireAuth.FirebaseAuth.instance;
+
+    if (_auth.currentUser != null) {
+      _isLoggedin = true;
+    }
+
+    // if (Provider.of<UserProvider>(context).getUser != null) {}
+
     return FutureBuilder<DocumentSnapshot>(
       future: _firestore.doc(widget.snapId).get(),
       builder:
@@ -110,7 +126,6 @@ class _SnapSpecificState extends State<SnapSpecific> {
                       children: [
                         Container(
                           width: MediaQuery.of(context).size.width * 0.95,
-                          // width: double.infinity,
                           height: 140,
                           child: Row(
                             children: [
@@ -173,27 +188,28 @@ class _SnapSpecificState extends State<SnapSpecific> {
                                       // spacing: 5, // 상하(좌우) 공간
                                       // runSpacing: 2,
                                       alignment: WrapAlignment.start, // 정렬 방식
-
-                                      children: filteredLanguageList
-                                          .map<Widget>((devLang) {
-                                        return Transform(
-                                          transform: new Matrix4.identity()
-                                            ..scale(1.0),
-                                          child: Chip(
-                                            padding: EdgeInsets.all(0.5),
-                                            backgroundColor: Colors
-                                                .green.shade900
-                                                .withOpacity(0.3),
-                                            label: Text(
-                                              devLang,
-                                              style: TextStyle(
-                                                fontSize: 10,
-                                                color: Colors.green,
+                                      children:
+                                          filteredLanguageList.map<Widget>(
+                                        (devLang) {
+                                          return Transform(
+                                            transform: new Matrix4.identity()
+                                              ..scale(1.0),
+                                            child: Chip(
+                                              padding: EdgeInsets.all(0.5),
+                                              backgroundColor: Colors
+                                                  .green.shade900
+                                                  .withOpacity(0.3),
+                                              label: Text(
+                                                devLang,
+                                                style: TextStyle(
+                                                  fontSize: 10,
+                                                  color: Colors.green,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        );
-                                      }).toList(),
+                                          );
+                                        },
+                                      ).toList(),
                                     ),
                                   ),
                                 ],
@@ -217,7 +233,7 @@ class _SnapSpecificState extends State<SnapSpecific> {
                                   width: 5,
                                 ),
                                 Text(
-                                  '스크랩 90',
+                                  '스크랩 ${data['bookMark'].length}',
                                   style: TextStyle(
                                     fontSize: 15,
                                     color: secondaryColor,
@@ -261,7 +277,17 @@ class _SnapSpecificState extends State<SnapSpecific> {
                             style: ElevatedButton.styleFrom(
                               primary: primaryColor,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      CodeDisplay(
+                                    codeSnippet: data['codeSnippet'],
+                                  ),
+                                ),
+                              );
+                            },
                             child: Text(
                               '코드보러 가기',
                               style: TextStyle(
@@ -277,7 +303,6 @@ class _SnapSpecificState extends State<SnapSpecific> {
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width * 0.95,
-                          // width: double.infinity,
                           child: Text(
                             '스냅 정보',
                             style: TextStyle(
@@ -292,7 +317,6 @@ class _SnapSpecificState extends State<SnapSpecific> {
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width * 0.95,
-                          // width: double.infinity,
                           child: data['description'].length > 100
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -320,7 +344,10 @@ class _SnapSpecificState extends State<SnapSpecific> {
                                           MaterialPageRoute(
                                             builder: (BuildContext context) =>
                                                 SnapDescription(
-                                              snapId: widget.snapId!,
+                                              authorName: data['username'],
+                                              reviewNum:
+                                                  snapshot.data!.docs.length,
+                                              snapId: widget.snapId,
                                             ),
                                           ),
                                         );
@@ -377,30 +404,57 @@ class _SnapSpecificState extends State<SnapSpecific> {
                           textEditingController: _commentController,
                           hintText: '리뷰 내용을 작성해주세요.',
                           textInputType: TextInputType.text,
+                          cursorColor: primaryColor,
                         ),
                         SizedBox(
                           height: 25,
                         ),
-                        InkWell(
-                          onTap: () => postComment(
-                            user.uid,
-                            user.username,
-                          ),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.95,
-                            // width: double.infinity,
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                '리뷰쓰기',
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                  color: secondaryColor,
+                        _isLoggedin
+                            ? InkWell(
+                                onTap: () => postComment(
+                                  widget.uid,
+                                  widget.username,
+                                ),
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.95,
+                                  // width: double.infinity,
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      '리뷰쓰기',
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                        color: secondaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : InkWell(
+                                onTap: () => Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        LoginScreen(),
+                                  ),
+                                ),
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.95,
+                                  // width: double.infinity,
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      '리뷰를 쓰려면 로그인 하세요.',
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                        color: primaryColor,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ),
                         SizedBox(
                           height: 30,
                         ),
@@ -431,7 +485,6 @@ class _SnapSpecificState extends State<SnapSpecific> {
                                     : 1,
                             //snapshot.data!.docs.length,
                             itemBuilder: (context, index) {
-                              print(snapshot.data!.docs.length);
                               return snapshot.data!.docs.length != 0
                                   ? Column(
                                       children: [
@@ -497,16 +550,11 @@ class _SnapSpecificState extends State<SnapSpecific> {
                       ],
                     ),
                   ),
-
-                  // Text(
-                  //   "Full Name: ${data['title']} ${data['description']} ${data['thumbnailUrl']}",
-                  // ),
                 );
               },
             ),
           );
         }
-
         return const Center(
           child: CircularProgressIndicator(),
         );

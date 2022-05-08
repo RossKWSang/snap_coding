@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:snap_coding_2/resources/firestore_methods.dart';
 import 'package:snap_coding_2/screens/snap_specific.dart';
 import 'package:snap_coding_2/utils/colors.dart';
 
-class SnapCardMain extends StatelessWidget {
+class SnapCardMain extends StatefulWidget {
+  final String uid;
   final String snapId;
   final String thumbnailUrl;
   final String title;
   final List<dynamic> hashTagList;
   final List<dynamic> filteredLanguageList;
+  final List bookmarkList;
   const SnapCardMain({
     Key? key,
+    required this.uid,
     required this.snapId,
     required this.thumbnailUrl,
     required this.title,
     required this.hashTagList,
     required this.filteredLanguageList,
+    required this.bookmarkList,
   }) : super(key: key);
 
+  @override
+  State<SnapCardMain> createState() => _SnapCardMainState();
+}
+
+class _SnapCardMainState extends State<SnapCardMain> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -29,7 +39,9 @@ class SnapCardMain extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (BuildContext context) => SnapSpecific(
-                  snapId: snapId,
+                  snapId: widget.snapId,
+                  uid: 'this widget no longer used',
+                  username: 'this widget no longer used',
                 ),
               ),
             );
@@ -43,7 +55,7 @@ class SnapCardMain extends StatelessWidget {
                   children: [
                     Container(
                       height: 120,
-                      width: 110,
+                      width: 105,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
@@ -54,7 +66,7 @@ class SnapCardMain extends StatelessWidget {
                         borderRadius: BorderRadius.circular(16),
                         child: SizedBox.fromSize(
                           child: Image.network(
-                            thumbnailUrl,
+                            widget.thumbnailUrl,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -64,18 +76,23 @@ class SnapCardMain extends StatelessWidget {
                       child: IconButton(
                         icon: Icon(
                           Icons.bookmark_border_outlined,
-                          // color: markedPosts.contains(
-                          //         snapshot.data?.docs[index].data()['snapId'])
-                          //     ? Colors.white
-                          //     : Colors.black,
+                          color: widget.bookmarkList.contains(widget.snapId)
+                              ? Colors.white
+                              : Colors.black,
                         ),
-                        onPressed: () => {
-                          // setState(() {
-                          //   isMarked = !isMarked;
-                          //   bookmarkImage(
-                          //       snapshot.data?.docs[index].data()['snapId'],
-                          //       snapshot.data?.docs[index].data()['uid']);
-                          // })
+                        onPressed: () async {
+                          //isMarked = !isMarked;
+                          await FireStoreMethods().bookmarkPost(
+                            widget.snapId,
+                            widget.uid,
+                            widget.bookmarkList,
+                          );
+
+                          await FireStoreMethods().bookmarkforUser(
+                            widget.snapId,
+                            widget.uid,
+                            widget.bookmarkList,
+                          );
                         },
                       ),
                       bottom: 0,
@@ -93,7 +110,7 @@ class SnapCardMain extends StatelessWidget {
                       height: 8,
                     ),
                     Text(
-                      title,
+                      widget.title,
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
@@ -101,12 +118,12 @@ class SnapCardMain extends StatelessWidget {
                       height: 6,
                     ),
                     Container(
-                      height: 50,
-                      width: 260,
+                      height: 70,
+                      width: 250,
                       child: Wrap(
                         alignment: WrapAlignment.start, // 정렬 방식
 
-                        children: hashTagList.map<Widget>((hashTag) {
+                        children: widget.hashTagList.map<Widget>((hashTag) {
                           return Container(
                             padding: EdgeInsets.all(2),
                             child: Text(
@@ -121,13 +138,14 @@ class SnapCardMain extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      height: 15,
+                      width: 250,
+                      height: 40,
                       child: Wrap(
                         // spacing: 5, // 상하(좌우) 공간
                         // runSpacing: 2,
-                        alignment: WrapAlignment.start, // 정렬 방식
-
-                        children: filteredLanguageList.map<Widget>((devLang) {
+                        alignment: WrapAlignment.start,
+                        children:
+                            widget.filteredLanguageList.map<Widget>((devLang) {
                           return Transform(
                             transform: new Matrix4.identity()..scale(1.0),
                             child: Chip(

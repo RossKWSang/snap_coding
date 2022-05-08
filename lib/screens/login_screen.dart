@@ -77,6 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 hintText: 'Enter your email',
                 textInputType: TextInputType.emailAddress,
                 textEditingController: _emailController,
+                cursorColor: primaryColor,
               ),
               const SizedBox(
                 height: 24,
@@ -86,6 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 textInputType: TextInputType.text,
                 textEditingController: _passwordController,
                 isPass: true,
+                cursorColor: primaryColor,
               ),
               const SizedBox(
                 height: 24,
@@ -110,17 +112,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 onTap: loginUser, // loginUser,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => MainPage(),
-                    ),
-                  );
-                },
-                child: Text('Back to MainPage'),
               ),
               const SizedBox(
                 height: 12,

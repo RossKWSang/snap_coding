@@ -59,6 +59,7 @@ flutter:
   assets:
     - SnapCoding.png
     - FramesnapCodingLogo.png
+    - kakaotalk.png
     - assets/images/banner1.png
     - assets/images/banner2.jpg
     - assets/images/banner2.png

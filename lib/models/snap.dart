@@ -5,14 +5,18 @@ class Snap {
   final String snapId;
   final String title;
   final String username;
+  final DateTime created;
+  final List bookMark;
+
   final List<String> hashTag;
   final String thumbnailUrl;
   final String description;
+  final List<String> description_words;
   final int price;
   final List<String> devLanguage;
   final List<String> codeImage;
   final List<String> buyer;
-  final Map<String, String> codeSnippet;
+  final Map<String, dynamic> codeSnippet;
   // final Buyer ???
 
   const Snap({
@@ -20,9 +24,12 @@ class Snap {
     required this.snapId,
     required this.title,
     required this.username,
+    required this.created,
+    required this.bookMark,
     required this.hashTag,
     required this.thumbnailUrl,
     required this.description,
+    required this.description_words,
     required this.price,
     required this.devLanguage,
     required this.codeImage,
@@ -38,9 +45,12 @@ class Snap {
       snapId: snapshot["snapId"],
       title: snapshot["title"],
       username: snapshot["username"],
+      created: snapshot["created"],
+      bookMark: snapshot["bookMark"],
       hashTag: snapshot["hashTag"],
       thumbnailUrl: snapshot["thumbnailUrl"],
       description: snapshot["description"],
+      description_words: snapshot["description_words"],
       price: snapshot["price"],
       devLanguage: snapshot["devLanguage"],
       codeImage: snapshot["codeImage"],
@@ -54,9 +64,12 @@ class Snap {
         "snapId": snapId,
         "title": title,
         "username": username,
+        "created": created,
+        "bookMark": bookMark,
         "HashTag": hashTag,
         "thumbnailUrl": thumbnailUrl,
         "description": description,
+        "description_words": description_words,
         "price": price,
         "devLanguage": devLanguage,
         "codeImage": codeImage,

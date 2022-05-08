@@ -8,7 +8,7 @@ import 'package:uuid/uuid.dart';
 class FireStoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<String> uploadPost(
+  Future<List<dynamic>> uploadPost(
     String title,
     String description,
     List<String> hashTag,
@@ -16,12 +16,12 @@ class FireStoreMethods {
     Uint8List file,
     String uid,
     String username,
-    String profImage,
-    List bookMark,
-    Map<String, String> codeSnippet,
+    // String profImage,
+    List<String> bookMark,
+    Map<String, dynamic> codeSnippet,
   ) async {
     // asking uid here because we dont want to make extra calls to firebase auth when we can just get from our state management
-    String res = "Some error occurred";
+    List res = [];
     try {
       String thumbnailUrl =
           await StorageMethods().uploadImageToStorage('posts', file, true);
@@ -31,17 +31,38 @@ class FireStoreMethods {
         snapId: snapId,
         title: title,
         username: username,
+        created: DateTime.now(),
+        bookMark: [],
         hashTag: hashTag,
         thumbnailUrl: thumbnailUrl,
         description: description,
+        description_words: description.split(' '),
         price: 10000,
         devLanguage: devLanguage,
         codeImage: [],
         buyer: [],
         codeSnippet: codeSnippet,
       );
-      _firestore.collection('snaps').doc(snapId).set(post.toJson());
-      res = "success";
+      _firestore.collection('posts').doc(snapId).set(post.toJson());
+      res = [0, snapId];
+    } catch (err) {
+      res = [err.toString()];
+    }
+    return res;
+  }
+
+  Future<String> addPostedSnap(
+    String snapId,
+    String uid,
+  ) async {
+    String res = "Some error occurred";
+    try {
+      _firestore.collection('users').doc(uid).update(
+        {
+          'postSnapId': FieldValue.arrayUnion([snapId]),
+        },
+      );
+      res = 'success';
     } catch (err) {
       res = err.toString();
     }
@@ -179,6 +200,26 @@ class FireStoreMethods {
     return res;
   }
 
+  Future<String> updateUserInfo(
+    String uid,
+    String nickName,
+    String devExp,
+  ) async {
+    String res = "Some error occurred";
+    try {
+      await _firestore.collection('users').doc(uid).update(
+        {
+          'username': nickName,
+          'devExp': devExp,
+        },
+      );
+
+      res = 'success';
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
   // Future<void> followUser(String uid, String followId) async {
   //   try {
   //     DocumentSnapshot snap =

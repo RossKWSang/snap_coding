@@ -149,32 +149,18 @@ class _CommentSpecificState extends State<CommentSpecific> {
                                       data['title'],
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 18,
+                                        fontSize: 20,
                                         color: secondaryColor,
                                       ),
                                     ),
                                     SizedBox(
-                                      height: 6,
+                                      height: 10,
                                     ),
                                     Container(
                                       height: 50,
                                       width: 260,
-                                      child: Wrap(
-                                        alignment: WrapAlignment.start, // 정렬 방식
-
-                                        children: data['HashTag']
-                                            .map<Widget>((hashTag) {
-                                          return Container(
-                                            padding: EdgeInsets.all(2),
-                                            child: Text(
-                                              hashTag,
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                color: primaryColor,
-                                              ),
-                                            ),
-                                          );
-                                        }).toList(),
+                                      child: Text(
+                                        "Author: " + data['username'],
                                       ),
                                     ),
                                     Container(
@@ -214,76 +200,7 @@ class _CommentSpecificState extends State<CommentSpecific> {
                           SizedBox(
                             height: 50,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    CupertinoIcons.bookmark_fill,
-                                    color: secondaryColor,
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    '스크랩 90',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      color: secondaryColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                '|',
-                                style: TextStyle(
-                                  color: secondaryColor,
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    CupertinoIcons.chat_bubble_fill,
-                                    color: secondaryColor,
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    '리뷰수 1,890',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      color: secondaryColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.95,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: primaryColor,
-                              ),
-                              onPressed: () {},
-                              child: Text(
-                                '코드보러 가기',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: secondaryColor,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
+                          Row(),
                           Container(
                             width: MediaQuery.of(context).size.width * 0.95,
                             child: Text(
