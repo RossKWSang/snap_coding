@@ -51,6 +51,24 @@ class FireStoreMethods {
     return res;
   }
 
+  Future<String> addPostedSnap(
+    String snapId,
+    String uid,
+  ) async {
+    String res = "Some error occurred";
+    try {
+      _firestore.collection('users').doc(uid).update(
+        {
+          'postSnapId': FieldValue.arrayUnion([snapId]),
+        },
+      );
+      res = 'success';
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
   Future<String> bookmarkPost(
     String snapId,
     String uid,

@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fireAuth;
+
 import 'package:code_editor/code_editor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +70,14 @@ class _SnapSpecificState extends State<SnapSpecific> {
   Widget build(BuildContext context) {
     //final DocumentReference<Object?> documentSnapshot =
     //    _firestore.doc(widget.snapId);
-    // final User user = Provider.of<UserProvider>(context).getUser;
+    final fireAuth.FirebaseAuth _auth = fireAuth.FirebaseAuth.instance;
+
+    if (_auth.currentUser != null) {
+      _isLoggedin = true;
+    }
+
+    // if (Provider.of<UserProvider>(context).getUser != null) {}
+
     return FutureBuilder<DocumentSnapshot>(
       future: _firestore.doc(widget.snapId).get(),
       builder:

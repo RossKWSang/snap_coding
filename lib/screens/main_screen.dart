@@ -6,7 +6,7 @@ import 'package:snap_coding_2/screens/login_screen.dart';
 import 'package:snap_coding_2/screens/snap_specific.dart';
 import 'package:snap_coding_2/utils/colors.dart';
 import 'package:snap_coding_2/utils/utils.dart';
-import 'package:snap_coding_2/models/user.dart';
+import 'package:snap_coding_2/models/user.dart' as model;
 import 'package:snap_coding_2/providers/user_provider.dart';
 import 'package:snap_coding_2/resources/auth_methods.dart';
 import 'package:snap_coding_2/resources/firestore_methods.dart';
@@ -63,8 +63,32 @@ class _MainPageState extends State<MainPage>
 
   String curLanguage = 'All';
 
+  String uid = '';
+  String username = '';
+  List bookmark = [];
+
+  Future<void> getUserInfo() async {
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    final fireAuth.FirebaseAuth _auth = fireAuth.FirebaseAuth.instance;
+
+    if (_auth.currentUser == null) {
+      return;
+    }
+    print(_auth.currentUser!.uid);
+    DocumentSnapshot documentSnapshot =
+        await _firestore.collection('users').doc(_auth.currentUser!.uid).get();
+    uid = model.User.fromSnap(documentSnapshot).uid;
+    username = model.User.fromSnap(documentSnapshot).username;
+    bookmark = model.User.fromSnap(documentSnapshot).bookMark;
+    print(model.User.fromSnap(documentSnapshot).bookMark);
+  }
+
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      getUserInfo();
+    });
+
     // if (Provider.of<UserProvider>(context).getUser != null) {
     //   _isLoggedIn = true;
     //   final User user = Provider.of<UserProvider>(context).getUser;
@@ -75,12 +99,13 @@ class _MainPageState extends State<MainPage>
 
     // print("userprovider print >> ");
     // print(userProvider.getUser);
-    User? userData;
+
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
     final fireAuth.FirebaseAuth _auth = fireAuth.FirebaseAuth.instance;
     if (_auth.currentUser != null) {
       fireAuth.User currentUser = _auth.currentUser!;
       _isLoggedIn = true;
+      uid = currentUser.uid;
       print(
         currentUser.uid.toString(),
       );
@@ -89,6 +114,11 @@ class _MainPageState extends State<MainPage>
     }
 
     final UserProvider userProvider = Provider.of<UserProvider>(context);
+    print(_isLoggedIn);
+    print(uid);
+    print('username ' + username);
+    // print(currentUser.uid);
+    // print(currentUser.username);
 
     return Scaffold(
       drawer: NavigationDrawerWidget(),
@@ -404,32 +434,37 @@ class _MainPageState extends State<MainPage>
                                                           // ),
                                                           onPressed: () async {
                                                             //isMarked = !isMarked;
-                                                            await FireStoreMethods()
-                                                                .bookmarkPost(
-                                                              filteredSnap[
-                                                                          index]
-                                                                      .data()[
-                                                                  'snapId'],
-                                                              userProvider
-                                                                  .getUser.uid,
-                                                              filteredSnap[
-                                                                          index]
-                                                                      .data()[
-                                                                  'bookMark'],
-                                                            );
+                                                            if (_isLoggedIn) {
+                                                              await FireStoreMethods()
+                                                                  .bookmarkPost(
+                                                                filteredSnap[
+                                                                            index]
+                                                                        .data()[
+                                                                    'snapId'],
+                                                                userProvider
+                                                                    .getUser
+                                                                    .uid,
+                                                                filteredSnap[
+                                                                            index]
+                                                                        .data()[
+                                                                    'bookMark'],
+                                                              );
 
-                                                            await FireStoreMethods()
-                                                                .bookmarkforUser(
-                                                              filteredSnap[
-                                                                          index]
-                                                                      .data()[
-                                                                  'snapId'],
-                                                              userProvider
-                                                                  .getUser.uid,
-                                                              userProvider
-                                                                  .getUser
-                                                                  .bookMark,
-                                                            );
+                                                              await FireStoreMethods()
+                                                                  .bookmarkforUser(
+                                                                filteredSnap[
+                                                                            index]
+                                                                        .data()[
+                                                                    'snapId'],
+                                                                userProvider
+                                                                    .getUser
+                                                                    .uid,
+                                                                userProvider
+                                                                    .getUser
+                                                                    .bookMark,
+                                                              );
+                                                            } else {}
+                                                            ;
                                                             //  setState(() {});
                                                           },
                                                         ),

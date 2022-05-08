@@ -128,6 +128,7 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
         codeSnippet,
       );
       if (res[0] == 0) {
+        await FireStoreMethods().addPostedSnap(res[1], uid);
         setState(() {
           isLoading = false;
         });
