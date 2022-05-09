@@ -159,12 +159,12 @@ class _MainPageState extends State<MainPage>
               color: secondaryColor,
             ),
             onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => LoginScreen(),
-                ),
-              );
+              // Navigator.pushReplacement(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (BuildContext context) => LoginScreen(),
+              //   ),
+              // );
             },
           ),
         ],
@@ -364,7 +364,8 @@ class _MainPageState extends State<MainPage>
                                                   decoration: BoxDecoration(
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            16),
+                                                      16,
+                                                    ),
                                                     border: Border.all(
                                                       color: Colors.white,
                                                     ),
@@ -520,29 +521,33 @@ class _MainPageState extends State<MainPage>
                                                         filteredLanguageList
                                                             .map<Widget>(
                                                                 (devLang) {
-                                                      return Transform(
-                                                        transform: new Matrix4
-                                                            .identity()
-                                                          ..scale(1.0),
-                                                        child: Chip(
-                                                          padding:
-                                                              EdgeInsets.all(
-                                                                  0.5),
-                                                          backgroundColor:
-                                                              Colors.green
-                                                                  .shade900
-                                                                  .withOpacity(
-                                                                      0.3),
-                                                          label: Text(
-                                                            devLang,
-                                                            style: TextStyle(
-                                                              fontSize: 10,
-                                                              color:
-                                                                  Colors.green,
+                                                      if (devLang == 'All') {
+                                                        return Container();
+                                                      } else {
+                                                        return Transform(
+                                                          transform: new Matrix4
+                                                              .identity()
+                                                            ..scale(1.0),
+                                                          child: Chip(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    0.2),
+                                                            backgroundColor:
+                                                                Colors.green
+                                                                    .shade900
+                                                                    .withOpacity(
+                                                                        0.3),
+                                                            label: Text(
+                                                              devLang,
+                                                              style: TextStyle(
+                                                                fontSize: 10,
+                                                                color: Colors
+                                                                    .green,
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
-                                                      );
+                                                        );
+                                                      }
                                                     }).toList(),
                                                   ),
                                                 ),
@@ -555,17 +560,6 @@ class _MainPageState extends State<MainPage>
                                   ],
                                 )
                               : Container();
-
-                          // SnapCardMain(
-                          //   uid: userProvider.getUser.uid,
-                          //   snapId: filteredSnap[index].data()['snapId'],
-                          //   thumbnailUrl:
-                          //       filteredSnap[index].data()['thumbnailUrl'],
-                          //   title: filteredSnap[index].data()['title'],
-                          //   hashTagList: filteredSnap[index].data()['HashTag'],
-                          //   filteredLanguageList: filteredLanguageList,
-                          //   bookmarkList: userProvider.getUser.bookMark,
-                          // );
                         },
                       ),
                     ),

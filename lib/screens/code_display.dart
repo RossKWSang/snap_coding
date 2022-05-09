@@ -88,6 +88,9 @@ class _CodeDisplayState extends State<CodeDisplay> {
             itemCount: widget.codeSnippet.length,
             itemBuilder: (context, index) {
               return Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: 3,
+                ),
                 width: MediaQuery.of(context).size.width * 0.95,
                 child: Column(
                   children: [

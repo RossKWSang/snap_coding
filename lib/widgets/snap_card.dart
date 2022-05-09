@@ -74,12 +74,15 @@ class _SnapCardMainState extends State<SnapCardMain> {
                     ),
                     Positioned(
                       child: IconButton(
-                        icon: Icon(
-                          Icons.bookmark_border_outlined,
-                          color: widget.bookmarkList.contains(widget.snapId)
-                              ? Colors.white
-                              : Colors.black,
-                        ),
+                        icon: widget.bookmarkList.contains(widget.snapId)
+                            ? Icon(
+                                Icons.bookmark,
+                                color: primaryColor,
+                              )
+                            : Icon(
+                                Icons.bookmark_border_outlined,
+                                color: primaryColor,
+                              ),
                         onPressed: () async {
                           //isMarked = !isMarked;
                           await FireStoreMethods().bookmarkPost(
@@ -93,6 +96,7 @@ class _SnapCardMainState extends State<SnapCardMain> {
                             widget.uid,
                             widget.bookmarkList,
                           );
+                          setState(() {});
                         },
                       ),
                       bottom: 0,
@@ -118,50 +122,53 @@ class _SnapCardMainState extends State<SnapCardMain> {
                       height: 6,
                     ),
                     Container(
-                      height: 70,
+                      height: 50,
                       width: 250,
                       child: Wrap(
                         alignment: WrapAlignment.start, // 정렬 방식
 
-                        children: widget.hashTagList.map<Widget>((hashTag) {
-                          return Container(
-                            padding: EdgeInsets.all(2),
-                            child: Text(
-                              hashTag,
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: primaryColor,
+                        children: widget.hashTagList.map<Widget>(
+                          (hashTag) {
+                            return Container(
+                              padding: EdgeInsets.all(2),
+                              child: Text(
+                                hashTag,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: primaryColor,
+                                ),
                               ),
-                            ),
-                          );
-                        }).toList(),
+                            );
+                          },
+                        ).toList(),
                       ),
                     ),
                     Container(
                       width: 250,
-                      height: 40,
+                      height: 20,
                       child: Wrap(
                         // spacing: 5, // 상하(좌우) 공간
                         // runSpacing: 2,
                         alignment: WrapAlignment.start,
-                        children:
-                            widget.filteredLanguageList.map<Widget>((devLang) {
-                          return Transform(
-                            transform: new Matrix4.identity()..scale(1.0),
-                            child: Chip(
-                              padding: EdgeInsets.all(0.5),
-                              backgroundColor:
-                                  Colors.green.shade900.withOpacity(0.3),
-                              label: Text(
-                                devLang,
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: Colors.green,
+                        children: widget.filteredLanguageList.map<Widget>(
+                          (devLang) {
+                            return Transform(
+                              transform: new Matrix4.identity()..scale(1.0),
+                              child: Chip(
+                                padding: EdgeInsets.all(0.5),
+                                backgroundColor:
+                                    Colors.green.shade900.withOpacity(0.3),
+                                label: Text(
+                                  devLang,
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: Colors.green,
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        }).toList(),
+                            );
+                          },
+                        ).toList(),
                       ),
                     ),
                   ],

@@ -20,6 +20,7 @@ class BookmarkPage extends StatefulWidget {
 class _BookmarkPageState extends State<BookmarkPage> {
   bool isMarked = false;
   bool _isLoggedIn = false;
+  String _curUid = '';
 
   // void bookmarkPost(String postId, String uid, List bookmark) async {
   //   setState(() {});
@@ -39,6 +40,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
     final fireAuth.FirebaseAuth _auth = fireAuth.FirebaseAuth.instance;
     if (_auth.currentUser != null) {
       fireAuth.User currentUser = _auth.currentUser!;
+      _curUid = currentUser.uid.toString();
       _isLoggedIn = true;
       print(
         currentUser.uid.toString(),
@@ -86,6 +88,10 @@ class _BookmarkPageState extends State<BookmarkPage> {
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: snapshot.data!.docs.length,
                             itemBuilder: (context, index) {
+                              List<dynamic> filteredLanguageList = snapshot
+                                  .data!.docs[index]
+                                  .data()['devLanguage'];
+                              filteredLanguageList.remove('All');
                               return Column(
                                 children: [
                                   Row(),
@@ -126,13 +132,14 @@ class _BookmarkPageState extends State<BookmarkPage> {
                                             children: [
                                               Container(
                                                 height: 120,
-                                                width: 120,
+                                                width: 110,
                                                 decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            16),
-                                                    border: Border.all(
-                                                        color: Colors.white)),
+                                                  borderRadius:
+                                                      BorderRadius.circular(16),
+                                                  border: Border.all(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
                                                 child: ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(16),
@@ -146,42 +153,36 @@ class _BookmarkPageState extends State<BookmarkPage> {
                                                   ),
                                                 ),
                                               ),
-                                              Positioned(
-                                                child: IconButton(
-                                                  icon: Icon(
-                                                    Icons
-                                                        .bookmark_border_outlined,
-                                                    // color: markedPost.contains(
-                                                    //         snapshot
-                                                    //             .data?.docs[index]
-                                                    //             .data()['snapId'])
-                                                    //     ? Colors.white
-                                                    //     : Colors.black,
-                                                  ),
-                                                  onPressed: () async {
-                                                    //isMarked = !isMarked;
-                                                    await FireStoreMethods()
-                                                        .bookmarkPost(
-                                                      snapshot.data?.docs[index]
-                                                          .data()['snapId'],
-                                                      userProvider.getUser.uid,
-                                                      snapshot.data?.docs[index]
-                                                          .data()['bookMark'],
-                                                    );
+                                              // Positioned(
+                                              //   child: IconButton(
+                                              //     icon: Icon(
+                                              //       Icons.remove_circle_rounded,
+                                              //       color: Colors.red[900],
+                                              //     ),
+                                              //     onPressed: () async {
+                                              //       //isMarked = !isMarked;
+                                              //       await FireStoreMethods()
+                                              //           .bookmarkPost(
+                                              //         snapshot.data?.docs[index]
+                                              //             .data()['snapId'],
+                                              //         userProvider.getUser.uid,
+                                              //         snapshot.data?.docs[index]
+                                              //             .data()['bookMark'],
+                                              //       );
 
-                                                    await FireStoreMethods()
-                                                        .bookmarkforUser(
-                                                      snapshot.data?.docs[index]
-                                                          .data()['snapId'],
-                                                      userProvider.getUser.uid,
-                                                      snapshot.data?.docs[index]
-                                                          .data()['bookMark'],
-                                                    );
-                                                  },
-                                                ),
-                                                bottom: 0,
-                                                right: 0,
-                                              )
+                                              //       await FireStoreMethods()
+                                              //           .bookmarkforUser(
+                                              //         snapshot.data?.docs[index]
+                                              //             .data()['snapId'],
+                                              //         userProvider.getUser.uid,
+                                              //         snapshot.data?.docs[index]
+                                              //             .data()['bookMark'],
+                                              //       );
+                                              //     },
+                                              //   ),
+                                              //   bottom: 0,
+                                              //   right: 0,
+                                              // )
                                             ],
                                           ),
                                           SizedBox(
@@ -194,52 +195,137 @@ class _BookmarkPageState extends State<BookmarkPage> {
                                               SizedBox(
                                                 height: 8,
                                               ),
-                                              Text(
-                                                snapshot.data!.docs[index]
-                                                    .data()['title'],
-                                                // snapshot.data!.docs[index]
-                                                //     .data()['snapId'],
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 18),
-                                              ),
-                                              Text(
-                                                snapshot.data!.docs[index]
-                                                    .data()['description']
-                                                    .substring(0, 10),
-                                                style: TextStyle(
-                                                    color: Colors.grey),
+                                              Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.63,
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      snapshot.data!.docs[index]
+                                                          .data()['title'],
+                                                      // snapshot.data!.docs[index]
+                                                      //     .data()['snapId'],
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 18),
+                                                    ),
+                                                    Spacer(),
+                                                    IconButton(
+                                                      onPressed: () async {
+                                                        //isMarked = !isMarked;
+                                                        await FireStoreMethods()
+                                                            .bookmarkPost(
+                                                          snapshot
+                                                              .data?.docs[index]
+                                                              .data()['snapId'],
+                                                          userProvider
+                                                              .getUser.uid,
+                                                          snapshot.data
+                                                                  ?.docs[index]
+                                                                  .data()[
+                                                              'bookMark'],
+                                                        );
+
+                                                        await FireStoreMethods()
+                                                            .bookmarkforUser(
+                                                          snapshot
+                                                              .data?.docs[index]
+                                                              .data()['snapId'],
+                                                          userProvider
+                                                              .getUser.uid,
+                                                          snapshot.data
+                                                                  ?.docs[index]
+                                                                  .data()[
+                                                              'bookMark'],
+                                                        );
+                                                      },
+                                                      icon: Icon(
+                                                        Icons.cancel,
+                                                        color: Colors.red[900],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                               SizedBox(
                                                 height: 6,
                                               ),
-                                              Row(
-                                                children: [
-                                                  Chip(
-                                                    backgroundColor: Colors
-                                                        .green.shade900
-                                                        .withOpacity(0.3),
-                                                    label: Text(
-                                                      '#JavaScript',
-                                                      style: TextStyle(
-                                                          fontSize: 12,
-                                                          color: Colors.green),
-                                                    ),
-                                                  ),
-                                                  SizedBox(width: 6),
-                                                  Chip(
-                                                    backgroundColor: Colors
-                                                        .green.shade900
-                                                        .withOpacity(0.3),
-                                                    label: Text(
-                                                      '#마켓컬리',
-                                                      style: TextStyle(
-                                                          fontSize: 12,
-                                                          color: Colors.green),
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
+
+                                              Container(
+                                                height: 30,
+                                                width: 260,
+                                                child: Wrap(
+                                                  alignment: WrapAlignment
+                                                      .start, // 정렬 방식
+
+                                                  children: snapshot
+                                                      .data!.docs[index]
+                                                      .data()['HashTag']
+                                                      .map<Widget>((hashTag) {
+                                                    return Container(
+                                                      padding:
+                                                          EdgeInsets.all(2),
+                                                      child: Text(
+                                                        hashTag,
+                                                        style: TextStyle(
+                                                          fontSize: 15,
+                                                          color: primaryColor,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }).toList(),
+                                                ),
+                                              ),
+                                              // Text(
+                                              //   snapshot.data!.docs[index]
+                                              //       .data()['description']
+                                              //       .substring(0, 10),
+                                              //   style: TextStyle(
+                                              //       color: Colors.grey),
+                                              // ),
+                                              Container(
+                                                height: 15,
+                                                child: Wrap(
+                                                  // spacing: 5, // 상하(좌우) 공간
+                                                  // runSpacing: 2,
+                                                  alignment: WrapAlignment
+                                                      .start, // 정렬 방식
+
+                                                  children: filteredLanguageList
+                                                      .map<Widget>((devLang) {
+                                                    if (devLang == 'All') {
+                                                      return Container();
+                                                    } else {
+                                                      return Transform(
+                                                        transform: new Matrix4
+                                                            .identity()
+                                                          ..scale(1.0),
+                                                        child: Chip(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  0.2),
+                                                          backgroundColor:
+                                                              Colors.green
+                                                                  .shade900
+                                                                  .withOpacity(
+                                                                      0.3),
+                                                          label: Text(
+                                                            devLang,
+                                                            style: TextStyle(
+                                                              fontSize: 10,
+                                                              color:
+                                                                  Colors.green,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }
+                                                  }).toList(),
+                                                ),
+                                              ),
                                             ],
                                           )
                                         ],

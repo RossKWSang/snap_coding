@@ -60,11 +60,9 @@ class _MySnapPageState extends State<MySnapPage> {
                             filteredSnap = snapshot.data!.docs;
                         List<dynamic> filteredLanguageList =
                             filteredSnap[index].data()['devLanguage'];
-                        // filteredLanguageList.remove('All');
+                        filteredLanguageList.remove('All');
                         bool _ismine = false;
-                        print(filteredSnap[index].data()['snapId']);
-                        print(postSnapId
-                            .contains(filteredSnap[index].data()['snapId']));
+
                         if (postSnapId
                             .contains(filteredSnap[index].data()['snapId'])) {
                           _ismine = true;

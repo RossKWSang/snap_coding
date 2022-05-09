@@ -628,6 +628,9 @@ class _AddSnapScreenState extends State<AddSnapScreen> {
                   return Column(
                     children: [
                       Container(
+                        margin: EdgeInsets.symmetric(
+                          horizontal: 3,
+                        ),
                         width: MediaQuery.of(context).size.width * 0.95,
                         child: Stack(
                           children: [
