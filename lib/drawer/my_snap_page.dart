@@ -143,7 +143,7 @@ class _MySnapPageState extends State<MySnapPage> {
                                                     //isMarked = !isMarked;
 
                                                     await FireStoreMethods()
-                                                        .bookmarkPost(
+                                                        .bookmarkforPost(
                                                       filteredSnap[index]
                                                           .data()['snapId'],
                                                       userProvider.getUser.uid,

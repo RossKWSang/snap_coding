@@ -82,7 +82,7 @@ class _SnapCardMainState extends State<SnapCardMain> {
                         ),
                         onPressed: () async {
                           //isMarked = !isMarked;
-                          await FireStoreMethods().bookmarkPost(
+                          await FireStoreMethods().bookmarkforPost(
                             widget.snapId,
                             widget.uid,
                             widget.bookmarkList,

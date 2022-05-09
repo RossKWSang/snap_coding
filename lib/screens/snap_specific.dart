@@ -12,6 +12,7 @@ import 'package:snap_coding_2/resources/firestore_methods.dart';
 import 'package:snap_coding_2/screens/code_display.dart';
 import 'package:snap_coding_2/screens/comment_specific.dart';
 import 'package:snap_coding_2/screens/login_screen.dart';
+import 'package:snap_coding_2/screens/main_screen.dart';
 import 'package:snap_coding_2/screens/snap_description.dart';
 import 'package:snap_coding_2/screens/snap_specific.dart';
 import 'package:snap_coding_2/utils/colors.dart';
@@ -128,6 +129,7 @@ class _SnapSpecificState extends State<SnapSpecific> {
                           width: MediaQuery.of(context).size.width * 0.95,
                           height: 140,
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Stack(
                                 children: [
@@ -177,7 +179,7 @@ class _SnapSpecificState extends State<SnapSpecific> {
                                   ),
                                   Container(
                                     height: 50,
-                                    width: 260,
+                                    width: 200,
                                     child: Text(
                                       "Author: " + data['username'],
                                     ),
@@ -214,6 +216,56 @@ class _SnapSpecificState extends State<SnapSpecific> {
                                   ),
                                 ],
                               ),
+                              widget.uid == data['uid']
+                                  ? PopupMenuButton(
+                                      icon: Icon(Icons.more_vert),
+                                      onSelected: (result) {
+                                        if (result == 0) {
+                                          FireStoreMethods()
+                                              .deletePost(widget.snapId);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MainPage()));
+                                        } else {}
+                                      },
+                                      itemBuilder: (context) => [
+                                            PopupMenuItem(
+                                              child: Text('삭제하기'),
+                                              value: 0,
+                                            ),
+                                            PopupMenuItem(child: Text('수정하기')),
+                                          ])
+                                  : PopupMenuButton(
+                                      icon: Icon(Icons.more_vert),
+                                      onSelected: (result) {
+                                        if (result == 0) {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text('신고 접수 완료'),
+                                                  content:
+                                                      Text('검토 후 조치하겠습니다.'),
+                                                  actions: [
+                                                    TextButton(
+                                                        onPressed: () => {
+                                                              Navigator.pop(
+                                                                  context)
+                                                            },
+                                                        child: Text('확인'))
+                                                  ],
+                                                );
+                                              });
+                                        }
+                                      },
+                                      itemBuilder: (context) => [
+                                            PopupMenuItem(
+                                              child: Text('신고하기'),
+                                              value: 0,
+                                            ),
+                                          ])
                             ],
                           ),
                         ),
@@ -488,16 +540,78 @@ class _SnapSpecificState extends State<SnapSpecific> {
                               return snapshot.data!.docs.length != 0
                                   ? Column(
                                       children: [
-                                        commentCard(
-                                          snapId: snapshot.data!.docs[index]
-                                              ['uid'],
-                                          username: snapshot.data!.docs[index]
-                                              ['name'],
-                                          comment: snapshot.data!.docs[index]
-                                              ['text'],
-                                          datePublished: snapshot.data!
-                                              .docs[index]['datePublished'],
-                                          isReported: false,
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            commentCard(
+                                              snapId: snapshot.data!.docs[index]
+                                                  ['uid'],
+                                              username: snapshot
+                                                  .data!.docs[index]['name'],
+                                              comment: snapshot
+                                                  .data!.docs[index]['text'],
+                                              datePublished: snapshot.data!
+                                                  .docs[index]['datePublished'],
+                                              isReported: false,
+                                            ),
+                                            widget.uid ==
+                                                    snapshot.data!.docs[index]
+                                                        ['uid']
+                                                ? PopupMenuButton(
+                                                    icon: Icon(Icons.more_vert),
+                                                    onSelected: (result) {
+                                                      if (result == 0) {
+                                                        FireStoreMethods()
+                                                            .deleteComment(
+                                                                widget.snapId,
+                                                                snapshot.data!
+                                                                            .docs[
+                                                                        index][
+                                                                    'commentId']);
+                                                      }
+                                                    },
+                                                    itemBuilder: (context) => [
+                                                          PopupMenuItem(
+                                                            child: Text('삭제하기'),
+                                                            value: 0,
+                                                          ),
+                                                        ])
+                                                : PopupMenuButton(
+                                                    icon: Icon(Icons.more_vert),
+                                                    onSelected: (result) {
+                                                      if (result == 0) {
+                                                        showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return AlertDialog(
+                                                                title: Text(
+                                                                    '신고 접수 완료'),
+                                                                content: Text(
+                                                                    '검토 후 조치하겠습니다.'),
+                                                                actions: [
+                                                                  TextButton(
+                                                                      onPressed:
+                                                                          () =>
+                                                                              {
+                                                                                Navigator.pop(context)
+                                                                              },
+                                                                      child: Text(
+                                                                          '확인'))
+                                                                ],
+                                                              );
+                                                            });
+                                                      }
+                                                    },
+                                                    itemBuilder: (context) => [
+                                                          PopupMenuItem(
+                                                            child: Text('신고하기'),
+                                                            value: 0,
+                                                          ),
+                                                        ])
+                                          ],
                                         ),
                                       ],
                                     )

@@ -200,6 +200,23 @@ class FireStoreMethods {
     return res;
   }
 
+  // Delete Comment
+  Future<String> deleteComment(String postId, String commentId) async {
+    String res = "Some error occurred";
+    try {
+      await _firestore
+          .collection('posts')
+          .doc(postId)
+          .collection('comments')
+          .doc(commentId)
+          .delete();
+      res = 'success';
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
   Future<String> updateUserInfo(
     String uid,
     String nickName,

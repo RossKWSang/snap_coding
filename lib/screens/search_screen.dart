@@ -212,7 +212,7 @@ class _SearchPageState extends State<SearchPage> {
                       onTap: () {
                         List<dynamic> updatedList = queueRecentSearchList(
                           recentSearch,
-                          _searchKeyWord.text,
+                          "#" + _searchKeyWord.text,
                         );
 
                         updateUserSearch(uid, updatedList);
