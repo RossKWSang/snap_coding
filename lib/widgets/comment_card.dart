@@ -26,7 +26,7 @@ class commentCard extends StatelessWidget {
       children: [
         Container(
           padding: EdgeInsets.all(3),
-          width: MediaQuery.of(context).size.width * 0.95,
+          width: MediaQuery.of(context).size.width * 0.88,
           height: 80,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

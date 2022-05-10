@@ -47,7 +47,7 @@ class _SnapCardMainState extends State<SnapCardMain> {
             );
           },
           child: Container(
-            width: MediaQuery.of(context).size.width * 0.95,
+            width: MediaQuery.of(context).size.width * 0.88,
             height: 140,
             child: Row(
               children: [

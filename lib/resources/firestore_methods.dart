@@ -188,6 +188,22 @@ class FireStoreMethods {
     return res;
   }
 
+  Future<String> deleteComment(String postId, String commentId) async {
+    String res = "Some error occurred";
+    try {
+      await _firestore
+          .collection('posts')
+          .doc(postId)
+          .collection('comments')
+          .doc(commentId)
+          .delete();
+      res = 'success';
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
   Future<String> updateUserInfo(
     String uid,
     String nickName,
@@ -208,6 +224,7 @@ class FireStoreMethods {
     }
     return res;
   }
+
   // Future<void> followUser(String uid, String followId) async {
   //   try {
   //     DocumentSnapshot snap =
