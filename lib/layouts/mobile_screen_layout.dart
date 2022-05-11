@@ -10,7 +10,11 @@ import 'package:snap_coding_2/utils/global_variables.dart';
 import 'package:snap_coding_2/models/user.dart' as model;
 
 class MobileScreenLayout extends StatefulWidget {
-  const MobileScreenLayout({Key? key}) : super(key: key);
+  // final int? routeNum;
+  const MobileScreenLayout({
+    Key? key,
+    // this.routeNum,
+  }) : super(key: key);
 
   @override
   State<MobileScreenLayout> createState() => _MobileScreenLayoutState();
@@ -59,9 +63,16 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout>
 
   @override
   Widget build(BuildContext context) {
+    _isSearchedProvider = Provider.of<IsSearchProvider>(context);
+
+    // if (widget.routeNum != null) {
+    //   print('route done');
+    //   onPageChanged(widget.routeNum!);
+    //   navigationTapped(widget.routeNum!);
+    // }
+
     // print(Provider.of<UserProvider>(context).getUser == Null);
     // model.User user = Provider.of<UserProvider>(context).getUser;
-    _isSearchedProvider = Provider.of<IsSearchProvider>(context);
 
     return Scaffold(
       body: PageView(

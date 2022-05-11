@@ -11,6 +11,7 @@ class SnapCardMain extends StatefulWidget {
   final List<dynamic> hashTagList;
   final List<dynamic> filteredLanguageList;
   final List bookmarkList;
+  final bool? bookmarkact;
   const SnapCardMain({
     Key? key,
     required this.uid,
@@ -20,6 +21,7 @@ class SnapCardMain extends StatefulWidget {
     required this.hashTagList,
     required this.filteredLanguageList,
     required this.bookmarkList,
+    this.bookmarkact,
   }) : super(key: key);
 
   @override
@@ -72,36 +74,39 @@ class _SnapCardMainState extends State<SnapCardMain> {
                         ),
                       ),
                     ),
-                    Positioned(
-                      child: IconButton(
-                        icon: widget.bookmarkList.contains(widget.snapId)
-                            ? Icon(
-                                Icons.bookmark,
-                                color: primaryColor,
-                              )
-                            : Icon(
-                                Icons.bookmark_border_outlined,
-                                color: primaryColor,
-                              ),
-                        onPressed: () async {
-                          //isMarked = !isMarked;
-                          await FireStoreMethods().bookmarkPost(
-                            widget.snapId,
-                            widget.uid,
-                            widget.bookmarkList,
-                          );
+                    widget.bookmarkact!
+                        ? Container()
+                        // Positioned(
+                        //     child: IconButton(
+                        //       icon: widget.bookmarkList.contains(widget.snapId)
+                        //           ? Icon(
+                        //               Icons.bookmark,
+                        //               color: primaryColor,
+                        //             )
+                        //           : Icon(
+                        //               Icons.bookmark_border_outlined,
+                        //               color: primaryColor,
+                        //             ),
+                        //       onPressed: () async {
+                        //         //isMarked = !isMarked;
+                        //         await FireStoreMethods().bookmarkPost(
+                        //           widget.snapId,
+                        //           widget.uid,
+                        //           widget.bookmarkList,
+                        //         );
 
-                          await FireStoreMethods().bookmarkforUser(
-                            widget.snapId,
-                            widget.uid,
-                            widget.bookmarkList,
-                          );
-                          setState(() {});
-                        },
-                      ),
-                      bottom: 0,
-                      right: 0,
-                    )
+                        //         await FireStoreMethods().bookmarkforUser(
+                        //           widget.snapId,
+                        //           widget.uid,
+                        //           widget.bookmarkList,
+                        //         );
+                        //         setState(() {});
+                        //       },
+                        //     ),
+                        //     bottom: 0,
+                        //     right: 0,
+                        //   )
+                        : Container(),
                   ],
                 ),
                 SizedBox(
@@ -123,7 +128,7 @@ class _SnapCardMainState extends State<SnapCardMain> {
                     ),
                     Container(
                       height: 50,
-                      width: 250,
+                      width: 220,
                       child: Wrap(
                         alignment: WrapAlignment.start, // 정렬 방식
 
@@ -144,7 +149,7 @@ class _SnapCardMainState extends State<SnapCardMain> {
                       ),
                     ),
                     Container(
-                      width: 250,
+                      width: 220,
                       height: 20,
                       child: Wrap(
                         // spacing: 5, // 상하(좌우) 공간

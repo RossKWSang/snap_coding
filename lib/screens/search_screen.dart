@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snap_coding_2/layouts/mobile_screen_layout.dart';
 import 'package:snap_coding_2/models/user.dart';
 import 'package:snap_coding_2/providers/user_provider.dart';
 import 'package:snap_coding_2/providers/search_provider.dart';
@@ -13,7 +14,9 @@ import 'package:snap_coding_2/widgets/text_field_input.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fireAuth;
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
+  const SearchPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -25,6 +28,9 @@ class _SearchPageState extends State<SearchPage> {
   String uid = '';
   String currentlySearched = '';
   User? userData = null;
+  List<dynamic> recentSearch = [];
+  List<dynamic> bookmarkList = [];
+
   final List _skillSets = [];
   final List chipSkillSets = [
     'C',
@@ -62,19 +68,16 @@ class _SearchPageState extends State<SearchPage> {
     super.dispose();
   }
 
-  void initializeUserSearch(
+  Future<void> initializeUserSearch(
     String uid,
   ) async {
     try {
       String res = await AuthMethods().recentSearchInitialize(userId: uid);
-
-      if (res != 'success') {
-        showSnackBar(
-          context,
-          '최근검색어가 초기화되었습니다.',
+      if (res == 'success') {
+        setState(
+          () {},
         );
       }
-      setState(() {});
     } catch (err) {
       showSnackBar(
         context,
@@ -83,7 +86,8 @@ class _SearchPageState extends State<SearchPage> {
     }
   }
 
-  void updateUserSearch(String uid, List<dynamic> updatedUserSearch) async {
+  Future<void> updateUserSearch(
+      String uid, List<dynamic> updatedUserSearch) async {
     try {
       currentlySearched = _searchKeyWord.text;
       String res = await AuthMethods().recentSearchUpdate(
@@ -102,27 +106,27 @@ class _SearchPageState extends State<SearchPage> {
     }
   }
 
-  // AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> searchSnapshot(
-  //   String searchKeyword,
-  // ) async {}
-
-  // List<Widget> searchResult(String searchKeyWord) {}
-
   void clearSearchBar() {
-    setState(() {
-      _searchKeyWord.clear();
-    });
+    setState(
+      () {
+        _searchKeyWord.clear();
+      },
+    );
   }
 
-  void getUserSnapshot(
+  Future<void> getUserSnapshot(
     String uid,
   ) async {
     try {
       final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
+      // if (_auth.currentUser == null) {
+      //   return;
+      // }
       DocumentSnapshot documentSnapshot =
           await _firestore.collection('users').doc(uid).get();
       userData = User.fromSnap(documentSnapshot);
+      recentSearch = User.fromSnap(documentSnapshot).recentSearch;
+      bookmarkList = User.fromSnap(documentSnapshot).bookMark;
     } catch (err) {
       showSnackBar(
         context,
@@ -146,30 +150,13 @@ class _SearchPageState extends State<SearchPage> {
       getUserSnapshot(uid);
     }
 
-    if (userData != null) {
-      print(userData!.uid);
-    }
+    // if (userData != null) {
+    //   recentSearch = userData!.recentSearch;
+    //   print(recentSearch);
+    // } else {
+    //   recentSearch = [];
+    // }
 
-    // return StreamBuilder(
-    //   stream:
-    //       FirebaseFirestore.instance.collection('users').doc(uid).snapshots(),
-    //   builder: (context,
-    //       AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
-    //     if (snapshot.connectionState == ConnectionState.waiting) {
-    //       return const Center(
-    //         child: CircularProgressIndicator(),
-    //       );
-    //     }
-    List<dynamic> recentSearch;
-    if (userData != null) {
-      recentSearch = userData!.recentSearch;
-      print(recentSearch);
-    } else {
-      recentSearch = [];
-    }
-    // List<dynamic> recentSearch = userData!.recentSearch;
-    // print('recent Search');
-    // print(userData!.recentSearch);
     return SingleChildScrollView(
       child: SafeArea(
         child: Padding(
@@ -243,9 +230,10 @@ class _SearchPageState extends State<SearchPage> {
                                   Spacer(),
                                   TextButton(
                                     onPressed: () async {
-                                      initializeUserSearch(
+                                      await initializeUserSearch(
                                         uid,
                                       );
+                                      setState(() {});
                                     },
                                     child: Text(
                                       '전체삭제',
@@ -469,20 +457,37 @@ class _SearchPageState extends State<SearchPage> {
                                             .data()['devLanguage'];
                                     filteredLanguageList.remove('All');
                                     // print(filteredLanguageList);
-                                    return SnapCardMain(
-                                      uid: uid,
-                                      snapId:
-                                          filteredSnap[index].data()['snapId'],
-                                      thumbnailUrl: filteredSnap[index]
-                                          .data()['thumbnailUrl'],
-                                      title:
-                                          filteredSnap[index].data()['title'],
-                                      hashTagList:
-                                          filteredSnap[index].data()['HashTag'],
-                                      filteredLanguageList:
-                                          filteredLanguageList,
-                                      bookmarkList: userData!.bookMark,
-                                    );
+                                    return _isLoggedIn
+                                        ? SnapCardMain(
+                                            uid: uid,
+                                            snapId: filteredSnap[index]
+                                                .data()['snapId'],
+                                            thumbnailUrl: filteredSnap[index]
+                                                .data()['thumbnailUrl'],
+                                            title: filteredSnap[index]
+                                                .data()['title'],
+                                            hashTagList: filteredSnap[index]
+                                                .data()['HashTag'],
+                                            filteredLanguageList:
+                                                filteredLanguageList,
+                                            bookmarkList: bookmarkList,
+                                            bookmarkact: true,
+                                          )
+                                        : SnapCardMain(
+                                            uid: uid,
+                                            snapId: filteredSnap[index]
+                                                .data()['snapId'],
+                                            thumbnailUrl: filteredSnap[index]
+                                                .data()['thumbnailUrl'],
+                                            title: filteredSnap[index]
+                                                .data()['title'],
+                                            hashTagList: filteredSnap[index]
+                                                .data()['HashTag'],
+                                            filteredLanguageList:
+                                                filteredLanguageList,
+                                            bookmarkList: [],
+                                            bookmarkact: false,
+                                          );
                                   },
                                 )
                               : Builder(

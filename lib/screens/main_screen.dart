@@ -74,13 +74,11 @@ class _MainPageState extends State<MainPage>
     if (_auth.currentUser == null) {
       return;
     }
-    // print(_auth.currentUser!.uid);
     DocumentSnapshot documentSnapshot =
         await _firestore.collection('users').doc(_auth.currentUser!.uid).get();
     uid = model.User.fromSnap(documentSnapshot).uid;
     username = model.User.fromSnap(documentSnapshot).username;
     bookmark = model.User.fromSnap(documentSnapshot).bookMark;
-    // print(model.User.fromSnap(documentSnapshot).bookMark);
   }
 
   @override
@@ -90,17 +88,6 @@ class _MainPageState extends State<MainPage>
         getUserInfo();
       },
     );
-
-    // if (Provider.of<UserProvider>(context).getUser != null) {
-    //   _isLoggedIn = true;
-    //   final User user = Provider.of<UserProvider>(context).getUser;
-    //   markedPost = user.bookMark;
-    // }
-    // final User user = Provider.of<UserProvider>(context).getUser;
-    // print(user.username);
-
-    // print("userprovider print >> ");
-    // print(userProvider.getUser);
 
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
     final fireAuth.FirebaseAuth _auth = fireAuth.FirebaseAuth.instance;
@@ -116,11 +103,6 @@ class _MainPageState extends State<MainPage>
     }
 
     final UserProvider userProvider = Provider.of<UserProvider>(context);
-    // print(_isLoggedIn);
-    // print(uid);
-    // print('username ' + username);
-    // print(currentUser.uid);
-    // print(currentUser.username);
 
     return Scaffold(
       drawer: NavigationDrawerWidget(),

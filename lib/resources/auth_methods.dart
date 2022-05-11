@@ -116,7 +116,7 @@ class AuthMethods {
     required String userId,
     required List<dynamic> searchKeyWord,
   }) async {
-    String res = "invalid search";
+    String res = "success";
     try {
       _firestore.collection('users').doc(userId).update(
         {
