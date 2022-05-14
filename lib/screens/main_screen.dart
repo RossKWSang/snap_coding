@@ -32,7 +32,7 @@ class _MainPageState extends State<MainPage>
   @override
   void initState() {
     super.initState();
-    _mainBannerTabController = new TabController(length: 4, vsync: this);
+    _mainBannerTabController = new TabController(length: 3, vsync: this);
   }
 
   @override
@@ -174,14 +174,14 @@ class _MainPageState extends State<MainPage>
                 pinned: true,
                 toolbarHeight: 0,
                 collapsedHeight: 70,
-                expandedHeight: 400,
+                expandedHeight: 350,
                 backgroundColor: mobileBackgroundColor,
                 flexibleSpace: FlexibleSpaceBar(
                   background: Stack(
                     children: [
                       Container(
                         width: double.infinity,
-                        height: 350,
+                        height: 300,
                         child: TabBarView(
                           controller: _mainBannerTabController,
                           children: [
@@ -194,19 +194,19 @@ class _MainPageState extends State<MainPage>
                               fit: BoxFit.fill,
                             ),
                             Image.asset(
-                              'assets/images/banner3.jpg',
+                              'assets/images/banner3.png',
                               fit: BoxFit.fill,
                             ),
-                            Image.asset(
-                              'assets/images/banner4.jpg',
-                              fit: BoxFit.fill,
-                            ),
+                            // Image.asset(
+                            //   'assets/images/banner4.jpg',
+                            //   fit: BoxFit.fill,
+                            // ),
                           ],
                         ),
                       ),
                       Container(
                         width: double.infinity,
-                        height: 350,
+                        height: 300,
                         child: Column(
                           children: [
                             Spacer(),
@@ -231,6 +231,9 @@ class _MainPageState extends State<MainPage>
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       height: 40,
+                      decoration: BoxDecoration(
+                        color: mobileBackgroundColor,
+                      ),
                       child: ListView.builder(
                         shrinkWrap: true,
                         // physics: const NeverScrollableScrollPhysics(),

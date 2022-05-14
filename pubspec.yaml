@@ -46,6 +46,7 @@ dev_dependencies:
   flutter_lints: ^1.0.0
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.9.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -61,11 +62,11 @@ flutter:
     - FramesnapCodingLogo.png
     - kakaotalk.png
     - assets/images/banner1.png
-    - assets/images/banner2.jpg
+    # - assets/images/banner2.jpg
     - assets/images/banner2.png
-    - assets/images/banner3.jpg
-    - assets/images/banner4.jpg
-    - assets/images/banner4.png
+    - assets/images/banner3.png
+    # - assets/images/banner4.jpg
+    # - assets/images/banner4.png
 
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
